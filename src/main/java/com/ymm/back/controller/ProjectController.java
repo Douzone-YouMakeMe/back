@@ -1,7 +1,7 @@
-package com.example.joqdemo.controller;
+package com.ymm.back.controller;
 
-import com.example.joqdemo.domain.tables.Project;
-import com.example.joqdemo.domain.tables.User;
+import com.ymm.back.domain.tables.Project;
+import com.ymm.back.domain.tables.User;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;

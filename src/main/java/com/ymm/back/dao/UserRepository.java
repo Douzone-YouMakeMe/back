@@ -1,11 +1,8 @@
-package com.example.joqdemo.dao;
+package com.ymm.back.dao;
 
 
-import com.example.joqdemo.domain.tables.*;
-import com.example.joqdemo.domain.tables.records.UserRecord;
+import com.ymm.back.domain.tables.User;
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
-
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
 
 
 @Repository

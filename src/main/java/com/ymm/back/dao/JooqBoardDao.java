@@ -1,19 +1,9 @@
-package com.example.joqdemo.dao;
+package com.ymm.back.dao;
 
 //import com.example.joqdemo.domain.Jooq;
 //import com.example.joqdemo.domain.tables.JooqBoard;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.Table;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Map;
-
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
 
 @Repository
 public class JooqBoardDao {

@@ -1,10 +1,7 @@
-package com.example.joqdemo.controller;
+package com.ymm.back.controller;
 
-import com.example.joqdemo.domain.tables.User;
-import com.example.joqdemo.domain.tables.records.UserRecord;
-import com.example.joqdemo.service.UserService;
-import org.jooq.Record;
-import org.jooq.Result;
+import com.ymm.back.domain.tables.User;
+import com.ymm.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

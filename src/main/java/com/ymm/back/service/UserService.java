@@ -1,10 +1,8 @@
-package com.example.joqdemo.service;
+package com.ymm.back.service;
 
-import com.example.joqdemo.dao.UserRepository;
-import com.example.joqdemo.domain.tables.User;
-import com.example.joqdemo.domain.tables.records.UserRecord;
-import org.jooq.Record;
-import org.jooq.Result;
+
+import com.ymm.back.dao.UserRepository;
+import com.ymm.back.domain.tables.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

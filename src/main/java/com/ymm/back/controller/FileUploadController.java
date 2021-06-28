@@ -1,5 +1,6 @@
 package com.ymm.back.controller;
 
+import com.ymm.back.s3.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;

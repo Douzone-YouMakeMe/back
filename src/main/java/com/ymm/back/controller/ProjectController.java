@@ -1,80 +1,74 @@
 package com.ymm.back.controller;
 
-import com.ymm.back.domain.tables.Project;
-import com.ymm.back.domain.tables.User;
-import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
+
+import javax.websocket.server.PathParam;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mercure.entity.ProjectEntity;
+import com.mercure.model.ProjectFile;
+import com.mercure.service.ProjectService;
+import com.mercure.utils.CFileUtil;
+
+import liquibase.util.file.FilenameUtils;
 
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
-    private final DSLContext dslContext;
-    private final JdbcTemplate jdbcTemplate;
-    @Autowired
-    public ProjectController(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
-        this.dslContext = dslContext;
-        this.jdbcTemplate = jdbcTemplate;
-    }
-    @GetMapping
-    // 프로젝트 정보 가져오기
-    public List<Map<String, Object>> selectProject(){
-        String sql = dslContext.selectFrom(DSL.table("project")).getSQL();
-        return jdbcTemplate.queryForList(sql);
-    }
-    // 프로젝트 만들기!
-    @PostMapping
-    public ResponseEntity<Project> insertProject(@RequestBody Project input){
-        Project project = Project.PROJECT;
-        int sql = dslContext.insertInto(project)
-                .columns(project.USER_ID) //project.NAME ,project.FINISHED_AT
-                .values(input.USER_ID)
-                .execute();
-        String q = dslContext.insertInto(project)
-                .columns(project.USER_ID,project.NAME) //,project.FINISHED_AT
-                .values(5,"프로젝트99").getSQL();
-        System.out.println(q);
-        return ResponseEntity.status(200).build();
-    }
-    //프로젝트 정보 변경
-    @PatchMapping
-    public String updateProject(){
-        Project project = Project.PROJECT;
-        User user = User.USER;
-        String result="";
-        int sql = dslContext.update(project)
-                .set(project.NAME,"변경된 프로젝트")
-                .where(project.USER_ID.eq(5))
-                .execute();
-        if(sql ==1){
-            result = "성공!";
-        } else {
-            result = "그런거 없습니다.";
-        }
-        return result;
-    }
-    // 프로젝트 삭제
-    @DeleteMapping
-    public String deleteProject(){
-        Project project = Project.PROJECT;
-        User user = User.USER;
-        String result="";
-        int sql = dslContext.deleteFrom(project)
-                .where(project.USER_ID.eq(5))
-                .execute();
-        if(sql ==1){
-            result = "삭제 성공!";
-        } else {
-            result = "그런거 없습니다. 정확한 정보로 삭제요청 부탁";
-        }
-        return result;
-    }
-
-
+	
+	@Autowired
+	ProjectService proService;
+	
+	
+	
+	@PostMapping(path="/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<?> createProject(@ModelAttribute ProjectFile pf){
+		ProjectEntity pro=new ProjectEntity();
+		pro.setViewCount(0);
+		pro.setName(pf.getName());
+		pro.setFinishedAt(pf.getFinishedAt());
+		pro.setDescription(pf.getDescription());
+		pro.setContents(pf.getContents());
+		pro.setUserFK(pf.getUserId());
+		pro.setAuthority(pf.getAuthority());
+		pro.setThumbnail(CFileUtil.uploadImage(pf.getThumbnail()));
+		
+		try {
+			proService.createProject(pro);
+		} catch (Exception e) {
+			return ResponseEntity.status(500).build();
+		}
+		
+		return ResponseEntity.status(200).body("good");
+	}
+	
+	@GetMapping("/")
+	public ResponseEntity<?> getProject(){
+		List<ProjectEntity> pro=proService.getProject();
+		
+		
+		return ResponseEntity.status(200).body(pro);
+	}
+	
+	//projecet id로 받아오기
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getPorjectOne(@PathVariable(value="id") int id){
+		ProjectEntity pro=proService.getProjectOne(id);
+		return ResponseEntity.status(200).body(pro);
+	}
+	
 }

@@ -4,25 +4,20 @@
 package com.ymm.back.domain.tables;
 
 
-import com.ymm.back.domain.Douzone;
-import com.ymm.back.domain.Keys;
+import com.ymm.back.domain.Hwant;
 import com.ymm.back.domain.tables.records.DatabasechangelogRecord;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row3;
+import org.jooq.Row14;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 
@@ -33,10 +28,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Databasechangelog extends TableImpl<DatabasechangelogRecord> {
 
-    private static final long serialVersionUID = 193401633;
+    private static final long serialVersionUID = -85952693;
 
     /**
-     * The reference instance of <code>douzone.databasechangelog</code>
+     * The reference instance of <code>hwant.DATABASECHANGELOG</code>
      */
     public static final Databasechangelog DATABASECHANGELOG = new Databasechangelog();
 
@@ -49,36 +44,91 @@ public class Databasechangelog extends TableImpl<DatabasechangelogRecord> {
     }
 
     /**
-     * The column <code>douzone.databasechangelog.create_time</code>.
+     * The column <code>hwant.DATABASECHANGELOG.ID</code>.
      */
-    public final TableField<DatabasechangelogRecord, LocalDateTime> CREATE_TIME = createField(DSL.name("create_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DatabasechangelogRecord, String> ID = createField(DSL.name("ID"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.databasechangelog.update_time</code>.
+     * The column <code>hwant.DATABASECHANGELOG.AUTHOR</code>.
      */
-    public final TableField<DatabasechangelogRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<DatabasechangelogRecord, String> AUTHOR = createField(DSL.name("AUTHOR"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.databasechangelog.id</code>.
+     * The column <code>hwant.DATABASECHANGELOG.FILENAME</code>.
      */
-    public final TableField<DatabasechangelogRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<DatabasechangelogRecord, String> FILENAME = createField(DSL.name("FILENAME"), org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
-     * Create a <code>douzone.databasechangelog</code> table reference
+     * The column <code>hwant.DATABASECHANGELOG.DATEEXECUTED</code>.
+     */
+    public final TableField<DatabasechangelogRecord, LocalDateTime> DATEEXECUTED = createField(DSL.name("DATEEXECUTED"), org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.ORDEREXECUTED</code>.
+     */
+    public final TableField<DatabasechangelogRecord, Integer> ORDEREXECUTED = createField(DSL.name("ORDEREXECUTED"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.EXECTYPE</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> EXECTYPE = createField(DSL.name("EXECTYPE"), org.jooq.impl.SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.MD5SUM</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> MD5SUM = createField(DSL.name("MD5SUM"), org.jooq.impl.SQLDataType.VARCHAR(35), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.DESCRIPTION</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> DESCRIPTION = createField(DSL.name("DESCRIPTION"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.COMMENTS</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> COMMENTS = createField(DSL.name("COMMENTS"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.TAG</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> TAG = createField(DSL.name("TAG"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.LIQUIBASE</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> LIQUIBASE = createField(DSL.name("LIQUIBASE"), org.jooq.impl.SQLDataType.VARCHAR(20), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.CONTEXTS</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> CONTEXTS = createField(DSL.name("CONTEXTS"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.LABELS</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> LABELS = createField(DSL.name("LABELS"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>hwant.DATABASECHANGELOG.DEPLOYMENT_ID</code>.
+     */
+    public final TableField<DatabasechangelogRecord, String> DEPLOYMENT_ID = createField(DSL.name("DEPLOYMENT_ID"), org.jooq.impl.SQLDataType.VARCHAR(10), this, "");
+
+    /**
+     * Create a <code>hwant.DATABASECHANGELOG</code> table reference
      */
     public Databasechangelog() {
-        this(DSL.name("databasechangelog"), null);
+        this(DSL.name("DATABASECHANGELOG"), null);
     }
 
     /**
-     * Create an aliased <code>douzone.databasechangelog</code> table reference
+     * Create an aliased <code>hwant.DATABASECHANGELOG</code> table reference
      */
     public Databasechangelog(String alias) {
         this(DSL.name(alias), DATABASECHANGELOG);
     }
 
     /**
-     * Create an aliased <code>douzone.databasechangelog</code> table reference
+     * Create an aliased <code>hwant.DATABASECHANGELOG</code> table reference
      */
     public Databasechangelog(Name alias) {
         this(alias, DATABASECHANGELOG);
@@ -98,22 +148,7 @@ public class Databasechangelog extends TableImpl<DatabasechangelogRecord> {
 
     @Override
     public Schema getSchema() {
-        return Douzone.DOUZONE;
-    }
-
-    @Override
-    public Identity<DatabasechangelogRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_DATABASECHANGELOG;
-    }
-
-    @Override
-    public UniqueKey<DatabasechangelogRecord> getPrimaryKey() {
-        return Keys.KEY_DATABASECHANGELOG_PRIMARY;
-    }
-
-    @Override
-    public List<UniqueKey<DatabasechangelogRecord>> getKeys() {
-        return Arrays.<UniqueKey<DatabasechangelogRecord>>asList(Keys.KEY_DATABASECHANGELOG_PRIMARY);
+        return Hwant.HWANT;
     }
 
     @Override
@@ -143,11 +178,11 @@ public class Databasechangelog extends TableImpl<DatabasechangelogRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row14 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<LocalDateTime, LocalDateTime, Integer> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row14<String, String, String, LocalDateTime, Integer, String, String, String, String, String, String, String, String, String> fieldsRow() {
+        return (Row14) super.fieldsRow();
     }
 }

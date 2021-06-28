@@ -4,22 +4,19 @@
 package com.ymm.back.domain.tables;
 
 
-import com.ymm.back.domain.Douzone;
-import com.ymm.back.domain.Indexes;
+import com.ymm.back.domain.Hwant;
 import com.ymm.back.domain.Keys;
 import com.ymm.back.domain.tables.records.ProjectRecord;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-    private static final long serialVersionUID = 479035905;
+    private static final long serialVersionUID = -1772656239;
 
     /**
-     * The reference instance of <code>douzone.project</code>
+     * The reference instance of <code>hwant.project</code>
      */
     public static final Project PROJECT = new Project();
 
@@ -51,51 +48,76 @@ public class Project extends TableImpl<ProjectRecord> {
     }
 
     /**
-     * The column <code>douzone.project.id</code>.
+     * The column <code>hwant.project.id</code>.
      */
     public final TableField<ProjectRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>douzone.project.user_id</code>.
+     * The column <code>hwant.project.name</code>.
      */
-    public final TableField<ProjectRecord, Integer> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<ProjectRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(15).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.project.name</code>.
+     * The column <code>hwant.project.contents</code>.
      */
-    public final TableField<ProjectRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
+    public final TableField<ProjectRecord, String> CONTENTS = createField(DSL.name("contents"), org.jooq.impl.SQLDataType.VARCHAR(2000).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.project.create_time</code>.
+     * The column <code>hwant.project.view_count</code>.
      */
-    public final TableField<ProjectRecord, LocalDateTime> CREATE_TIME = createField(DSL.name("create_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<ProjectRecord, Integer> VIEW_COUNT = createField(DSL.name("view_count"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>douzone.project.update_time</code>.
+     * The column <code>hwant.project.thumbnail</code>.
      */
-    public final TableField<ProjectRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<ProjectRecord, String> THUMBNAIL = createField(DSL.name("thumbnail"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * The column <code>douzone.project.finished_at</code>.
+     * The column <code>hwant.project.description</code>.
      */
-    public final TableField<ProjectRecord, LocalDateTime> FINISHED_AT = createField(DSL.name("finished_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<ProjectRecord, String> DESCRIPTION = createField(DSL.name("description"), org.jooq.impl.SQLDataType.VARCHAR(50), this, "");
 
     /**
-     * Create a <code>douzone.project</code> table reference
+     * The column <code>hwant.project.created_at</code>.
+     */
+    public final TableField<ProjectRecord, String> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
+
+    /**
+     * The column <code>hwant.project.updated_at</code>.
+     */
+    public final TableField<ProjectRecord, String> UPDATED_AT = createField(DSL.name("updated_at"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
+
+    /**
+     * The column <code>hwant.project.finished_at</code>.
+     */
+    public final TableField<ProjectRecord, String> FINISHED_AT = createField(DSL.name("finished_at"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
+
+    /**
+     * The column <code>hwant.project.user_fk</code>.
+     */
+    public final TableField<ProjectRecord, Integer> USER_FK = createField(DSL.name("user_fk"), org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>hwant.project.authority</code>.
+     */
+    public final TableField<ProjectRecord, String> AUTHORITY = createField(DSL.name("authority"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("1", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * Create a <code>hwant.project</code> table reference
      */
     public Project() {
         this(DSL.name("project"), null);
     }
 
     /**
-     * Create an aliased <code>douzone.project</code> table reference
+     * Create an aliased <code>hwant.project</code> table reference
      */
     public Project(String alias) {
         this(DSL.name(alias), PROJECT);
     }
 
     /**
-     * Create an aliased <code>douzone.project</code> table reference
+     * Create an aliased <code>hwant.project</code> table reference
      */
     public Project(Name alias) {
         this(alias, PROJECT);
@@ -115,12 +137,7 @@ public class Project extends TableImpl<ProjectRecord> {
 
     @Override
     public Schema getSchema() {
-        return Douzone.DOUZONE;
-    }
-
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PROJECT_FK_PROJECT_USER_IDX);
+        return Hwant.HWANT;
     }
 
     @Override
@@ -140,11 +157,11 @@ public class Project extends TableImpl<ProjectRecord> {
 
     @Override
     public List<ForeignKey<ProjectRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<ProjectRecord, ?>>asList(Keys.FK_PROJECT_USER);
+        return Arrays.<ForeignKey<ProjectRecord, ?>>asList(Keys.PROJECT_USER_FK);
     }
 
     public User user() {
-        return new User(this, Keys.FK_PROJECT_USER);
+        return new User(this, Keys.PROJECT_USER_FK);
     }
 
     @Override
@@ -174,11 +191,11 @@ public class Project extends TableImpl<ProjectRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, Integer, String, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row11<Integer, String, String, Integer, String, String, String, String, String, Integer, String> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }

@@ -14,11 +14,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/project")
-public class ProjectController {
+public class ProjectController3 {
     private final DSLContext dslContext;
     private final JdbcTemplate jdbcTemplate;
     @Autowired
-    public ProjectController(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
+    public ProjectController3(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
         this.dslContext = dslContext;
         this.jdbcTemplate = jdbcTemplate;
     }

@@ -14,12 +14,12 @@ import java.util.Map;
 
 
 @Repository
-public class UserRepository {
+public class UserRepository2 {
     private final DSLContext dslContext;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public UserRepository(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
+    public UserRepository2(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
         this.dslContext = dslContext;
         this.jdbcTemplate = jdbcTemplate;
     }

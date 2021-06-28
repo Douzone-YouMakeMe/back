@@ -1,10 +1,17 @@
-package com.mercure.controller;
+package com.ymm.back.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ymm.back.dto.MessageDTO;
+import com.ymm.back.dto.NotificationDTO;
+import com.ymm.back.entity.MessageEntity;
+import com.ymm.back.service.MessageService;
+import com.ymm.back.service.ProjectService;
+import com.ymm.back.utils.JwtUtil;
+import com.ymm.back.utils.MessageTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -20,22 +27,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mercure.dto.MessageDTO;
-import com.mercure.dto.NotificationDTO;
-import com.mercure.entity.MessageEntity;
-import com.mercure.service.MessageService;
-import com.mercure.service.ProjectService;
-import com.mercure.utils.JwtUtil;
-import com.mercure.utils.MessageTypeEnum;
 
 @RestController
 @CrossOrigin
 public class ChatController {
 
 	@Autowired
-	ProjectService projectService;
+    ProjectService projectService;
 	@Autowired
-	MessageService messageService;
+    MessageService messageService;
 	@Autowired
     private SimpMessagingTemplate messagingTemplate;
     @Autowired

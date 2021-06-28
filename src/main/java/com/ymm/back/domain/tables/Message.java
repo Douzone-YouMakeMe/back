@@ -4,22 +4,19 @@
 package com.ymm.back.domain.tables;
 
 
-import com.ymm.back.domain.Douzone;
-import com.ymm.back.domain.Indexes;
+import com.ymm.back.domain.Hwant;
 import com.ymm.back.domain.Keys;
 import com.ymm.back.domain.tables.records.MessageRecord;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row7;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Message extends TableImpl<MessageRecord> {
 
-    private static final long serialVersionUID = 1238317667;
+    private static final long serialVersionUID = -1324964891;
 
     /**
-     * The reference instance of <code>douzone.message</code>
+     * The reference instance of <code>hwant.message</code>
      */
     public static final Message MESSAGE = new Message();
 
@@ -51,56 +48,51 @@ public class Message extends TableImpl<MessageRecord> {
     }
 
     /**
-     * The column <code>douzone.message.id</code>.
+     * The column <code>hwant.message.id</code>.
      */
     public final TableField<MessageRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>douzone.message.member_id</code>.
+     * The column <code>hwant.message.message</code>.
      */
-    public final TableField<MessageRecord, Integer> MEMBER_ID = createField(DSL.name("member_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MessageRecord, String> MESSAGE_ = createField(DSL.name("message"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.message.project_id</code>.
+     * The column <code>hwant.message.project_member_fk</code>.
      */
-    public final TableField<MessageRecord, Integer> PROJECT_ID = createField(DSL.name("project_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<MessageRecord, Integer> PROJECT_MEMBER_FK = createField(DSL.name("project_member_fk"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>douzone.message.create_time</code>.
+     * The column <code>hwant.message.project_fk</code>.
      */
-    public final TableField<MessageRecord, LocalDateTime> CREATE_TIME = createField(DSL.name("create_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<MessageRecord, Integer> PROJECT_FK = createField(DSL.name("project_fk"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>douzone.message.update_time</code>.
+     * The column <code>hwant.message.type</code>.
      */
-    public final TableField<MessageRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<MessageRecord, String> TYPE = createField(DSL.name("type"), org.jooq.impl.SQLDataType.VARCHAR(10), this, "");
 
     /**
-     * The column <code>douzone.message.message</code>.
+     * The column <code>hwant.message.created_at</code>.
      */
-    public final TableField<MessageRecord, String> MESSAGE_ = createField(DSL.name("message"), org.jooq.impl.SQLDataType.CLOB, this, "");
+    public final TableField<MessageRecord, String> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.VARCHAR(20), this, "");
 
     /**
-     * The column <code>douzone.message.type</code>.
-     */
-    public final TableField<MessageRecord, String> TYPE = createField(DSL.name("type"), org.jooq.impl.SQLDataType.VARCHAR(20), this, "");
-
-    /**
-     * Create a <code>douzone.message</code> table reference
+     * Create a <code>hwant.message</code> table reference
      */
     public Message() {
         this(DSL.name("message"), null);
     }
 
     /**
-     * Create an aliased <code>douzone.message</code> table reference
+     * Create an aliased <code>hwant.message</code> table reference
      */
     public Message(String alias) {
         this(DSL.name(alias), MESSAGE);
     }
 
     /**
-     * Create an aliased <code>douzone.message</code> table reference
+     * Create an aliased <code>hwant.message</code> table reference
      */
     public Message(Name alias) {
         this(alias, MESSAGE);
@@ -120,12 +112,7 @@ public class Message extends TableImpl<MessageRecord> {
 
     @Override
     public Schema getSchema() {
-        return Douzone.DOUZONE;
-    }
-
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MESSAGE_FK_MESSAGE_MEMBER1_IDX, Indexes.MESSAGE_FK_MESSAGE_PROJECT1_IDX);
+        return Hwant.HWANT;
     }
 
     @Override
@@ -145,15 +132,15 @@ public class Message extends TableImpl<MessageRecord> {
 
     @Override
     public List<ForeignKey<MessageRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<MessageRecord, ?>>asList(Keys.FK_MESSAGE_MEMBER1, Keys.FK_MESSAGE_PROJECT1);
+        return Arrays.<ForeignKey<MessageRecord, ?>>asList(Keys.PROJECT_MEMBER_MESSAGE_FK, Keys.PROJECT_MESSAGE_FK);
     }
 
-    public Member member() {
-        return new Member(this, Keys.FK_MESSAGE_MEMBER1);
+    public ProjectMember projectMember() {
+        return new ProjectMember(this, Keys.PROJECT_MEMBER_MESSAGE_FK);
     }
 
     public Project project() {
-        return new Project(this, Keys.FK_MESSAGE_PROJECT1);
+        return new Project(this, Keys.PROJECT_MESSAGE_FK);
     }
 
     @Override
@@ -183,11 +170,11 @@ public class Message extends TableImpl<MessageRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Integer, Integer, Integer, LocalDateTime, LocalDateTime, String, String> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row6<Integer, String, Integer, Integer, String, String> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }

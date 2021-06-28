@@ -4,83 +4,53 @@
 package com.ymm.back.domain;
 
 
-import com.ymm.back.domain.tables.Agenda;
-import com.ymm.back.domain.tables.Comment;
 import com.ymm.back.domain.tables.Databasechangelog;
 import com.ymm.back.domain.tables.Databasechangeloglock;
 import com.ymm.back.domain.tables.FileStorage;
-import com.ymm.back.domain.tables.Hashtag;
-import com.ymm.back.domain.tables.Member;
 import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.Project;
+import com.ymm.back.domain.tables.ProjectMember;
 import com.ymm.back.domain.tables.User;
-import com.ymm.back.domain.tables.Voting;
-import com.ymm.back.domain.tables.Work;
 
 
 /**
- * Convenience access to all tables in douzone
+ * Convenience access to all tables in hwant
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
-     * The table <code>douzone.agenda</code>.
-     */
-    public static final Agenda AGENDA = Agenda.AGENDA;
-
-    /**
-     * The table <code>douzone.comment</code>.
-     */
-    public static final Comment COMMENT = Comment.COMMENT;
-
-    /**
-     * The table <code>douzone.databasechangelog</code>.
+     * The table <code>hwant.DATABASECHANGELOG</code>.
      */
     public static final Databasechangelog DATABASECHANGELOG = Databasechangelog.DATABASECHANGELOG;
 
     /**
-     * The table <code>douzone.databasechangeloglock</code>.
+     * The table <code>hwant.DATABASECHANGELOGLOCK</code>.
      */
     public static final Databasechangeloglock DATABASECHANGELOGLOCK = Databasechangeloglock.DATABASECHANGELOGLOCK;
 
     /**
-     * The table <code>douzone.file_storage</code>.
+     * The table <code>hwant.file_storage</code>.
      */
     public static final FileStorage FILE_STORAGE = FileStorage.FILE_STORAGE;
 
     /**
-     * The table <code>douzone.hashtag</code>.
-     */
-    public static final Hashtag HASHTAG = Hashtag.HASHTAG;
-
-    /**
-     * The table <code>douzone.member</code>.
-     */
-    public static final Member MEMBER = Member.MEMBER;
-
-    /**
-     * The table <code>douzone.message</code>.
+     * The table <code>hwant.message</code>.
      */
     public static final Message MESSAGE = Message.MESSAGE;
 
     /**
-     * The table <code>douzone.project</code>.
+     * The table <code>hwant.project</code>.
      */
     public static final Project PROJECT = Project.PROJECT;
 
     /**
-     * The table <code>douzone.user</code>.
+     * The table <code>hwant.project_member</code>.
+     */
+    public static final ProjectMember PROJECT_MEMBER = ProjectMember.PROJECT_MEMBER;
+
+    /**
+     * The table <code>hwant.user</code>.
      */
     public static final User USER = User.USER;
-
-    /**
-     * The table <code>douzone.voting</code>.
-     */
-    public static final Voting VOTING = Voting.VOTING;
-
-    /**
-     * The table <code>douzone.work</code>.
-     */
-    public static final Work WORK = Work.WORK;
 }

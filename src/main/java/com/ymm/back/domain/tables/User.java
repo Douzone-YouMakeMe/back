@@ -4,11 +4,10 @@
 package com.ymm.back.domain.tables;
 
 
-import com.ymm.back.domain.Douzone;
+import com.ymm.back.domain.Hwant;
 import com.ymm.back.domain.Keys;
 import com.ymm.back.domain.tables.records.UserRecord;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row10;
+import org.jooq.Row15;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = -136713012;
+    private static final long serialVersionUID = -1238618145;
 
     /**
-     * The reference instance of <code>douzone.user</code>
+     * The reference instance of <code>hwant.user</code>
      */
     public static final User USER = new User();
 
@@ -49,71 +48,96 @@ public class User extends TableImpl<UserRecord> {
     }
 
     /**
-     * The column <code>douzone.user.id</code>.
+     * The column <code>hwant.user.id</code>.
      */
     public final TableField<UserRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>douzone.user.name</code>.
+     * The column <code>hwant.user.u_name</code>.
      */
-    public final TableField<UserRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(16).nullable(false), this, "");
+    public final TableField<UserRecord, String> U_NAME = createField(DSL.name("u_name"), org.jooq.impl.SQLDataType.VARCHAR(15).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.user.email</code>.
+     * The column <code>hwant.user.email</code>.
      */
-    public final TableField<UserRecord, String> EMAIL = createField(DSL.name("email"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<UserRecord, String> EMAIL = createField(DSL.name("email"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.user.password</code>.
+     * The column <code>hwant.user.password</code>.
      */
     public final TableField<UserRecord, String> PASSWORD = createField(DSL.name("password"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.user.tel</code>.
+     * The column <code>hwant.user.wstoken</code>.
      */
-    public final TableField<UserRecord, String> TEL = createField(DSL.name("tel"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
+    public final TableField<UserRecord, String> WSTOKEN = createField(DSL.name("wstoken"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.user.profile</code>.
+     * The column <code>hwant.user.jwt</code>.
      */
-    public final TableField<UserRecord, String> PROFILE = createField(DSL.name("profile"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<UserRecord, String> JWT = createField(DSL.name("jwt"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * The column <code>douzone.user.job_title</code>.
+     * The column <code>hwant.user.tel</code>.
      */
-    public final TableField<UserRecord, String> JOB_TITLE = createField(DSL.name("job_title"), org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
+    public final TableField<UserRecord, String> TEL = createField(DSL.name("tel"), org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.user.create_time</code>.
+     * The column <code>hwant.user.created_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> CREATE_TIME = createField(DSL.name("create_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<UserRecord, String> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
 
     /**
-     * The column <code>douzone.user.update_time</code>.
+     * The column <code>hwant.user.updated_at</code>.
      */
-    public final TableField<UserRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<UserRecord, String> UPDATED_AT = createField(DSL.name("updated_at"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
 
     /**
-     * The column <code>douzone.user.ROLE</code>.
+     * The column <code>hwant.user.profile</code>.
      */
-    public final TableField<UserRecord, String> ROLE = createField(DSL.name("ROLE"), org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
+    public final TableField<UserRecord, String> PROFILE = createField(DSL.name("profile"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
 
     /**
-     * Create a <code>douzone.user</code> table reference
+     * The column <code>hwant.user.role_id</code>.
+     */
+    public final TableField<UserRecord, Integer> ROLE_ID = createField(DSL.name("role_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.user.credentials_non_expired</code>.
+     */
+    public final TableField<UserRecord, String> CREDENTIALS_NON_EXPIRED = createField(DSL.name("credentials_non_expired"), org.jooq.impl.SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.user.account_non_locked</code>.
+     */
+    public final TableField<UserRecord, String> ACCOUNT_NON_LOCKED = createField(DSL.name("account_non_locked"), org.jooq.impl.SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.user.account_non_expired</code>.
+     */
+    public final TableField<UserRecord, String> ACCOUNT_NON_EXPIRED = createField(DSL.name("account_non_expired"), org.jooq.impl.SQLDataType.VARCHAR(10).nullable(false), this, "");
+
+    /**
+     * The column <code>hwant.user.enabled</code>.
+     */
+    public final TableField<UserRecord, String> ENABLED = createField(DSL.name("enabled"), org.jooq.impl.SQLDataType.VARCHAR(10).defaultValue(org.jooq.impl.DSL.inline("false", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * Create a <code>hwant.user</code> table reference
      */
     public User() {
         this(DSL.name("user"), null);
     }
 
     /**
-     * Create an aliased <code>douzone.user</code> table reference
+     * Create an aliased <code>hwant.user</code> table reference
      */
     public User(String alias) {
         this(DSL.name(alias), USER);
     }
 
     /**
-     * Create an aliased <code>douzone.user</code> table reference
+     * Create an aliased <code>hwant.user</code> table reference
      */
     public User(Name alias) {
         this(alias, USER);
@@ -133,7 +157,7 @@ public class User extends TableImpl<UserRecord> {
 
     @Override
     public Schema getSchema() {
-        return Douzone.DOUZONE;
+        return Hwant.HWANT;
     }
 
     @Override
@@ -178,11 +202,11 @@ public class User extends TableImpl<UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row15 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Integer, String, String, String, String, String, String, LocalDateTime, LocalDateTime, String> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row15<Integer, String, String, String, String, String, String, String, String, String, Integer, String, String, String, String> fieldsRow() {
+        return (Row15) super.fieldsRow();
     }
 }

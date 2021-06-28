@@ -4,22 +4,19 @@
 package com.ymm.back.domain.tables;
 
 
-import com.ymm.back.domain.Douzone;
-import com.ymm.back.domain.Indexes;
+import com.ymm.back.domain.Hwant;
 import com.ymm.back.domain.Keys;
 import com.ymm.back.domain.tables.records.FileStorageRecord;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row5;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FileStorage extends TableImpl<FileStorageRecord> {
 
-    private static final long serialVersionUID = -1162580816;
+    private static final long serialVersionUID = -1193397962;
 
     /**
-     * The reference instance of <code>douzone.file_storage</code>
+     * The reference instance of <code>hwant.file_storage</code>
      */
     public static final FileStorage FILE_STORAGE = new FileStorage();
 
@@ -51,51 +48,46 @@ public class FileStorage extends TableImpl<FileStorageRecord> {
     }
 
     /**
-     * The column <code>douzone.file_storage.id</code>.
+     * The column <code>hwant.file_storage.id</code>.
      */
     public final TableField<FileStorageRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>douzone.file_storage.message_id</code>.
+     * The column <code>hwant.file_storage.url</code>.
      */
-    public final TableField<FileStorageRecord, Integer> MESSAGE_ID = createField(DSL.name("message_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FileStorageRecord, String> URL = createField(DSL.name("url"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.file_storage.url</code>.
+     * The column <code>hwant.file_storage.file_name</code>.
      */
-    public final TableField<FileStorageRecord, String> URL = createField(DSL.name("url"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<FileStorageRecord, String> FILE_NAME = createField(DSL.name("file_name"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     /**
-     * The column <code>douzone.file_storage.filename</code>.
+     * The column <code>hwant.file_storage.message_fk</code>.
      */
-    public final TableField<FileStorageRecord, String> FILENAME = createField(DSL.name("filename"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<FileStorageRecord, Integer> MESSAGE_FK = createField(DSL.name("message_fk"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>douzone.file_storage.create_time</code>.
+     * The column <code>hwant.file_storage.created_at</code>.
      */
-    public final TableField<FileStorageRecord, LocalDateTime> CREATE_TIME = createField(DSL.name("create_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<FileStorageRecord, String> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.VARCHAR(20), this, "");
 
     /**
-     * The column <code>douzone.file_storage.update_time</code>.
-     */
-    public final TableField<FileStorageRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
-
-    /**
-     * Create a <code>douzone.file_storage</code> table reference
+     * Create a <code>hwant.file_storage</code> table reference
      */
     public FileStorage() {
         this(DSL.name("file_storage"), null);
     }
 
     /**
-     * Create an aliased <code>douzone.file_storage</code> table reference
+     * Create an aliased <code>hwant.file_storage</code> table reference
      */
     public FileStorage(String alias) {
         this(DSL.name(alias), FILE_STORAGE);
     }
 
     /**
-     * Create an aliased <code>douzone.file_storage</code> table reference
+     * Create an aliased <code>hwant.file_storage</code> table reference
      */
     public FileStorage(Name alias) {
         this(alias, FILE_STORAGE);
@@ -115,12 +107,7 @@ public class FileStorage extends TableImpl<FileStorageRecord> {
 
     @Override
     public Schema getSchema() {
-        return Douzone.DOUZONE;
-    }
-
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.FILE_STORAGE_FK_FILE_STORAGE_MESSAGE1_IDX);
+        return Hwant.HWANT;
     }
 
     @Override
@@ -140,11 +127,11 @@ public class FileStorage extends TableImpl<FileStorageRecord> {
 
     @Override
     public List<ForeignKey<FileStorageRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<FileStorageRecord, ?>>asList(Keys.FK_FILE_STORAGE_MESSAGE1);
+        return Arrays.<ForeignKey<FileStorageRecord, ?>>asList(Keys.MESSAGE_FILE_FK);
     }
 
     public Message message() {
-        return new Message(this, Keys.FK_FILE_STORAGE_MESSAGE1);
+        return new Message(this, Keys.MESSAGE_FILE_FK);
     }
 
     @Override
@@ -174,11 +161,11 @@ public class FileStorage extends TableImpl<FileStorageRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row5 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, Integer, String, String, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row5<Integer, String, String, Integer, String> fieldsRow() {
+        return (Row5) super.fieldsRow();
     }
 }

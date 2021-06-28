@@ -4,7 +4,7 @@
 package com.ymm.back.domain.tables;
 
 
-import com.ymm.back.domain.Douzone;
+import com.ymm.back.domain.Hwant;
 import com.ymm.back.domain.Keys;
 import com.ymm.back.domain.tables.records.DatabasechangeloglockRecord;
 
@@ -14,10 +14,9 @@ import java.util.List;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row3;
+import org.jooq.Row4;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,10 +32,10 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Databasechangeloglock extends TableImpl<DatabasechangeloglockRecord> {
 
-    private static final long serialVersionUID = -1196902365;
+    private static final long serialVersionUID = 1630126786;
 
     /**
-     * The reference instance of <code>douzone.databasechangeloglock</code>
+     * The reference instance of <code>hwant.DATABASECHANGELOGLOCK</code>
      */
     public static final Databasechangeloglock DATABASECHANGELOGLOCK = new Databasechangeloglock();
 
@@ -49,36 +48,41 @@ public class Databasechangeloglock extends TableImpl<DatabasechangeloglockRecord
     }
 
     /**
-     * The column <code>douzone.databasechangeloglock.create_time</code>.
+     * The column <code>hwant.DATABASECHANGELOGLOCK.ID</code>.
      */
-    public final TableField<DatabasechangeloglockRecord, LocalDateTime> CREATE_TIME = createField(DSL.name("create_time"), org.jooq.impl.SQLDataType.LOCALDATETIME.defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
+    public final TableField<DatabasechangeloglockRecord, Integer> ID = createField(DSL.name("ID"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>douzone.databasechangeloglock.update_time</code>.
+     * The column <code>hwant.DATABASECHANGELOGLOCK.LOCKED</code>.
      */
-    public final TableField<DatabasechangeloglockRecord, LocalDateTime> UPDATE_TIME = createField(DSL.name("update_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<DatabasechangeloglockRecord, Boolean> LOCKED = createField(DSL.name("LOCKED"), org.jooq.impl.SQLDataType.BIT.nullable(false), this, "");
 
     /**
-     * The column <code>douzone.databasechangeloglock.id</code>.
+     * The column <code>hwant.DATABASECHANGELOGLOCK.LOCKGRANTED</code>.
      */
-    public final TableField<DatabasechangeloglockRecord, Integer> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<DatabasechangeloglockRecord, LocalDateTime> LOCKGRANTED = createField(DSL.name("LOCKGRANTED"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
-     * Create a <code>douzone.databasechangeloglock</code> table reference
+     * The column <code>hwant.DATABASECHANGELOGLOCK.LOCKEDBY</code>.
+     */
+    public final TableField<DatabasechangeloglockRecord, String> LOCKEDBY = createField(DSL.name("LOCKEDBY"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * Create a <code>hwant.DATABASECHANGELOGLOCK</code> table reference
      */
     public Databasechangeloglock() {
-        this(DSL.name("databasechangeloglock"), null);
+        this(DSL.name("DATABASECHANGELOGLOCK"), null);
     }
 
     /**
-     * Create an aliased <code>douzone.databasechangeloglock</code> table reference
+     * Create an aliased <code>hwant.DATABASECHANGELOGLOCK</code> table reference
      */
     public Databasechangeloglock(String alias) {
         this(DSL.name(alias), DATABASECHANGELOGLOCK);
     }
 
     /**
-     * Create an aliased <code>douzone.databasechangeloglock</code> table reference
+     * Create an aliased <code>hwant.DATABASECHANGELOGLOCK</code> table reference
      */
     public Databasechangeloglock(Name alias) {
         this(alias, DATABASECHANGELOGLOCK);
@@ -98,12 +102,7 @@ public class Databasechangeloglock extends TableImpl<DatabasechangeloglockRecord
 
     @Override
     public Schema getSchema() {
-        return Douzone.DOUZONE;
-    }
-
-    @Override
-    public Identity<DatabasechangeloglockRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_DATABASECHANGELOGLOCK;
+        return Hwant.HWANT;
     }
 
     @Override
@@ -143,11 +142,11 @@ public class Databasechangeloglock extends TableImpl<DatabasechangeloglockRecord
     }
 
     // -------------------------------------------------------------------------
-    // Row3 type methods
+    // Row4 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row3<LocalDateTime, LocalDateTime, Integer> fieldsRow() {
-        return (Row3) super.fieldsRow();
+    public Row4<Integer, Boolean, LocalDateTime, String> fieldsRow() {
+        return (Row4) super.fieldsRow();
     }
 }

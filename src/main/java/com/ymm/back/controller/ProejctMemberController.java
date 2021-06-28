@@ -1,9 +1,13 @@
-package com.mercure.controller;
+package com.ymm.back.controller;
 
 import java.util.List;
 
 import javax.websocket.server.PathParam;
 
+import com.ymm.back.entity.ProjectMemberEntity;
+import com.ymm.back.model.ProejcetMemberFile;
+import com.ymm.back.service.ProjectMemberService;
+import com.ymm.back.utils.CFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mercure.entity.ProjectMemberEntity;
-import com.mercure.model.ProejcetMemberFile;
-import com.mercure.service.ProjectMemberService;
-import com.mercure.utils.CFileUtil;
 
 @RestController
 @RequestMapping("/member")

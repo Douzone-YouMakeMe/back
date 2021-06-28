@@ -8,6 +8,10 @@ import java.util.UUID;
 
 import javax.websocket.server.PathParam;
 
+import com.ymm.back.entity.ProjectEntity;
+import com.ymm.back.model.ProjectFile;
+import com.ymm.back.service.ProjectService;
+import com.ymm.back.utils.CFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mercure.entity.ProjectEntity;
-import com.mercure.model.ProjectFile;
-import com.mercure.service.ProjectService;
-import com.mercure.utils.CFileUtil;
-
-import liquibase.util.file.FilenameUtils;
 
 @RestController
 @RequestMapping("/project")

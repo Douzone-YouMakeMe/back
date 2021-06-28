@@ -1,7 +1,7 @@
 package com.ymm.back.s3;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.test.usercrud.s3.S3Service;
+import com.ymm.back.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

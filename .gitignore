@@ -35,3 +35,4 @@ build/
 pom.xml
 application-secret.properties
 application.yml
+application-pw.properties

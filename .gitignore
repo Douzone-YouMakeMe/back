@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+pom.xml
+application-secret.properties
+application.yml
+application-pw.properties

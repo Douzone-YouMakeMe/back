@@ -15,74 +15,74 @@ import java.util.Map;
 
 @Repository
 public class UserRepository {
-    private final DSLContext dslContext;
-    private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public UserRepository(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
-        this.dslContext = dslContext;
-        this.jdbcTemplate = jdbcTemplate;
-    }
-    // 유저정보 가져오기
-    public List<Map<String, Object>> selectUser(){
-        String sql = dslContext.selectFrom(DSL.table("user")).getSQL();
-        return jdbcTemplate.queryForList(sql);
-    }
-    // 유저 회원가입
-    public ResponseEntity<User> insertUser(){
-        User user = User.USER;
-        int sql = dslContext.insertInto(user)
-                .columns(user.NAME,user.EMAIL,user.JOB_TITLE,user.PASSWORD)
-                .values("가가가","이메일1","회사원","0000")
-                .execute();
-        String q = dslContext.insertInto(user)
-                .columns(user.NAME,user.EMAIL,user.JOB_TITLE,user.PASSWORD)
-                .values("가가가","이메일1","회사원","0000").getSQL();
-        System.out.println(q);
-        return ResponseEntity.status(200).build();
-    }
-    // 유저 개인정보 수정
-    public String updateUser(){
-        User user = User.USER;
-        String result="";
-        int sql = dslContext.update(user)
-                .set(user.EMAIL,"한메일")
-                .set(user.PASSWORD,"9999")
-                .where(user.EMAIL.eq("이메일1"))
-                .execute();
-        if(sql ==1){
-            result = "성공!";
-        } else {
-            result = "그런거 없습니다.";
-        }
-        return result;
-    }
-    // 유저 삭제
-    public String deleteUser(){
-        User user = User.USER;
-        String result="";
-        int sql = dslContext.deleteFrom(user)
-                .where(user.EMAIL.eq("한메일4"))
-                .execute();
-        if(sql ==1){
-            result = "성공!";
-        } else {
-            result = "그런거 없습니다.";
-        }
-        return result;
-    }
-
-
-
-    /** * jooq로 표쥰 sql 생성후 jdbctemplate 을 사용하여 데이터 불러오기 * * @return
-     * @return*/
-    public List<Map<String, Object>> getList() {
-        String sql = dslContext.select(DSL.field("id"), DSL.field("name"))
-                .from(DSL.table("user")).getSQL();
-        //log.debug("string sql = {}", sql);
-        System.out.println(jdbcTemplate.queryForList(sql));
-        return jdbcTemplate.queryForList(sql);
-    }
+//    private final DSLContext dslContext;
+//    private final JdbcTemplate jdbcTemplate;
+//
+//    @Autowired
+//    public UserRepository(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
+//        this.dslContext = dslContext;
+//        this.jdbcTemplate = jdbcTemplate;
+//    }
+//    // 유저정보 가져오기
+//    public List<Map<String, Object>> selectUser(){
+//        String sql = dslContext.selectFrom(DSL.table("user")).getSQL();
+//        return jdbcTemplate.queryForList(sql);
+//    }
+//    // 유저 회원가입
+//    public ResponseEntity<User> insertUser(){
+//        User user = User.USER;
+//        int sql = dslContext.insertInto(user)
+//                .columns(user.NAME,user.EMAIL,user.JOB_TITLE,user.PASSWORD)
+//                .values("가가가","이메일1","회사원","0000")
+//                .execute();
+//        String q = dslContext.insertInto(user)
+//                .columns(user.NAME,user.EMAIL,user.JOB_TITLE,user.PASSWORD)
+//                .values("가가가","이메일1","회사원","0000").getSQL();
+//        System.out.println(q);
+//        return ResponseEntity.status(200).build();
+//    }
+//    // 유저 개인정보 수정
+//    public String updateUser(){
+//        User user = User.USER;
+//        String result="";
+//        int sql = dslContext.update(user)
+//                .set(user.EMAIL,"한메일")
+//                .set(user.PASSWORD,"9999")
+//                .where(user.EMAIL.eq("이메일1"))
+//                .execute();
+//        if(sql ==1){
+//            result = "성공!";
+//        } else {
+//            result = "그런거 없습니다.";
+//        }
+//        return result;
+//    }
+//    // 유저 삭제
+//    public String deleteUser(){
+//        User user = User.USER;
+//        String result="";
+//        int sql = dslContext.deleteFrom(user)
+//                .where(user.EMAIL.eq("한메일4"))
+//                .execute();
+//        if(sql ==1){
+//            result = "성공!";
+//        } else {
+//            result = "그런거 없습니다.";
+//        }
+//        return result;
+//    }
+//
+//
+//
+//    /** * jooq로 표쥰 sql 생성후 jdbctemplate 을 사용하여 데이터 불러오기 * * @return
+//     * @return*/
+//    public List<Map<String, Object>> getList() {
+//        String sql = dslContext.select(DSL.field("id"), DSL.field("name"))
+//                .from(DSL.table("user")).getSQL();
+//        //log.debug("string sql = {}", sql);
+//        System.out.println(jdbcTemplate.queryForList(sql));
+//        return jdbcTemplate.queryForList(sql);
+//    }
 
 
 

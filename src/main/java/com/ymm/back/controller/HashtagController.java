@@ -1,7 +1,7 @@
 package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.Hashtag;
-import com.ymm.back.domain.tables.Work;
+import com.ymm.back.pojos.HashtagP;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * 주의 : POST 메소드의 @RequestBody input 객체들은 pojos로만 받는게 고정이다...
- * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이기 때문.
+ * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이고, jooq Record는 serialize에서 충돌나기 때문.
  */
 
 @RestController
@@ -51,7 +51,7 @@ public class HashtagController {
     }
     //해시태그 만들기. 어느 작업의 해시태그인지 workId가 중요!
     @PostMapping
-    public String insertHashtag(@RequestBody com.ymm.back.domain.tables.pojos.Hashtag input){
+    public String insertHashtag(@RequestBody HashtagP input){
         Hashtag tag = Hashtag.HASHTAG;
         String result="";
         int sql = dslContext.insertInto(tag)

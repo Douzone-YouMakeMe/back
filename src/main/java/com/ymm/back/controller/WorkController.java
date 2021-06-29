@@ -1,11 +1,8 @@
 package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.Work;
-import com.ymm.back.domain.tables.records.WorkRecord;
+import com.ymm.back.pojos.WorkP;
 import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.Record;
-import org.jooq.Result;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +15,7 @@ import java.util.Map;
 
 /**
  * 주의 : POST 메소드의 @RequestBody input 객체들은 pojos로만 받는게 고정이다...
- * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이기 때문.
+ * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이고, jooq Record는 serialize에서 충돌나기 때문.
  */
 
 @RestController
@@ -34,19 +31,20 @@ public class WorkController {
     // 작업 정보 모두 가져오기
     @GetMapping
     public List<Map<String, Object>> selectWorkAll(){
-        String sql = dslContext.selectFrom(DSL.table("work")).getSQL();
+        var sql = dslContext.selectFrom(DSL.table("work")).getSQL();
         return jdbcTemplate.queryForList(sql);
     }
     // 작업 단일 정보 파라미터로 가져오기
-    //localhost:8080/work/?id=1
+    //localhost:8080/work/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> selectWorkOne(@PathVariable("id") int id){
         Work work = Work.WORK;
-        List<com.ymm.back.domain.tables.pojos.Work> sql = dslContext.select().from(work).where(work.ID.eq(id)).fetchInto(com.ymm.back.domain.tables.pojos.Work.class);
+        /*List<com.ymm.back.domain.tables.pojos.Work>*/
+        var sql = dslContext.select().from(work).where(work.ID.eq(id)).fetchInto(WorkP.class);
         return ResponseEntity.status(200).body(sql);//jdbcTemplate.queryForList(sql).get(0);
     }
     @PostMapping
-    public String insertWork(@RequestBody com.ymm.back.domain.tables.pojos.Work input){
+    public ResponseEntity<?> insertWork(@RequestBody WorkP input){
         Work work = Work.WORK;
         String result="";
         int sql = dslContext.insertInto(work)
@@ -58,10 +56,10 @@ public class WorkController {
         } else {
             result = "그런거 없습니다.";
         }
-        return result;
+        return ResponseEntity.status(200).body(result);
     }
     @PatchMapping
-    public String updateWork(@RequestBody com.ymm.back.domain.tables.pojos.Work input){
+    public ResponseEntity<?> updateWork(@RequestBody WorkP input){
         Work work = Work.WORK;
         String result="";
         // jackson은 구리다... 날짜 강제변경 어노테이션 ㄱ. 게다가 로컬 변수는 안되니 VO 테이블 전체에 붙여야됨.
@@ -80,10 +78,10 @@ public class WorkController {
         } else {
             result = "그런거 없습니다.";
         }
-        return result;
+        return ResponseEntity.status(200).body(result);
     }
     @DeleteMapping("/{id}")
-    public String deleteProject(@PathVariable("id") int id){
+    public ResponseEntity<?> deleteProject(@PathVariable("id") int id){
         Work work = Work.WORK;
         String result="";
         int sql = dslContext.deleteFrom(work)
@@ -94,10 +92,8 @@ public class WorkController {
         } else {
             result = "그런거 없습니다. 정확한 정보로 삭제요청 부탁";
         }
-        return result;
+        return ResponseEntity.status(200).body(result);
     }
-
-
 
 
 }

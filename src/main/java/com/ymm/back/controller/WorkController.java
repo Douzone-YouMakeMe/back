@@ -1,7 +1,6 @@
 package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.Work;
-import com.ymm.back.pojos.WorkP;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;

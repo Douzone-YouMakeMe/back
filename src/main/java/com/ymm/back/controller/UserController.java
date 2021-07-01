@@ -1,22 +1,11 @@
 package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.User;
-import com.ymm.back.domain.tables.Work;
-import com.ymm.back.domain.tables.records.UserRecord;
-import com.ymm.back.pojos.UserP;
-import com.ymm.back.pojos.WorkP;
-import com.ymm.back.service.UserService;
 import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.jooq.impl.DSL.coalesce;
 import static org.jooq.impl.DSL.val;
@@ -82,13 +71,13 @@ public class UserController {
     // 회원정보 수정
     // 테이블에 있는 not null 조건상,
     // 업데이트에서도 필수로 id, name, password가 필요함에 유의.
-    // 물론 보안상 심히 이상하므로, 나중에 nullCheck로 set 칼럼 빼는 기능 추가할 것...
+    // 2021.06.29. 일단 프론트에 문의해서 처음에는 GET/user 로 다 받아서 양식 채워진 상태로 보여주기로.
     // localhost:8080/user/2
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") int id, @RequestBody UserP input){
         User user = User.USER;
         String result="";
-        Map<String, ?> map1 = new HashMap<>();
+        //Map<String, ?> map1 = new HashMap<>();
         var sql = dslContext.update(user)
                 .set(user.EMAIL, input.getEmail())
                 .set(user.PASSWORD,input.getPassword())
@@ -116,7 +105,7 @@ public class UserController {
         if(sql ==1){
             result = "그동안 저희 서비스를 이용해 주셔서 감사합니다.";
         } else {
-            return ResponseEntity.status(400).body("허용되는 타입의 정보를 입력해서 수정해 주세요.");
+            return ResponseEntity.status(400).body("허용되는 타입의 정보로 입력해서 삭제요청을 해주세요.");
         }
         return ResponseEntity.status(200).body(result);
     }

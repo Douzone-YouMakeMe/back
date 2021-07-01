@@ -131,6 +131,20 @@ public class WorkDao extends DAOImpl<WorkRecord, com.ymm.back.domain.tables.pojo
     }
 
     /**
+     * Fetch records that have <code>color BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Work> fetchRangeOfColor(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Work.WORK.COLOR, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>color IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Work> fetchByColor(String... values) {
+        return fetch(Work.WORK.COLOR, values);
+    }
+
+    /**
      * Fetch records that have <code>started_at BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.Work> fetchRangeOfStartedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {

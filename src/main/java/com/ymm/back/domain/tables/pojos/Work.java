@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Work implements Serializable {
 
-    private static final long serialVersionUID = 142310104;
+    private static final long serialVersionUID = 1340040005;
 
     private Integer       id;
     private Integer       projectId;
@@ -22,6 +22,7 @@ public class Work implements Serializable {
     private String        name;
     private String        manager;
     private String        status;
+    private String        color;
     private LocalDateTime startedAt;
     private LocalDateTime finishedAt;
     private LocalDateTime createTime;
@@ -36,6 +37,7 @@ public class Work implements Serializable {
         this.name = value.name;
         this.manager = value.manager;
         this.status = value.status;
+        this.color = value.color;
         this.startedAt = value.startedAt;
         this.finishedAt = value.finishedAt;
         this.createTime = value.createTime;
@@ -49,6 +51,7 @@ public class Work implements Serializable {
         String        name,
         String        manager,
         String        status,
+        String        color,
         LocalDateTime startedAt,
         LocalDateTime finishedAt,
         LocalDateTime createTime,
@@ -60,6 +63,7 @@ public class Work implements Serializable {
         this.name = name;
         this.manager = manager;
         this.status = status;
+        this.color = color;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.createTime = createTime;
@@ -112,6 +116,14 @@ public class Work implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public LocalDateTime getStartedAt() {
@@ -191,6 +203,12 @@ public class Work implements Serializable {
         }
         else if (!status.equals(other.status))
             return false;
+        if (color == null) {
+            if (other.color != null)
+                return false;
+        }
+        else if (!color.equals(other.color))
+            return false;
         if (startedAt == null) {
             if (other.startedAt != null)
                 return false;
@@ -228,6 +246,7 @@ public class Work implements Serializable {
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.manager == null) ? 0 : this.manager.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
+        result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
         result = prime * result + ((this.startedAt == null) ? 0 : this.startedAt.hashCode());
         result = prime * result + ((this.finishedAt == null) ? 0 : this.finishedAt.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
@@ -245,6 +264,7 @@ public class Work implements Serializable {
         sb.append(", ").append(name);
         sb.append(", ").append(manager);
         sb.append(", ").append(status);
+        sb.append(", ").append(color);
         sb.append(", ").append(startedAt);
         sb.append(", ").append(finishedAt);
         sb.append(", ").append(createTime);

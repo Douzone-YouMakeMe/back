@@ -229,6 +229,20 @@ public class ProjectMemberDao extends DAOImpl<ProjectMemberRecord, com.ymm.back.
     }
 
     /**
+     * Fetch records that have <code>color BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfColor(String lowerInclusive, String upperInclusive) {
+        return fetchRange(ProjectMember.PROJECT_MEMBER.COLOR, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>color IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByColor(String... values) {
+        return fetch(ProjectMember.PROJECT_MEMBER.COLOR, values);
+    }
+
+    /**
      * Fetch records that have <code>create_time BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfCreateTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {

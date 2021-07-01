@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectMember implements Serializable {
 
-    private static final long serialVersionUID = 241489962;
+    private static final long serialVersionUID = -1768394099;
 
     private Integer       id;
     private Integer       userId;
@@ -29,6 +29,7 @@ public class ProjectMember implements Serializable {
     private String        auth;
     private Integer       roleId;
     private String        websocket;
+    private String        color;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
@@ -48,6 +49,7 @@ public class ProjectMember implements Serializable {
         this.auth = value.auth;
         this.roleId = value.roleId;
         this.websocket = value.websocket;
+        this.color = value.color;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
     }
@@ -66,6 +68,7 @@ public class ProjectMember implements Serializable {
         String        auth,
         Integer       roleId,
         String        websocket,
+        String        color,
         LocalDateTime createTime,
         LocalDateTime updateTime
     ) {
@@ -82,6 +85,7 @@ public class ProjectMember implements Serializable {
         this.auth = auth;
         this.roleId = roleId;
         this.websocket = websocket;
+        this.color = color;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -190,6 +194,14 @@ public class ProjectMember implements Serializable {
         this.websocket = websocket;
     }
 
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }
@@ -293,6 +305,12 @@ public class ProjectMember implements Serializable {
         }
         else if (!websocket.equals(other.websocket))
             return false;
+        if (color == null) {
+            if (other.color != null)
+                return false;
+        }
+        else if (!color.equals(other.color))
+            return false;
         if (createTime == null) {
             if (other.createTime != null)
                 return false;
@@ -325,6 +343,7 @@ public class ProjectMember implements Serializable {
         result = prime * result + ((this.auth == null) ? 0 : this.auth.hashCode());
         result = prime * result + ((this.roleId == null) ? 0 : this.roleId.hashCode());
         result = prime * result + ((this.websocket == null) ? 0 : this.websocket.hashCode());
+        result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         return result;
@@ -347,6 +366,7 @@ public class ProjectMember implements Serializable {
         sb.append(", ").append(auth);
         sb.append(", ").append(roleId);
         sb.append(", ").append(websocket);
+        sb.append(", ").append(color);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
 

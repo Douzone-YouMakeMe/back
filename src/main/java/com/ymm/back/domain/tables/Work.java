@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row10;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Work extends TableImpl<WorkRecord> {
 
-    private static final long serialVersionUID = -1898129730;
+    private static final long serialVersionUID = 765368391;
 
     /**
      * The reference instance of <code>work</code>
@@ -79,6 +79,11 @@ public class Work extends TableImpl<WorkRecord> {
      * The column <code>work.status</code>.
      */
     public final TableField<WorkRecord, String> STATUS = createField(DSL.name("status"), org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
+
+    /**
+     * The column <code>work.color</code>.
+     */
+    public final TableField<WorkRecord, String> COLOR = createField(DSL.name("color"), org.jooq.impl.SQLDataType.VARCHAR(32), this, "");
 
     /**
      * The column <code>work.started_at</code>.
@@ -198,11 +203,11 @@ public class Work extends TableImpl<WorkRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Integer, Integer, Integer, String, String, String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row11<Integer, Integer, Integer, String, String, String, String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 }

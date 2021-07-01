@@ -1,6 +1,7 @@
 package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.Work;
+import com.ymm.back.pojos.WorkP;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,23 @@ public class WorkController {
         this.dslContext = dslContext;
         this.jdbcTemplate = jdbcTemplate;
     }
-    // 작업 정보 모두 가져오기
+    // 작업 정보들 모두 가져오기
     @GetMapping
-    public List<Map<String, Object>> selectWorkAll(){
+    public ResponseEntity<?> selectWorkAll(){
         var sql = dslContext.selectFrom(DSL.table("work")).getSQL();
-        return jdbcTemplate.queryForList(sql);
+        //List<Map<String, Object>>
+        return ResponseEntity.status(200).body(jdbcTemplate.queryForList(sql));
     }
-    // 작업 단일 정보 파라미터로 가져오기
+    // 내 프로젝트가 속한 작업 정보 파라미터로 가져오기
+    //localhost:8080/work/from-project/2
+    @GetMapping(path = "/from-project/{id}")
+    public ResponseEntity<?> selectWorkOfProject(@PathVariable("id") int id){
+        Work work = Work.WORK;
+        /*List<com.ymm.back.domain.tables.pojos.Work>*/
+        var sql = dslContext.select().from(work).where(work.PROJECT_ID.eq(id)).fetchInto(WorkP.class);
+        return ResponseEntity.status(200).body(sql);//jdbcTemplate.queryForList(sql).get(0);
+    }
+    // 작업에 대한 단일 정보 파라미터로 가져오기
     //localhost:8080/work/{id}
     @GetMapping("/{id}")
     public ResponseEntity<?> selectWorkOne(@PathVariable("id") int id){
@@ -42,13 +53,15 @@ public class WorkController {
         var sql = dslContext.select().from(work).where(work.ID.eq(id)).fetchInto(WorkP.class);
         return ResponseEntity.status(200).body(sql);//jdbcTemplate.queryForList(sql).get(0);
     }
+    //업무 만들기
+    // 주의: 시작시간 입력은 "startedAt": "2021-07-01 18:37:17" 처럼 전체를 입력해야 한다.
     @PostMapping
     public ResponseEntity<?> insertWork(@RequestBody WorkP input){
         Work work = Work.WORK;
         String result="";
         int sql = dslContext.insertInto(work)
-                .columns(work.CREATE_TIME,work.FINISHED_AT,work.MEMBER_ID,work.PROJECT_ID,work.MANAGER,work.NAME,work.STARTED_AT,work.STATUS,work.UPDATE_TIME)
-                .values(input.getCreateTime(),input.getFinishedAt(),input.getMemberId(),input.getProjectId(),input.getManager(),input.getName(),input.getStartedAt(),input.getStatus(),input.getUpdateTime())
+                .columns(work.FINISHED_AT,work.MEMBER_ID,work.PROJECT_ID,work.MANAGER,work.NAME,work.STARTED_AT,work.COLOR)
+                .values(input.getFinishedAt(),input.getMemberId(),input.getProjectId(),input.getManager(),input.getName(),input.getStartedAt(),input.getColor())
                 .execute();
         if(sql ==1){
             result = "성공!";
@@ -57,20 +70,21 @@ public class WorkController {
         }
         return ResponseEntity.status(200).body(result);
     }
-    @PatchMapping
-    public ResponseEntity<?> updateWork(@RequestBody WorkP input){
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<?> updateWork(@PathVariable("id") int id, @RequestBody WorkP input){
         Work work = Work.WORK;
         String result="";
         // jackson은 구리다... 날짜 강제변경 어노테이션 ㄱ. 게다가 로컬 변수는 안되니 VO 테이블 전체에 붙여야됨.
         //@DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
         //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime finishedAt = input.getFinishedAt();
+        //LocalDateTime finishedAt = input.getFinishedAt();
         int sql = dslContext.update(work)
                 .set(work.MANAGER,input.getManager())
                 .set(work.NAME,input.getName())
                 .set(work.STATUS,input.getStatus())
-                .set(work.FINISHED_AT, finishedAt)
-                .where(work.ID.eq(input.getId()))
+                .set(work.FINISHED_AT, input.getFinishedAt())
+                .set(work.COLOR, input.getColor())
+                .where(work.ID.eq(id))
                 .execute();
         if(sql ==1){
             result = "성공!";
@@ -89,7 +103,7 @@ public class WorkController {
         if(sql ==1){
             result = "삭제 성공!";
         } else {
-            result = "그런거 없습니다. 정확한 정보로 삭제요청 부탁";
+            result = "정확한 정보로 삭제요청을 부탁드립니다.";
         }
         return ResponseEntity.status(200).body(result);
     }

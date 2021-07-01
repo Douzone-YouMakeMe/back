@@ -2,17 +2,21 @@ package com.ymm.back.pojos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 public class UserM {
 
     private Integer       id;
@@ -20,7 +24,7 @@ public class UserM {
     private String        email;
     private String        password;
     private String        tel;
-    private String        profile;
+    public MultipartFile profile;
     private String        jobTitle;
     private String        role;
     private String        wstoken;

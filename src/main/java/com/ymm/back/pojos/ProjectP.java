@@ -21,14 +21,15 @@ public class ProjectP implements Serializable {
     private Integer       id;
     private Integer       userId;
     private String        name;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime finishedAt;
+
     private String        contents;
     private Integer       viewCount;
     private String        thumbnail;
     private String        description;
     private String        authority;
     private Integer       total;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startedTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -42,7 +43,7 @@ public class ProjectP implements Serializable {
         this.id = value.id;
         this.userId = value.userId;
         this.name = value.name;
-        this.finishedAt = value.finishedAt;
+        this.startedTime = value.startedTime;
         this.contents = value.contents;
         this.viewCount = value.viewCount;
         this.thumbnail = value.thumbnail;
@@ -58,7 +59,7 @@ public class ProjectP implements Serializable {
         Integer       id,
         Integer       userId,
         String        name,
-        LocalDateTime finishedAt,
+        LocalDateTime startedTime,
         String        contents,
         Integer       viewCount,
         String        thumbnail,
@@ -72,7 +73,7 @@ public class ProjectP implements Serializable {
         this.id = id;
         this.userId = userId;
         this.name = name;
-        this.finishedAt = finishedAt;
+        this.startedTime = startedTime;
         this.contents = contents;
         this.viewCount = viewCount;
         this.thumbnail = thumbnail;
@@ -108,12 +109,12 @@ public class ProjectP implements Serializable {
         this.name = name;
     }
 
-    public LocalDateTime getFinishedAt() {
-        return this.finishedAt;
+    public LocalDateTime getStartedTime() {
+        return this.startedTime;
     }
 
-    public void setFinishedAt(LocalDateTime finishedAt) {
-        this.finishedAt = finishedAt;
+    public void setStartedTime(LocalDateTime startedTime) {
+        this.startedTime = startedTime;
     }
 
     public String getContents() {
@@ -215,11 +216,11 @@ public class ProjectP implements Serializable {
         }
         else if (!name.equals(other.name))
             return false;
-        if (finishedAt == null) {
-            if (other.finishedAt != null)
+        if (startedTime == null) {
+            if (other.startedTime != null)
                 return false;
         }
-        else if (!finishedAt.equals(other.finishedAt))
+        else if (!startedTime.equals(other.startedTime))
             return false;
         if (contents == null) {
             if (other.contents != null)
@@ -285,7 +286,7 @@ public class ProjectP implements Serializable {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-        result = prime * result + ((this.finishedAt == null) ? 0 : this.finishedAt.hashCode());
+        result = prime * result + ((this.startedTime == null) ? 0 : this.startedTime.hashCode());
         result = prime * result + ((this.contents == null) ? 0 : this.contents.hashCode());
         result = prime * result + ((this.viewCount == null) ? 0 : this.viewCount.hashCode());
         result = prime * result + ((this.thumbnail == null) ? 0 : this.thumbnail.hashCode());
@@ -305,7 +306,7 @@ public class ProjectP implements Serializable {
         sb.append(id);
         sb.append(", ").append(userId);
         sb.append(", ").append(name);
-        sb.append(", ").append(finishedAt);
+        sb.append(", ").append(startedTime);
         sb.append(", ").append(contents);
         sb.append(", ").append(viewCount);
         sb.append(", ").append(thumbnail);

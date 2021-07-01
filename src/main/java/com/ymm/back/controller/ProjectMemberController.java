@@ -2,14 +2,22 @@ package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
+import com.ymm.back.domain.tables.User;
+import com.ymm.back.domain.tables.records.ProjectMemberRecord;
+import com.ymm.back.pojos.ProjectMemberM;
+import com.ymm.back.pojos.ProjectMemberP;
+import com.ymm.back.pojos.ProjectP;
+import com.ymm.back.pojos.UserP;
 import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -43,7 +51,7 @@ public class ProjectMemberController {
     }
 
     // 프로젝트의 멤버 한명에 대한 정보 검색. id 파라미터로 가져오기
-    //localhost:8080/member/{id}
+    //localhost:8080/member/{project_member.id}
     @GetMapping("/{id}")
     public ResponseEntity<?> selectMemberOfProject(@PathVariable("id") int id){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
@@ -66,17 +74,15 @@ public class ProjectMemberController {
      *     "appliedPosition": "아이 엠 그것"
      * }
      */
-    @PostMapping(path="/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> insertMemberMulti(@ModelAttribute ProjectMemberU input){
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> insertMemberMulti(@ModelAttribute ProjectMemberM input){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
         String result ="";
-        StringBuilder sb = new StringBuilder();
-        /*
+        /* //StringBuilder sb = new StringBuilder();
         input.entrySet().forEach(entry ->{
             sb.append(entry.getValue());
         });
         */
-        //String fileUrl = fileUploadService.uploadImage(input.getPortfolioFile());
         try {
             var sql = dslContext.insertInto(member)
                     // 지원서 제출 시, pending으로 status 고정. status 변경은 patch에서만.
@@ -105,18 +111,27 @@ public class ProjectMemberController {
      *     "appliedPosition": "아이 엠 그것"
      * }
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateMember(@PathVariable("id") int id, @RequestBody ProjectMemberP input){
+    @PutMapping(path = "/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateMember(@PathVariable("id") int id, @ModelAttribute ProjectMemberM input){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
         String result ="";
+        ProjectMemberRecord record = dslContext.newRecord(member);
+        // 이름 참여가능일 직무 포트폴리오 2개 하고싶은말
+        if(input.getPortfolioFile() != null)
+            record.set(member.PORTFOLIO_FILE,fileUploadService.uploadImage(input.getPortfolioFile()));
+        if(input.getName() != null)
+            record.set(member.NAME,input.getName());
+        if(input.getStartedTime() != null)
+            record.set(member.STARTED_TIME, input.getStartedTime());
+        if(input.getAppliedPosition() != null)
+            record.set(member.APPLIED_POSITION, input.getAppliedPosition());
+        if(input.getComments() != null)
+            record.set(member.COMMENTS,input.getComments());
+        if(input.getPortfolioUrl() != null)
+            record.set(member.PORTFOLIO_URL,input.getPortfolioUrl());
+
         var sql = dslContext.update(member)
-                .set(member.USER_ID,input.getUserId())
-                .set(member.PROJECT_ID,input.getProjectId())
-                .set(member.NAME,input.getName())
-                .set(member.APPLIED_POSITION,input.getAppliedPosition())
-                .set(member.COMMENTS,input.getComments())
-                //.set(member.PORTFOLIO_FILE,input.getPortfolioFile())
-                .set(member.PORTFOLIO_URL,input.getPortfolioUrl())
+                .set(record)
                 .where(member.ID.eq(id))
                 .execute();
         if(sql ==1){
@@ -139,32 +154,35 @@ public class ProjectMemberController {
      *  --> x. 다시 협의. projct_id 를 가지고 project의 total-1 하는 쿼리로 진행.
      *  input : projectMember.id(pathVariable), projectId, userId, status(approved, rejected)
      *  output : success or fail
-     *
+     * // 주의 : approved로 이미 승인했는데, 다시 reject하는 기능은 없습니다!
+     * // 그거 만드려면 api 갈아 엎어야됨.
      */
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable("id") int id, @RequestBody ProjectMemberP input){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
         Project project = Project.PROJECT;
         String result ="";
-        int flagOfQuery;
-        if(input.getStatus() == "approved"){
+        int flagOfQuery = 0; //이게 1이 되면 승인각.
+        if(input.getStatus().equalsIgnoreCase("approved")){
             var sql = dslContext.update(member)
                     .set(member.STATUS, input.getStatus())
                     .where(member.ID.eq(id))
                     .execute();
+            //System.out.println("승인되었습니까? 1이면 성공: "+sql);
             flagOfQuery = sql;
             // 서브쿼리 떼어낸 버전.
             // 해당 프로젝트의 TO가 몇명인지 본다.
-            var getTotal = dslContext.select().from(project)
-                    .where(project.ID.eq(input.getProjectId())).fetchInto(ProjectP.class);
-            int tot = getTotal.get(0).getTotal();
+            var total = dslContext.select().from(project)
+                    .where(project.ID.eq(input.getProjectId())).fetchInto(ProjectP.class).get(0).getTotal();
             // 그리고 토탈을 하나 까버린다.
+            //System.out.println("지금 티오몇명입네까?: "+total);
             var totalCut = dslContext.update(project)
-                    .set(project.TOTAL, (tot-1))
+                    .set(project.TOTAL, (total-1))
                     .where(project.ID.eq(input.getProjectId()))
                     .execute();
             flagOfQuery = totalCut;
-        } else {
+            //System.out.println("토탈 인원티오가 까졌습니까?: "+totalCut);
+        } else if(input.getStatus().equalsIgnoreCase("rejected")) {
             var sql = dslContext.update(member)
                     .set(member.STATUS, input.getStatus())
                     .where(member.ID.eq(id))
@@ -174,11 +192,55 @@ public class ProjectMemberController {
         if(flagOfQuery == 0){
             return ResponseEntity.status(400).body("승인 실패. 관리자에게 문의 바랍니다.");
         } else {
-            result = "프로젝트 참여 승인을 성공적으로 마쳤습니다.";
+            result = "프로젝트 승인 결정을 성공적으로 마쳤습니다.";
         }
 
         return ResponseEntity.status(201).body(result);
     }
+
+    /**
+     * 프로젝트 탈퇴 로직.
+     * 프로젝트를 탈퇴할 때, projectMember.id를 가지고 탈퇴 들어간다.
+     * 하지만, 스토리보드 상으로는 user.password를 입력해야 탈퇴가 된다.
+     * 그렇다면...
+     * input: projectMember.id, user.password
+     * process: select user.password from user
+     * where member.user_id 한 다음, equals ==true면 결정!
+     * output: success or fail
+     *  (T/F) deleteMember(projectMember.id, user.password)
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMember(@PathVariable("id") int id, @RequestBody UserP input){
+        ProjectMember member = ProjectMember.PROJECT_MEMBER;
+        Project project = Project.PROJECT;
+        User user = User.USER;
+        String result ="";
+        var deleted = 0;
+        // 유저아이디를 project_member를 통해 조회.
+        var user_id = dslContext.select(DSL.field("user_id"))
+                .from(member).where(member.ID.eq(id)).fetchInto(ProjectMemberP.class).get(0).getUserId();
+        //System.out.println("유저아이디 조회되었스므니까?: "+user_id);
+        var pw = dslContext.select(DSL.field("password"))
+                .from(user).where(user.ID.eq(user_id)).fetchInto(UserP.class).get(0).getPassword();
+        //System.out.println("패스워드 나왔습니까?: "+pw);
+        //System.out.println("그래서 입력한 패스워드는 무엇입네까?: "+input.getPassword());
+        var flag = input.getPassword().equals(pw);
+        //System.out.println("그래서 대조하니 맞습니까? "+flag);
+        if(flag){
+            deleted = dslContext.deleteFrom(member).where(member.ID.eq(id)).execute();
+        } else {
+            return ResponseEntity.status(401).body("비밀번호가 틀렸습니다. 탈퇴 및 삭제 실패.");
+        }
+        if(deleted==1){
+            result = "프로젝트 탈퇴 및 삭제 성공.";
+        }
+
+        return ResponseEntity.status(201).body(result);
+    }
+
+
+
+
                 /* //원본 서브쿼리 SQL문이다. 그냥 2개로 분리해서 사용해야 길이가 줄어들 듯...
             // .where(member.ID.eq(id).and(member.USER_ID.eq(input.getUserId())))
             var sql2 = dslContext.update(project)

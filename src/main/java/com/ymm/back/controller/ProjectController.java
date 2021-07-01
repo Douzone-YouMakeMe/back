@@ -1,8 +1,13 @@
 package com.ymm.back.controller;
 
 
+import com.ymm.back.dao.ViewCount;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.User;
+import com.ymm.back.domain.tables.records.ProjectRecord;
+import com.ymm.back.pojos.ProjectM;
+import com.ymm.back.pojos.ProjectP;
+import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +28,12 @@ import java.util.Map;
 public class ProjectController {
     private final DSLContext dslContext;
     private final JdbcTemplate jdbcTemplate;
+    private final FileUploadService fileUploadService;
     @Autowired
-    public ProjectController(DSLContext dslContext, JdbcTemplate jdbcTemplate) {
+    public ProjectController(DSLContext dslContext, JdbcTemplate jdbcTemplate, FileUploadService fileUploadService) {
         this.dslContext = dslContext;
         this.jdbcTemplate = jdbcTemplate;
+        this.fileUploadService = fileUploadService;
     }
     // 프로젝트 정보 모두 가져오기
     @GetMapping
@@ -39,22 +46,36 @@ public class ProjectController {
     @GetMapping("/{id}")
     public ResponseEntity<?> selectProjectOne(@PathVariable("id") int id){
         Project project = Project.PROJECT;
-        //System.out.println("패스 파라미터 입니다: "+id);
-        //System.out.println("sql문 입니다: "+dslContext.select().from(DSL.table("project")).where(project.ID.equal(id)).getSQL());
-//        System.out.println(dslContext.selectFrom(DSL.table("project")).where(project.ID.eq(1)).getSQL());
         var sql = dslContext.select().from(project).where(project.ID.eq(id)).fetchInto(ProjectP.class);
-        //System.out.println(sql.get(0)); //하나만 받아온다
+        /* //조회수 증가 람다식. 익명함수의 파라미터 문제로 변환중.
+        // update projectboard set view_count=IFNULL(view_count,0)+1
+        // 서브쿼리가 차라리 문장이 덜 길어지것다... 그냥 서브쿼리로 변경.
+        ViewCount viewCountUp=()->{
+            return dslContext.select(DSL.field("view_count")).from(project).where(project.ID.eq(id)).fetchInto(ProjectP.class).get(0).getViewCount()+1;
+        };
+        */
+        //System.out.println(dslContext.select().from(project).where(project.ID.eq(id)).fetchInto(ProjectP.class).get(0).getViewCount());
+        //int count = dslContext.select(project.VIEW_COUNT).from(project).where(project.ID.eq(id)).fetchInto(ProjectP.class).get(0).getViewCount();
+        var countUp = dslContext.update(project)
+                .set(project.VIEW_COUNT,
+                        dslContext.select(project.VIEW_COUNT).from(project).where(project.ID.eq(id)).fetchInto(ProjectP.class).get(0).getViewCount()+1)
+                .where(project.ID.eq(id))
+                .execute();
 
         return ResponseEntity.status(200).body(sql);
     }
-    // 프로젝트 만들기!
+
+
+
+    // 프로젝트 만들기! multipart/form
+    // 필수 파라미터는 만드는 사람의 userId와, thumbnail 2가지이다.
     @PostMapping
-    public ResponseEntity<?> insertProject(@RequestBody ProjectP input){
+    public ResponseEntity<?> insertProject(@ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
         String result="";
         var sql = dslContext.insertInto(project)
-                .columns(project.USER_ID,project.NAME,project.FINISHED_AT,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION,project.AUTHORITY,project.TOTAL,project.FINISHED_TIME) //project.NAME ,project.FINISHED_AT
-                .values(input.getUserId(), input.getName(),input.getFinishedAt(),input.getContents(),input.getViewCount(),input.getThumbnail(),input.getDescription(),input.getAuthority(),input.getTotal(),input.getFinishedTime())
+                .columns(project.USER_ID,project.NAME,project.STARTED_TIME,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION,project.AUTHORITY,project.TOTAL,project.FINISHED_TIME) //project.NAME ,project.FINISHED_AT
+                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,fileUploadService.uploadImage(input.getThumbnail()),input.getDescription(),input.getAuthority(),input.getTotal(),input.getFinishedTime())
                 .execute();
         if(sql==1){
             result = "프로젝트가 생성되었습니다.";
@@ -64,13 +85,32 @@ public class ProjectController {
         return ResponseEntity.status(201).body(result);
     }
     //프로젝트 정보 변경
-    @PatchMapping
-    public String updateProject(@RequestBody ProjectP input){
+    @PatchMapping("/{id}")
+    public String updateProject(@PathVariable("id") int id, @ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
         String result="";
+        ProjectRecord record = dslContext.newRecord(project);
+        if(input.getThumbnail() != null /*&& !input.getThumbnail().isEmpty() */){
+            record.set(project.THUMBNAIL, fileUploadService.uploadImage(input.getThumbnail()));
+        }
+        if(input.getName() != null)
+            record.set(project.NAME,input.getName());
+        if(input.getDescription() != null)
+            record.set(project.DESCRIPTION, input.getDescription());
+        if(input.getContents() != null)
+            record.set(project.CONTENTS, input.getContents());
+        if(input.getTotal() != null)
+            record.set(project.TOTAL, input.getTotal());
+        if(input.getStartedTime() != null)
+            record.set(project.STARTED_TIME, input.getStartedTime());
+        if(input.getFinishedTime() != null)
+            record.set(project.FINISHED_TIME, input.getFinishedTime());
+        if(input.getContents() != null)
+            record.set(project.CONTENTS, input.getContents());
+        //
         int sql = dslContext.update(project)
-                .set(project.NAME,input.getName())
-                .where(project.USER_ID.eq(5))
+                .set(record)
+                .where(project.ID.eq(id))
                 .execute();
         if(sql ==1){
             result = "성공!";
@@ -80,18 +120,18 @@ public class ProjectController {
         return result;
     }
     // 프로젝트 삭제
-    @DeleteMapping
-    public String deleteProject(){
+    @DeleteMapping("/{id}")
+    public String deleteProject(@PathVariable("id") int id){
         Project project = Project.PROJECT;
         User user = User.USER;
         String result="";
         int sql = dslContext.deleteFrom(project)
-                .where(project.USER_ID.eq(5))
+                .where(project.ID.eq(id))
                 .execute();
         if(sql ==1){
             result = "삭제 성공!";
         } else {
-            result = "그런거 없습니다. 정확한 정보로 삭제요청 부탁";
+            result = "해당 프로젝트가 없습니다. 정확한 정보로 삭제요청을 발송해 주세요.";
         }
         return result;
     }

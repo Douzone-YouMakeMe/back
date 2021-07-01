@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row16;
+import org.jooq.Row17;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectMember extends TableImpl<ProjectMemberRecord> {
 
-    private static final long serialVersionUID = -1276390016;
+    private static final long serialVersionUID = -138924941;
 
     /**
      * The reference instance of <code>project_member</code>
@@ -119,6 +119,11 @@ public class ProjectMember extends TableImpl<ProjectMemberRecord> {
      * The column <code>project_member.color</code>.
      */
     public final TableField<ProjectMemberRecord, String> COLOR = createField(DSL.name("color"), org.jooq.impl.SQLDataType.VARCHAR(32), this, "");
+
+    /**
+     * The column <code>project_member.started_time</code>.
+     */
+    public final TableField<ProjectMemberRecord, LocalDateTime> STARTED_TIME = createField(DSL.name("started_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
      * The column <code>project_member.create_time</code>.
@@ -228,11 +233,11 @@ public class ProjectMember extends TableImpl<ProjectMemberRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row16 type methods
+    // Row17 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row16<Integer, Integer, Integer, String, String, String, String, String, String, String, String, Integer, String, String, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row16) super.fieldsRow();
+    public Row17<Integer, Integer, Integer, String, String, String, String, String, String, String, String, Integer, String, String, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row17) super.fieldsRow();
     }
 }

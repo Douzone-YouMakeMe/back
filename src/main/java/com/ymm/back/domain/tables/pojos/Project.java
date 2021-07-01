@@ -14,18 +14,18 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-    private static final long serialVersionUID = 301081396;
+    private static final long serialVersionUID = -990261663;
 
     private Integer       id;
     private Integer       userId;
     private String        name;
-    private LocalDateTime finishedAt;
     private String        contents;
     private Integer       viewCount;
     private String        thumbnail;
     private String        description;
     private String        authority;
     private Integer       total;
+    private LocalDateTime startedTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private LocalDateTime finishedTime;
@@ -36,13 +36,13 @@ public class Project implements Serializable {
         this.id = value.id;
         this.userId = value.userId;
         this.name = value.name;
-        this.finishedAt = value.finishedAt;
         this.contents = value.contents;
         this.viewCount = value.viewCount;
         this.thumbnail = value.thumbnail;
         this.description = value.description;
         this.authority = value.authority;
         this.total = value.total;
+        this.startedTime = value.startedTime;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
         this.finishedTime = value.finishedTime;
@@ -52,13 +52,13 @@ public class Project implements Serializable {
         Integer       id,
         Integer       userId,
         String        name,
-        LocalDateTime finishedAt,
         String        contents,
         Integer       viewCount,
         String        thumbnail,
         String        description,
         String        authority,
         Integer       total,
+        LocalDateTime startedTime,
         LocalDateTime createTime,
         LocalDateTime updateTime,
         LocalDateTime finishedTime
@@ -66,13 +66,13 @@ public class Project implements Serializable {
         this.id = id;
         this.userId = userId;
         this.name = name;
-        this.finishedAt = finishedAt;
         this.contents = contents;
         this.viewCount = viewCount;
         this.thumbnail = thumbnail;
         this.description = description;
         this.authority = authority;
         this.total = total;
+        this.startedTime = startedTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.finishedTime = finishedTime;
@@ -100,14 +100,6 @@ public class Project implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LocalDateTime getFinishedAt() {
-        return this.finishedAt;
-    }
-
-    public void setFinishedAt(LocalDateTime finishedAt) {
-        this.finishedAt = finishedAt;
     }
 
     public String getContents() {
@@ -156,6 +148,14 @@ public class Project implements Serializable {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public LocalDateTime getStartedTime() {
+        return this.startedTime;
+    }
+
+    public void setStartedTime(LocalDateTime startedTime) {
+        this.startedTime = startedTime;
     }
 
     public LocalDateTime getCreateTime() {
@@ -209,12 +209,6 @@ public class Project implements Serializable {
         }
         else if (!name.equals(other.name))
             return false;
-        if (finishedAt == null) {
-            if (other.finishedAt != null)
-                return false;
-        }
-        else if (!finishedAt.equals(other.finishedAt))
-            return false;
         if (contents == null) {
             if (other.contents != null)
                 return false;
@@ -251,6 +245,12 @@ public class Project implements Serializable {
         }
         else if (!total.equals(other.total))
             return false;
+        if (startedTime == null) {
+            if (other.startedTime != null)
+                return false;
+        }
+        else if (!startedTime.equals(other.startedTime))
+            return false;
         if (createTime == null) {
             if (other.createTime != null)
                 return false;
@@ -279,13 +279,13 @@ public class Project implements Serializable {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-        result = prime * result + ((this.finishedAt == null) ? 0 : this.finishedAt.hashCode());
         result = prime * result + ((this.contents == null) ? 0 : this.contents.hashCode());
         result = prime * result + ((this.viewCount == null) ? 0 : this.viewCount.hashCode());
         result = prime * result + ((this.thumbnail == null) ? 0 : this.thumbnail.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.authority == null) ? 0 : this.authority.hashCode());
         result = prime * result + ((this.total == null) ? 0 : this.total.hashCode());
+        result = prime * result + ((this.startedTime == null) ? 0 : this.startedTime.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         result = prime * result + ((this.finishedTime == null) ? 0 : this.finishedTime.hashCode());
@@ -299,13 +299,13 @@ public class Project implements Serializable {
         sb.append(id);
         sb.append(", ").append(userId);
         sb.append(", ").append(name);
-        sb.append(", ").append(finishedAt);
         sb.append(", ").append(contents);
         sb.append(", ").append(viewCount);
         sb.append(", ").append(thumbnail);
         sb.append(", ").append(description);
         sb.append(", ").append(authority);
         sb.append(", ").append(total);
+        sb.append(", ").append(startedTime);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
         sb.append(", ").append(finishedTime);

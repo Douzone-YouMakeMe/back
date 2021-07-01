@@ -89,20 +89,6 @@ public class ProjectDao extends DAOImpl<ProjectRecord, com.ymm.back.domain.table
     }
 
     /**
-     * Fetch records that have <code>finished_at BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.Project> fetchRangeOfFinishedAt(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-        return fetchRange(Project.PROJECT.FINISHED_AT, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>finished_at IN (values)</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.Project> fetchByFinishedAt(LocalDateTime... values) {
-        return fetch(Project.PROJECT.FINISHED_AT, values);
-    }
-
-    /**
      * Fetch records that have <code>contents BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.Project> fetchRangeOfContents(String lowerInclusive, String upperInclusive) {
@@ -184,6 +170,20 @@ public class ProjectDao extends DAOImpl<ProjectRecord, com.ymm.back.domain.table
      */
     public List<com.ymm.back.domain.tables.pojos.Project> fetchByTotal(Integer... values) {
         return fetch(Project.PROJECT.TOTAL, values);
+    }
+
+    /**
+     * Fetch records that have <code>started_time BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Project> fetchRangeOfStartedTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(Project.PROJECT.STARTED_TIME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>started_time IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Project> fetchByStartedTime(LocalDateTime... values) {
+        return fetch(Project.PROJECT.STARTED_TIME, values);
     }
 
     /**

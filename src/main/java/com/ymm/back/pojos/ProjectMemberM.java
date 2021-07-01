@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -21,13 +22,15 @@ public class ProjectMemberM {
     private String        status;
     private String        appliedPosition;
     private String        comments;
-    private String        portfolioFile;
+    private MultipartFile portfolioFile;
     private String        portfolioUrl;
     private String        description;
     private String        auth;
     private Integer       roleId;
     private String        websocket;
     private String        color;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startedTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

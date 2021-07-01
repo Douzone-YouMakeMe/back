@@ -33,6 +33,8 @@ public class ProjectMemberP implements Serializable {
     private String        websocket;
     private String        color;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startedTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
@@ -54,6 +56,7 @@ public class ProjectMemberP implements Serializable {
         this.roleId = value.roleId;
         this.websocket = value.websocket;
         this.color = value.color;
+        this.startedTime = value.startedTime;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
     }
@@ -73,6 +76,7 @@ public class ProjectMemberP implements Serializable {
         Integer       roleId,
         String        websocket,
         String        color,
+        LocalDateTime startedTime,
         LocalDateTime createTime,
         LocalDateTime updateTime
     ) {
@@ -90,6 +94,7 @@ public class ProjectMemberP implements Serializable {
         this.roleId = roleId;
         this.websocket = websocket;
         this.color = color;
+        this.startedTime = startedTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -206,6 +211,12 @@ public class ProjectMemberP implements Serializable {
         this.color = color;
     }
 
+    public LocalDateTime getStartedTime() {
+        return this.startedTime;
+    }
+
+    public void setStartedTime(LocalDateTime startedTime) { this.startedTime = startedTime;}
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }
@@ -315,6 +326,14 @@ public class ProjectMemberP implements Serializable {
         }
         else if (!color.equals(other.color))
             return false;
+        //
+        if (startedTime == null) {
+            if (other.startedTime != null)
+                return false;
+        }
+        else if (!startedTime.equals(other.startedTime))
+            return false;
+        //
         if (createTime == null) {
             if (other.createTime != null)
                 return false;
@@ -348,6 +367,7 @@ public class ProjectMemberP implements Serializable {
         result = prime * result + ((this.roleId == null) ? 0 : this.roleId.hashCode());
         result = prime * result + ((this.websocket == null) ? 0 : this.websocket.hashCode());
         result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
+        result = prime * result + ((this.startedTime == null) ? 0 : this.startedTime.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         return result;
@@ -371,6 +391,7 @@ public class ProjectMemberP implements Serializable {
         sb.append(", ").append(roleId);
         sb.append(", ").append(websocket);
         sb.append(", ").append(color);
+        sb.append(", ").append(startedTime);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
 

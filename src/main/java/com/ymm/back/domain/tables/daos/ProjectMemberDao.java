@@ -243,6 +243,20 @@ public class ProjectMemberDao extends DAOImpl<ProjectMemberRecord, com.ymm.back.
     }
 
     /**
+     * Fetch records that have <code>started_time BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfStartedTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(ProjectMember.PROJECT_MEMBER.STARTED_TIME, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>started_time IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByStartedTime(LocalDateTime... values) {
+        return fetch(ProjectMember.PROJECT_MEMBER.STARTED_TIME, values);
+    }
+
+    /**
      * Fetch records that have <code>create_time BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfCreateTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {

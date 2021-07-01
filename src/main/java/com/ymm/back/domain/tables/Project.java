@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-    private static final long serialVersionUID = 356176847;
+    private static final long serialVersionUID = 2056509494;
 
     /**
      * The reference instance of <code>project</code>
@@ -66,11 +66,6 @@ public class Project extends TableImpl<ProjectRecord> {
     public final TableField<ProjectRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * The column <code>project.finished_at</code>.
-     */
-    public final TableField<ProjectRecord, LocalDateTime> FINISHED_AT = createField(DSL.name("finished_at"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
-
-    /**
      * The column <code>project.contents</code>.
      */
     public final TableField<ProjectRecord, String> CONTENTS = createField(DSL.name("contents"), org.jooq.impl.SQLDataType.VARCHAR(200), this, "");
@@ -78,7 +73,7 @@ public class Project extends TableImpl<ProjectRecord> {
     /**
      * The column <code>project.view_count</code>.
      */
-    public final TableField<ProjectRecord, Integer> VIEW_COUNT = createField(DSL.name("view_count"), org.jooq.impl.SQLDataType.INTEGER, this, "");
+    public final TableField<ProjectRecord, Integer> VIEW_COUNT = createField(DSL.name("view_count"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>project.thumbnail</code>.
@@ -99,6 +94,11 @@ public class Project extends TableImpl<ProjectRecord> {
      * The column <code>project.total</code>.
      */
     public final TableField<ProjectRecord, Integer> TOTAL = createField(DSL.name("total"), org.jooq.impl.SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>project.started_time</code>.
+     */
+    public final TableField<ProjectRecord, LocalDateTime> STARTED_TIME = createField(DSL.name("started_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
      * The column <code>project.create_time</code>.
@@ -213,7 +213,7 @@ public class Project extends TableImpl<ProjectRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row13<Integer, Integer, String, LocalDateTime, String, Integer, String, String, String, Integer, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+    public Row13<Integer, Integer, String, String, Integer, String, String, String, Integer, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
         return (Row13) super.fieldsRow();
     }
 }

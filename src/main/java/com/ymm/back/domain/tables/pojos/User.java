@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -2130805960;
+    private static final long serialVersionUID = -193719953;
 
     private Integer       id;
     private String        name;
@@ -31,6 +31,7 @@ public class User implements Serializable {
     private Boolean       accountNonLocked;
     private Boolean       enabled;
     private Boolean       accountNonExpired;
+    private String        color;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
@@ -52,6 +53,7 @@ public class User implements Serializable {
         this.accountNonLocked = value.accountNonLocked;
         this.enabled = value.enabled;
         this.accountNonExpired = value.accountNonExpired;
+        this.color = value.color;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
     }
@@ -72,6 +74,7 @@ public class User implements Serializable {
         Boolean       accountNonLocked,
         Boolean       enabled,
         Boolean       accountNonExpired,
+        String        color,
         LocalDateTime createTime,
         LocalDateTime updateTime
     ) {
@@ -90,6 +93,7 @@ public class User implements Serializable {
         this.accountNonLocked = accountNonLocked;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
+        this.color = color;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -214,6 +218,14 @@ public class User implements Serializable {
         this.accountNonExpired = accountNonExpired;
     }
 
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }
@@ -329,6 +341,12 @@ public class User implements Serializable {
         }
         else if (!accountNonExpired.equals(other.accountNonExpired))
             return false;
+        if (color == null) {
+            if (other.color != null)
+                return false;
+        }
+        else if (!color.equals(other.color))
+            return false;
         if (createTime == null) {
             if (other.createTime != null)
                 return false;
@@ -363,6 +381,7 @@ public class User implements Serializable {
         result = prime * result + ((this.accountNonLocked == null) ? 0 : this.accountNonLocked.hashCode());
         result = prime * result + ((this.enabled == null) ? 0 : this.enabled.hashCode());
         result = prime * result + ((this.accountNonExpired == null) ? 0 : this.accountNonExpired.hashCode());
+        result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         return result;
@@ -387,6 +406,7 @@ public class User implements Serializable {
         sb.append(", ").append(accountNonLocked);
         sb.append(", ").append(enabled);
         sb.append(", ").append(accountNonExpired);
+        sb.append(", ").append(color);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
 

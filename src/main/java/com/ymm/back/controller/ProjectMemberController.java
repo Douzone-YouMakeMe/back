@@ -17,8 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.Locale;
 import java.util.Map;
+
+import static org.jooq.impl.DSL.defaultValue;
 
 @RestController
 @RequestMapping("/member")
@@ -34,7 +37,7 @@ public class ProjectMemberController {
     }
     // 해당 프로젝트의 소속 멤버들 검색. id === project_id
     // localhost:8080/member/project?id=1
-    @GetMapping(path = "project")
+    @GetMapping(path = "/project")
     public ResponseEntity<?> selectAllMemberOfProject(@RequestParam Map<String, ?> project){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
         StringBuilder sb = new StringBuilder();
@@ -70,8 +73,10 @@ public class ProjectMemberController {
      * {
      *     "userId": "1",
      *     "projectId": "2", //이거 없는 프로젝트를 입력하면 404 인데도 500을 띄움에 유의.
-     *     "name": "이 칼럼 4개는 post, put 모두 필수입니다.",
-     *     "appliedPosition": "아이 엠 그것"
+     *     "PORTFOLIO_FILE": "디폴트 아이콘 아무거나 클라이언트에서 넣기."
+     *     "total":
+     *     // "POST는 put, patch와 달리 칼럼 3개가 필수입니다.
+     *     // 아니면 Exception 처리 추가작업 필요"
      * }
      */
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -83,10 +88,11 @@ public class ProjectMemberController {
             sb.append(entry.getValue());
         });
         */
+        //defaultValue(fileUploadService.uploadImage(input.getPortfolioFile()))
         try {
-            var sql = dslContext.insertInto(member)
+            var sql = dslContext.insertInto(member,member.USER_ID,member.PROJECT_ID,member.NAME,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
                     // 지원서 제출 시, pending으로 status 고정. status 변경은 patch에서만.
-                    .columns(member.USER_ID,member.PROJECT_ID,member.NAME,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
+                    //.columns(member.USER_ID,member.PROJECT_ID,member.NAME,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
                     .values(input.getUserId(),input.getProjectId(),input.getName(),input.getAppliedPosition(),input.getComments(),fileUploadService.uploadImage(input.getPortfolioFile()),input.getPortfolioUrl(), "pending")
                     .execute();
             if(sql==1){
@@ -105,9 +111,7 @@ public class ProjectMemberController {
      * localhost:8080/member/5
      * application/json 바디 예시
      * {
-     *     "userId": "1",
-     *     "projectId": "2",
-     *     "name": "이 칼럼 4개는 post, put 모두 필수입니다.",
+     *     "name": "",
      *     "appliedPosition": "아이 엠 그것"
      * }
      */

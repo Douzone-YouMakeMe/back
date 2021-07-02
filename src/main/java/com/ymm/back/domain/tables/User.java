@@ -17,7 +17,7 @@ import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row17;
+import org.jooq.Row18;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -33,7 +33,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends TableImpl<UserRecord> {
 
-    private static final long serialVersionUID = -45505180;
+    private static final long serialVersionUID = -950666067;
 
     /**
      * The reference instance of <code>user</code>
@@ -122,6 +122,11 @@ public class User extends TableImpl<UserRecord> {
      * The column <code>user.account_non_expired</code>.
      */
     public final TableField<UserRecord, Boolean> ACCOUNT_NON_EXPIRED = createField(DSL.name("account_non_expired"), org.jooq.impl.SQLDataType.BIT.defaultValue(org.jooq.impl.DSL.inline("b'0'", org.jooq.impl.SQLDataType.BIT)), this, "");
+
+    /**
+     * The column <code>user.color</code>.
+     */
+    public final TableField<UserRecord, String> COLOR = createField(DSL.name("color"), org.jooq.impl.SQLDataType.VARCHAR(32), this, "");
 
     /**
      * The column <code>user.create_time</code>.
@@ -213,11 +218,11 @@ public class User extends TableImpl<UserRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row17 type methods
+    // Row18 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row17<Integer, String, String, String, String, String, String, String, String, String, Integer, Boolean, Boolean, Boolean, Boolean, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row17) super.fieldsRow();
+    public Row18<Integer, String, String, String, String, String, String, String, String, String, Integer, Boolean, Boolean, Boolean, Boolean, String, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row18) super.fieldsRow();
     }
 }

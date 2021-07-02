@@ -257,6 +257,20 @@ public class UserDao extends DAOImpl<UserRecord, com.ymm.back.domain.tables.pojo
     }
 
     /**
+     * Fetch records that have <code>color BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.User> fetchRangeOfColor(String lowerInclusive, String upperInclusive) {
+        return fetchRange(User.USER.COLOR, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>color IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.User> fetchByColor(String... values) {
+        return fetch(User.USER.COLOR, values);
+    }
+
+    /**
      * Fetch records that have <code>create_time BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.User> fetchRangeOfCreateTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {

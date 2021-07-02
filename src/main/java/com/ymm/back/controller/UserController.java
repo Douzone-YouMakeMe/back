@@ -6,11 +6,13 @@ import com.ymm.back.pojos.UserM;
 import com.ymm.back.pojos.UserP;
 import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
 import static org.jooq.impl.DSL.coalesce;
 import static org.jooq.impl.DSL.val;
@@ -58,21 +60,35 @@ public class UserController {
 
         return ResponseEntity.status(200).body(sql);
     }
-    // 회원가입은 성공시 201로 직접 지정한다.
+    /**
+     * 회원가입은 성공시 201로 직접 지정한다.
+     * {
+     *     "email": "tmdrbs1@gmail.com",
+     *     "password": "0000",
+     *     "name": "aaa"
+     * }
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody UserP input){
         User user = User.USER;
         String result="";
-        var sql = dslContext.insertInto(user)
-                .columns(user.EMAIL,user.NAME,user.ENABLED,user.PASSWORD)
-                //지금은 ENABLED가 default로 활성화에 유의!
-                //나중에 spring security 적용시에는 전적으로 시큐리티 모듈에 맡겨야됨.
-                .values(input.getEmail(),input.getName(),true,input.getPassword())
-                .execute();
+        var emailchk = "";
+        var sql = 0;
+        try { //이메일이 있는지 없는지 체크한다.
+            emailchk = dslContext.select(DSL.field("email"))
+                    .from(user).where(user.EMAIL.eq(input.getEmail())).fetchInto(UserP.class).get(0).getEmail();
+            return ResponseEntity.status(409).body("이메일이 중복됩니다. 다른 이메일로 가입 시도 바랍니다.");
+            //이메일이 없을때 nullpointer익셉션을 일으켜서 가입 go!
+        } catch (Exception e){
+            sql = dslContext.insertInto(user)
+                    .columns(user.EMAIL,user.NAME,user.ENABLED,user.PASSWORD,user.WSTOKEN)
+                    //지금은 ENABLED가 default로 활성화에 유의!
+                    //나중에 spring security 키는순간 전적으로 시큐리티 모듈에 맡겨야됨.
+                    .values(input.getEmail(),input.getName(),true,input.getPassword(),UUID.randomUUID().toString())
+                    .execute();
+        }
         if(sql ==1){
             result = "회원가입에 성공했습니다. 로그인 해주세요.";
-        } else {
-            return ResponseEntity.status(409).body("아이디가 중복됩니다. 다른 아이디를 사용해 주세요.");
         }
         return ResponseEntity.status(201).body(result);
     }

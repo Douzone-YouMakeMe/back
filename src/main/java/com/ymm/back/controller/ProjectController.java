@@ -69,13 +69,20 @@ public class ProjectController {
 
     // 프로젝트 만들기! multipart/form
     // 필수 파라미터는 만드는 사람의 userId와, thumbnail 2가지이다.
+    // UI 안내하기! total 설정 안하고 누르면 기본 정원수가 5명이라고 설정합니다!
     @PostMapping
     public ResponseEntity<?> insertProject(@ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
         String result="";
+        int total= 1;
+        if(input.getTotal() == null){
+            total = 5;
+        } else {
+            total = input.getTotal();
+        }
         var sql = dslContext.insertInto(project)
                 .columns(project.USER_ID,project.NAME,project.STARTED_TIME,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION,project.AUTHORITY,project.TOTAL,project.FINISHED_TIME) //project.NAME ,project.FINISHED_AT
-                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,fileUploadService.uploadImage(input.getThumbnail()),input.getDescription(),input.getAuthority(),input.getTotal(),input.getFinishedTime())
+                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,fileUploadService.uploadImage(input.getThumbnail()),input.getDescription(),input.getAuthority(),total,input.getFinishedTime())
                 .execute();
         if(sql==1){
             result = "프로젝트가 생성되었습니다.";

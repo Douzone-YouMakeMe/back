@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static org.jooq.impl.DSL.defaultValue;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/member")
 public class ProjectMemberController {

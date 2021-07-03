@@ -18,6 +18,7 @@ import java.util.Map;
  * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이고, jooq Record는 serialize에서 충돌나기 때문.
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/comment")
 public class CommentController {

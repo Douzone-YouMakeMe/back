@@ -17,6 +17,7 @@ import java.util.UUID;
 import static org.jooq.impl.DSL.coalesce;
 import static org.jooq.impl.DSL.val;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {

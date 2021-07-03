@@ -3,9 +3,11 @@ package com.ymm.back.controller;
 
 import com.ymm.back.dao.ViewCount;
 import com.ymm.back.domain.tables.Project;
+import com.ymm.back.domain.tables.ProjectMember;
 import com.ymm.back.domain.tables.User;
 import com.ymm.back.domain.tables.records.ProjectRecord;
 import com.ymm.back.pojos.ProjectM;
+import com.ymm.back.pojos.ProjectMemberP;
 import com.ymm.back.pojos.ProjectP;
 import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;
@@ -23,6 +25,7 @@ import java.util.Map;
  * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이고, jooq Record는 serialize에서 충돌나기 때문.
  */
 
+@CrossOrigin
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
@@ -64,6 +67,24 @@ public class ProjectController {
 
         return ResponseEntity.status(200).body(sql);
     }
+    // user_id가 속한 리스트를 모두 받아오기
+    //localhost:8080/project/?id=1
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> selectProjectOne2(@PathVariable("id") int id){
+        Project project = Project.PROJECT;
+        ProjectMember member = ProjectMember.PROJECT_MEMBER;
+        //SELECT * FROM project WHERE project.id IN (SELECT project_member.project_id FROM project_member WHERE project_member.user_id=15 AND status="approved");
+        // var sub = dslContext.select(member.PROJECT_ID).from(member).where(member.USER_ID.eq(id).and(member.STATUS.eq("approved")));
+        var sql = dslContext.select().from(project).where(project.ID.in(
+                dslContext.select(member.PROJECT_ID).from(member)
+                        .where(member.USER_ID.eq(id).and(member.STATUS.eq("approved"))).fetchInto(String.class))).fetchInto(ProjectP.class);
+        System.out.println(sql);
+
+        //.where(project.USER_ID.eq(id)).fetchInto(ProjectP.class);
+
+        return ResponseEntity.status(200).body(sql);
+    }
+
 
 
 

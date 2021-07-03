@@ -1,6 +1,7 @@
 package com.ymm.back.controller;
 
 import com.ymm.back.domain.tables.Work;
+import com.ymm.back.domain.tables.records.WorkRecord;
 import com.ymm.back.pojos.WorkP;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import java.util.Map;
  * 주의 : POST 메소드의 @RequestBody input 객체들은 pojos로만 받는게 고정이다...
  * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이고, jooq Record는 serialize에서 충돌나기 때문.
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/work")
 public class WorkController {
@@ -59,7 +61,7 @@ public class WorkController {
     public ResponseEntity<?> insertWork(@RequestBody WorkP input){
         Work work = Work.WORK;
         String result="";
-        int sql = dslContext.insertInto(work)
+        var sql = dslContext.insertInto(work)
                 .columns(work.FINISHED_AT,work.MEMBER_ID,work.PROJECT_ID,work.MANAGER,work.NAME,work.STARTED_AT,work.COLOR)
                 .values(input.getFinishedAt(),input.getMemberId(),input.getProjectId(),input.getManager(),input.getName(),input.getStartedAt(),input.getColor())
                 .execute();
@@ -78,7 +80,7 @@ public class WorkController {
         //@DateTimeFormat(pattern = "yyyy-MM-dd kk:mm:ss")
         //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         //LocalDateTime finishedAt = input.getFinishedAt();
-        int sql = dslContext.update(work)
+        var sql = dslContext.update(work)
                 .set(work.MANAGER,input.getManager())
                 .set(work.NAME,input.getName())
                 .set(work.STATUS,input.getStatus())
@@ -93,6 +95,50 @@ public class WorkController {
         }
         return ResponseEntity.status(200).body(result);
     }
+
+    /**
+     * localhost:8080/work/status
+     * 다중 status 업데이트 ()
+     * input: List(work.id, status)
+     * process: status: started(할일), proceed(진행중), finished(완료)
+     * output: 성공(200), 실패(400)
+     * 주의: 어느 프로젝트의, 어느 멤버가 업데이트 쳤는지를 받지 않으므로
+     * UI 비즈니스 로직으로 막아야함.
+     * 하단에 예시 request body List문 첨부.
+     */
+    @PatchMapping(path = "/status")
+    public ResponseEntity<?> updateWork2( @RequestBody List<WorkP> input){
+        Work work = Work.WORK;
+        String result="";
+        WorkRecord record = new WorkRecord();
+
+        try {
+            for(int i=0;i<input.size();i++){
+                //진행중으로 치면 상태만 변경되지만...
+                if(input.get(i).getStatus().equalsIgnoreCase("proceed")){
+                    record.set(work.STATUS, input.get(i).getStatus());
+                    //완료를 치면 종료일까지 처리된다!
+                } else if(input.get(i).getStatus().equalsIgnoreCase("finished")){
+                    record.set(work.STATUS, input.get(i).getStatus());
+                    //record.set(work.FINISHED_AT, LocalDateTime.now());
+                } else {
+                    record.set(work.STATUS, input.get(i).getStatus());
+                }
+                var sql = dslContext.update(work)
+                        .set(record)
+                        .where( work.ID.eq( input.get(i).getId() ) ).execute();
+            }
+            result = "업무 진행사항 변경이 완료되었습니다.";
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(400).body("이미 처리된 업무가 포함되어 있습니다. 다시 시도해 주세요.");
+        }
+
+        return ResponseEntity.status(200).body(result);
+    }
+
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProject(@PathVariable("id") int id){
         Work work = Work.WORK;
@@ -108,5 +154,21 @@ public class WorkController {
         return ResponseEntity.status(200).body(result);
     }
 
+    /*
+    [
+    {
+        "id": "14",
+        "status": "finished"
+    },
+    {
+        "id": "15",
+        "status": "started"
+    },
+    {
+        "id": "16",
+        "status": "finished"
+    }
+    ]
+    * */
 
 }

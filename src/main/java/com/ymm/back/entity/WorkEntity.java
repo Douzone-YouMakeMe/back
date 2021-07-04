@@ -12,6 +12,7 @@ public class WorkEntity {
     private String name;
     private String manager;
     private String status;
+    private String color;
     private Timestamp startedAt;
     private Timestamp finishedAt;
     private Timestamp createTime;
@@ -62,6 +63,16 @@ public class WorkEntity {
     }
 
     @Basic
+    @Column(name = "color", nullable = true, length = 32)
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Basic
     @Column(name = "started_at", nullable = true)
     public Timestamp getStartedAt() {
         return startedAt;
@@ -106,12 +117,12 @@ public class WorkEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkEntity that = (WorkEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(manager, that.manager) && Objects.equals(status, that.status) && Objects.equals(startedAt, that.startedAt) && Objects.equals(finishedAt, that.finishedAt) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(manager, that.manager) && Objects.equals(status, that.status) && Objects.equals(color, that.color) && Objects.equals(startedAt, that.startedAt) && Objects.equals(finishedAt, that.finishedAt) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, manager, status, startedAt, finishedAt, createTime, updateTime);
+        return Objects.hash(id, name, manager, status, color, startedAt, finishedAt, createTime, updateTime);
     }
 
     @OneToMany(mappedBy = "workByWorkId")

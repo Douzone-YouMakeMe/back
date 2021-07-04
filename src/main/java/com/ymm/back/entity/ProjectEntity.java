@@ -10,13 +10,15 @@ import java.util.Objects;
 public class ProjectEntity {
     private int id;
     private String name;
-    private Timestamp finishedAt;
     private String contents;
     private Integer viewCount;
     private String thumbnail;
     private String description;
     private String authority;
     private Integer total;
+    private String type;
+    private String url;
+    private Timestamp startedTime;
     private Timestamp createTime;
     private Timestamp updateTime;
     private Timestamp finishedTime;
@@ -44,16 +46,6 @@ public class ProjectEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "finished_at", nullable = true)
-    public Timestamp getFinishedAt() {
-        return finishedAt;
-    }
-
-    public void setFinishedAt(Timestamp finishedAt) {
-        this.finishedAt = finishedAt;
     }
 
     @Basic
@@ -117,6 +109,36 @@ public class ProjectEntity {
     }
 
     @Basic
+    @Column(name = "type", nullable = true, length = 50)
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Basic
+    @Column(name = "url", nullable = true, length = 255)
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Basic
+    @Column(name = "started_time", nullable = true)
+    public Timestamp getStartedTime() {
+        return startedTime;
+    }
+
+    public void setStartedTime(Timestamp startedTime) {
+        this.startedTime = startedTime;
+    }
+
+    @Basic
     @Column(name = "create_time", nullable = true)
     public Timestamp getCreateTime() {
         return createTime;
@@ -151,12 +173,12 @@ public class ProjectEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectEntity that = (ProjectEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(finishedAt, that.finishedAt) && Objects.equals(contents, that.contents) && Objects.equals(viewCount, that.viewCount) && Objects.equals(thumbnail, that.thumbnail) && Objects.equals(description, that.description) && Objects.equals(authority, that.authority) && Objects.equals(total, that.total) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime) && Objects.equals(finishedTime, that.finishedTime);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(contents, that.contents) && Objects.equals(viewCount, that.viewCount) && Objects.equals(thumbnail, that.thumbnail) && Objects.equals(description, that.description) && Objects.equals(authority, that.authority) && Objects.equals(total, that.total) && Objects.equals(type, that.type) && Objects.equals(url, that.url) && Objects.equals(startedTime, that.startedTime) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime) && Objects.equals(finishedTime, that.finishedTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, finishedAt, contents, viewCount, thumbnail, description, authority, total, createTime, updateTime, finishedTime);
+        return Objects.hash(id, name, contents, viewCount, thumbnail, description, authority, total, type, url, startedTime, createTime, updateTime, finishedTime);
     }
 
     @OneToMany(mappedBy = "projectByProjectId")

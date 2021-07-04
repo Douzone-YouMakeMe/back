@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-    private static final long serialVersionUID = -990261663;
+    private static final long serialVersionUID = -1654913168;
 
     private Integer       id;
     private Integer       userId;
@@ -25,6 +25,8 @@ public class Project implements Serializable {
     private String        description;
     private String        authority;
     private Integer       total;
+    private String        type;
+    private String        url;
     private LocalDateTime startedTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
@@ -42,6 +44,8 @@ public class Project implements Serializable {
         this.description = value.description;
         this.authority = value.authority;
         this.total = value.total;
+        this.type = value.type;
+        this.url = value.url;
         this.startedTime = value.startedTime;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
@@ -58,6 +62,8 @@ public class Project implements Serializable {
         String        description,
         String        authority,
         Integer       total,
+        String        type,
+        String        url,
         LocalDateTime startedTime,
         LocalDateTime createTime,
         LocalDateTime updateTime,
@@ -72,6 +78,8 @@ public class Project implements Serializable {
         this.description = description;
         this.authority = authority;
         this.total = total;
+        this.type = type;
+        this.url = url;
         this.startedTime = startedTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -148,6 +156,22 @@ public class Project implements Serializable {
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public LocalDateTime getStartedTime() {
@@ -245,6 +269,18 @@ public class Project implements Serializable {
         }
         else if (!total.equals(other.total))
             return false;
+        if (type == null) {
+            if (other.type != null)
+                return false;
+        }
+        else if (!type.equals(other.type))
+            return false;
+        if (url == null) {
+            if (other.url != null)
+                return false;
+        }
+        else if (!url.equals(other.url))
+            return false;
         if (startedTime == null) {
             if (other.startedTime != null)
                 return false;
@@ -285,6 +321,8 @@ public class Project implements Serializable {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.authority == null) ? 0 : this.authority.hashCode());
         result = prime * result + ((this.total == null) ? 0 : this.total.hashCode());
+        result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
+        result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
         result = prime * result + ((this.startedTime == null) ? 0 : this.startedTime.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
@@ -305,6 +343,8 @@ public class Project implements Serializable {
         sb.append(", ").append(description);
         sb.append(", ").append(authority);
         sb.append(", ").append(total);
+        sb.append(", ").append(type);
+        sb.append(", ").append(url);
         sb.append(", ").append(startedTime);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);

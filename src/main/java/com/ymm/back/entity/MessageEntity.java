@@ -17,6 +17,7 @@ public class MessageEntity {
     private ProjectMemberEntity projectMemberByMemberId;
     private ProjectEntity projectByProjectId;
 
+
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {

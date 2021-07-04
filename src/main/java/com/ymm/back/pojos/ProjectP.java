@@ -28,6 +28,8 @@ public class ProjectP implements Serializable {
     private String        description;
     private String        authority;
     private Integer       total;
+    private String        url;
+    private String        type;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startedTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -50,6 +52,8 @@ public class ProjectP implements Serializable {
         this.description = value.description;
         this.authority = value.authority;
         this.total = value.total;
+        this.url = value.url;
+        this.type = value.type;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
         this.finishedTime = value.finishedTime;
@@ -66,6 +70,8 @@ public class ProjectP implements Serializable {
         String        description,
         String        authority,
         Integer       total,
+        String        type,
+        String        url,
         LocalDateTime createTime,
         LocalDateTime updateTime,
         LocalDateTime finishedTime
@@ -80,6 +86,8 @@ public class ProjectP implements Serializable {
         this.description = description;
         this.authority = authority;
         this.total = total;
+        this.type = type;
+        this.url = url;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.finishedTime = finishedTime;
@@ -164,6 +172,14 @@ public class ProjectP implements Serializable {
     public void setTotal(Integer total) {
         this.total = total;
     }
+
+    public String getType() {return this.type;}
+
+    public void setType(String type) {this.type=type;}
+
+    public String getUrl() {return this.url;}
+
+    public void setUrl(String url) {this.url = url;}
 
     public LocalDateTime getCreateTime() {
         return this.createTime;
@@ -258,6 +274,20 @@ public class ProjectP implements Serializable {
         }
         else if (!total.equals(other.total))
             return false;
+        //
+        if (url == null) {
+            if (other.url != null)
+                return false;
+        }
+        else if (!url.equals(other.url))
+            return false;
+        if (type == null) {
+            if (other.type != null)
+                return false;
+        }
+        else if (!type.equals(other.type))
+            return false;
+        //
         if (createTime == null) {
             if (other.createTime != null)
                 return false;
@@ -293,6 +323,8 @@ public class ProjectP implements Serializable {
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.authority == null) ? 0 : this.authority.hashCode());
         result = prime * result + ((this.total == null) ? 0 : this.total.hashCode());
+        result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
+        result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         result = prime * result + ((this.finishedTime == null) ? 0 : this.finishedTime.hashCode());
@@ -313,6 +345,8 @@ public class ProjectP implements Serializable {
         sb.append(", ").append(description);
         sb.append(", ").append(authority);
         sb.append(", ").append(total);
+        sb.append(", ").append(type);
+        sb.append(", ").append(url);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
         sb.append(", ").append(finishedTime);

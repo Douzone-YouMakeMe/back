@@ -19,6 +19,8 @@ public class ProjectMemberEntity {
     private String auth;
     private Integer roleId;
     private String websocket;
+    private String color;
+    private Timestamp startedTime;
     private Timestamp createTime;
     private Timestamp updateTime;
     private Collection<AgendaEntity> agendaById;
@@ -140,6 +142,26 @@ public class ProjectMemberEntity {
     }
 
     @Basic
+    @Column(name = "color", nullable = true, length = 32)
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Basic
+    @Column(name = "started_time", nullable = true)
+    public Timestamp getStartedTime() {
+        return startedTime;
+    }
+
+    public void setStartedTime(Timestamp startedTime) {
+        this.startedTime = startedTime;
+    }
+
+    @Basic
     @Column(name = "create_time", nullable = true)
     public Timestamp getCreateTime() {
         return createTime;
@@ -164,12 +186,12 @@ public class ProjectMemberEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectMemberEntity that = (ProjectMemberEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(status, that.status) && Objects.equals(appliedPosition, that.appliedPosition) && Objects.equals(comments, that.comments) && Objects.equals(portfolioFile, that.portfolioFile) && Objects.equals(portfolioUrl, that.portfolioUrl) && Objects.equals(description, that.description) && Objects.equals(auth, that.auth) && Objects.equals(roleId, that.roleId) && Objects.equals(websocket, that.websocket) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(status, that.status) && Objects.equals(appliedPosition, that.appliedPosition) && Objects.equals(comments, that.comments) && Objects.equals(portfolioFile, that.portfolioFile) && Objects.equals(portfolioUrl, that.portfolioUrl) && Objects.equals(description, that.description) && Objects.equals(auth, that.auth) && Objects.equals(roleId, that.roleId) && Objects.equals(websocket, that.websocket) && Objects.equals(color, that.color) && Objects.equals(startedTime, that.startedTime) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, status, appliedPosition, comments, portfolioFile, portfolioUrl, description, auth, roleId, websocket, createTime, updateTime);
+        return Objects.hash(id, name, status, appliedPosition, comments, portfolioFile, portfolioUrl, description, auth, roleId, websocket, color, startedTime, createTime, updateTime);
     }
 
     @OneToMany(mappedBy = "projectMemberByMemberId")

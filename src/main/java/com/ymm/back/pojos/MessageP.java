@@ -30,6 +30,16 @@ public class MessageP implements Serializable {
 
     public MessageP() {}
 
+    // 채팅용 추가된 생성자
+    public MessageP(Integer memberId, Integer projectId, String message, String type) {
+        this.memberId = memberId;
+        this.projectId = projectId;
+        this.message = message;
+        this.type = type;
+    }
+
+    //
+
     public MessageP(MessageP value) {
         this.id = value.id;
         this.memberId = value.memberId;

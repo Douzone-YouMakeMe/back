@@ -1,13 +1,11 @@
 package com.ymm.back.controller;
 
 
-import com.ymm.back.dao.ViewCount;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
 import com.ymm.back.domain.tables.User;
 import com.ymm.back.domain.tables.records.ProjectRecord;
 import com.ymm.back.pojos.ProjectM;
-import com.ymm.back.pojos.ProjectMemberP;
 import com.ymm.back.pojos.ProjectP;
 import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;

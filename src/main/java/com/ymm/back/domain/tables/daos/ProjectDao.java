@@ -173,6 +173,34 @@ public class ProjectDao extends DAOImpl<ProjectRecord, com.ymm.back.domain.table
     }
 
     /**
+     * Fetch records that have <code>type BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Project> fetchRangeOfType(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Project.PROJECT.TYPE, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>type IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Project> fetchByType(String... values) {
+        return fetch(Project.PROJECT.TYPE, values);
+    }
+
+    /**
+     * Fetch records that have <code>url BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Project> fetchRangeOfUrl(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Project.PROJECT.URL, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>url IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Project> fetchByUrl(String... values) {
+        return fetch(Project.PROJECT.URL, values);
+    }
+
+    /**
      * Fetch records that have <code>started_time BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.Project> fetchRangeOfStartedTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {

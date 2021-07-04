@@ -23,6 +23,7 @@ public class UserEntity {
     private Boolean accountNonLocked;
     private Boolean enabled;
     private Boolean accountNonExpired;
+    private String color;
     private Timestamp createTime;
     private Timestamp updateTime;
     private Collection<ProjectEntity> projectsById;
@@ -179,6 +180,16 @@ public class UserEntity {
     }
 
     @Basic
+    @Column(name = "color", nullable = true, length = 32)
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Basic
     @Column(name = "create_time", nullable = true)
     public Timestamp getCreateTime() {
         return createTime;
@@ -203,12 +214,12 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(tel, that.tel) && Objects.equals(profile, that.profile) && Objects.equals(jobTitle, that.jobTitle) && Objects.equals(role, that.role) && Objects.equals(wstoken, that.wstoken) && Objects.equals(jwt, that.jwt) && Objects.equals(roleId, that.roleId) && Objects.equals(credentialsNonExpired, that.credentialsNonExpired) && Objects.equals(accountNonLocked, that.accountNonLocked) && Objects.equals(enabled, that.enabled) && Objects.equals(accountNonExpired, that.accountNonExpired) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(tel, that.tel) && Objects.equals(profile, that.profile) && Objects.equals(jobTitle, that.jobTitle) && Objects.equals(role, that.role) && Objects.equals(wstoken, that.wstoken) && Objects.equals(jwt, that.jwt) && Objects.equals(roleId, that.roleId) && Objects.equals(credentialsNonExpired, that.credentialsNonExpired) && Objects.equals(accountNonLocked, that.accountNonLocked) && Objects.equals(enabled, that.enabled) && Objects.equals(accountNonExpired, that.accountNonExpired) && Objects.equals(color, that.color) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, tel, profile, jobTitle, role, wstoken, jwt, roleId, credentialsNonExpired, accountNonLocked, enabled, accountNonExpired, createTime, updateTime);
+        return Objects.hash(id, name, email, password, tel, profile, jobTitle, role, wstoken, jwt, roleId, credentialsNonExpired, accountNonLocked, enabled, accountNonExpired, color, createTime, updateTime);
     }
 
     @OneToMany(mappedBy = "userByUserId")

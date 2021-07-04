@@ -25,6 +25,8 @@ public class ProjectM {
     private String        description;
     private String        authority;
     private Integer       total;
+    private String        url;
+    private String        type;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startedTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

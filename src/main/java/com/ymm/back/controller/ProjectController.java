@@ -75,18 +75,16 @@ public class ProjectController {
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
         //SELECT * FROM project WHERE project.id IN (SELECT project_member.project_id FROM project_member WHERE project_member.user_id=15 AND status="approved");
         // var sub = dslContext.select(member.PROJECT_ID).from(member).where(member.USER_ID.eq(id).and(member.STATUS.eq("approved")));
+        //var sql2 = dslContext.select().fro
         var sql = dslContext.select().from(project).where(project.ID.in(
                 dslContext.select(member.PROJECT_ID).from(member)
                         .where(member.USER_ID.eq(id).and(member.STATUS.eq("approved"))).fetchInto(String.class))).fetchInto(ProjectP.class);
-        System.out.println(sql);
+        //System.out.println(sql);
 
         //.where(project.USER_ID.eq(id)).fetchInto(ProjectP.class);
 
         return ResponseEntity.status(200).body(sql);
     }
-
-
-
 
     // 프로젝트 만들기! multipart/form
     // 필수 파라미터는 만드는 사람의 userId와, thumbnail 2가지이다.

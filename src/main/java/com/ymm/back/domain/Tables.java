@@ -9,7 +9,6 @@ import com.ymm.back.domain.tables.Comment;
 import com.ymm.back.domain.tables.Databasechangelog;
 import com.ymm.back.domain.tables.Databasechangeloglock;
 import com.ymm.back.domain.tables.FileStorage;
-import com.ymm.back.domain.tables.Hashtag;
 import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
@@ -48,11 +47,6 @@ public class Tables {
      * The table <code>file_storage</code>.
      */
     public static final FileStorage FILE_STORAGE = FileStorage.FILE_STORAGE;
-
-    /**
-     * The table <code>hashtag</code>.
-     */
-    public static final Hashtag HASHTAG = Hashtag.HASHTAG;
 
     /**
      * The table <code>message</code>.

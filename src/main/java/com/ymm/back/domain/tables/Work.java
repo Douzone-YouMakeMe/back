@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row11;
+import org.jooq.Row12;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Work extends TableImpl<WorkRecord> {
 
-    private static final long serialVersionUID = 765368391;
+    private static final long serialVersionUID = 974199686;
 
     /**
      * The reference instance of <code>work</code>
@@ -71,11 +71,6 @@ public class Work extends TableImpl<WorkRecord> {
     public final TableField<WorkRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
-     * The column <code>work.manager</code>.
-     */
-    public final TableField<WorkRecord, String> MANAGER = createField(DSL.name("manager"), org.jooq.impl.SQLDataType.VARCHAR(70), this, "");
-
-    /**
      * The column <code>work.status</code>.
      */
     public final TableField<WorkRecord, String> STATUS = createField(DSL.name("status"), org.jooq.impl.SQLDataType.VARCHAR(45), this, "");
@@ -84,6 +79,16 @@ public class Work extends TableImpl<WorkRecord> {
      * The column <code>work.color</code>.
      */
     public final TableField<WorkRecord, String> COLOR = createField(DSL.name("color"), org.jooq.impl.SQLDataType.VARCHAR(32), this, "");
+
+    /**
+     * The column <code>work.description</code>.
+     */
+    public final TableField<WorkRecord, String> DESCRIPTION = createField(DSL.name("description"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>work.hashtag</code>.
+     */
+    public final TableField<WorkRecord, String> HASHTAG = createField(DSL.name("hashtag"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>work.started_at</code>.
@@ -203,11 +208,11 @@ public class Work extends TableImpl<WorkRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row11 type methods
+    // Row12 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, Integer, Integer, String, String, String, String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row11) super.fieldsRow();
+    public Row12<Integer, Integer, Integer, String, String, String, String, String, LocalDateTime, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row12) super.fieldsRow();
     }
 }

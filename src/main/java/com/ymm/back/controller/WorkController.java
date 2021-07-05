@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * 주의 : POST 메소드의 @RequestBody input 객체들은 pojos로만 받는게 고정이다...
  * Spring 공식 어노테이션 라이브러리 포함된건 Jackson이고, jooq Record는 serialize에서 충돌나기 때문.
+ * work.status : waited, proceed, finished
  */
 @CrossOrigin
 @RestController
@@ -62,8 +63,8 @@ public class WorkController {
         Work work = Work.WORK;
         String result="";
         var sql = dslContext.insertInto(work)
-                .columns(work.FINISHED_AT,work.MEMBER_ID,work.PROJECT_ID,work.MANAGER,work.NAME,work.STARTED_AT,work.COLOR)
-                .values(input.getFinishedAt(),input.getMemberId(),input.getProjectId(),input.getManager(),input.getName(),input.getStartedAt(),input.getColor())
+                .columns(work.FINISHED_AT,work.MEMBER_ID,work.PROJECT_ID,work.NAME,work.STARTED_AT,work.COLOR,work.DESCRIPTION, work.HASHTAG, work.STATUS)
+                .values(input.getFinishedAt(),input.getMemberId(),input.getProjectId(),input.getName(),input.getStartedAt(),input.getColor(),input.getDescription(), input.getHashtag(), "waited")
                 .execute();
         if(sql ==1){
             result = "성공!";
@@ -72,7 +73,7 @@ public class WorkController {
         }
         return ResponseEntity.status(200).body(result);
     }
-    @PatchMapping(path = "/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<?> updateWork(@PathVariable("id") int id, @RequestBody WorkP input){
         Work work = Work.WORK;
         String result="";
@@ -81,11 +82,13 @@ public class WorkController {
         //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         //LocalDateTime finishedAt = input.getFinishedAt();
         var sql = dslContext.update(work)
-                .set(work.MANAGER,input.getManager())
                 .set(work.NAME,input.getName())
                 .set(work.STATUS,input.getStatus())
-                .set(work.FINISHED_AT, input.getFinishedAt())
                 .set(work.COLOR, input.getColor())
+                .set(work.DESCRIPTION, input.getDescription())
+                .set(work.HASHTAG, input.getHashtag())
+                .set(work.STARTED_AT, input.getStartedAt())
+                .set(work.FINISHED_AT, input.getFinishedAt())
                 .where(work.ID.eq(id))
                 .execute();
         if(sql ==1){

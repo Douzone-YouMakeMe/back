@@ -9,7 +9,6 @@ import com.ymm.back.domain.tables.Comment;
 import com.ymm.back.domain.tables.Databasechangelog;
 import com.ymm.back.domain.tables.Databasechangeloglock;
 import com.ymm.back.domain.tables.FileStorage;
-import com.ymm.back.domain.tables.Hashtag;
 import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
@@ -21,7 +20,6 @@ import com.ymm.back.domain.tables.records.CommentRecord;
 import com.ymm.back.domain.tables.records.DatabasechangelogRecord;
 import com.ymm.back.domain.tables.records.DatabasechangeloglockRecord;
 import com.ymm.back.domain.tables.records.FileStorageRecord;
-import com.ymm.back.domain.tables.records.HashtagRecord;
 import com.ymm.back.domain.tables.records.MessageRecord;
 import com.ymm.back.domain.tables.records.ProjectMemberRecord;
 import com.ymm.back.domain.tables.records.ProjectRecord;
@@ -52,7 +50,6 @@ public class Keys {
     public static final Identity<DatabasechangelogRecord, Integer> IDENTITY_DATABASECHANGELOG = Identities0.IDENTITY_DATABASECHANGELOG;
     public static final Identity<DatabasechangeloglockRecord, Integer> IDENTITY_DATABASECHANGELOGLOCK = Identities0.IDENTITY_DATABASECHANGELOGLOCK;
     public static final Identity<FileStorageRecord, Integer> IDENTITY_FILE_STORAGE = Identities0.IDENTITY_FILE_STORAGE;
-    public static final Identity<HashtagRecord, Integer> IDENTITY_HASHTAG = Identities0.IDENTITY_HASHTAG;
     public static final Identity<MessageRecord, Integer> IDENTITY_MESSAGE = Identities0.IDENTITY_MESSAGE;
     public static final Identity<ProjectRecord, Integer> IDENTITY_PROJECT = Identities0.IDENTITY_PROJECT;
     public static final Identity<ProjectMemberRecord, Integer> IDENTITY_PROJECT_MEMBER = Identities0.IDENTITY_PROJECT_MEMBER;
@@ -69,7 +66,6 @@ public class Keys {
     public static final UniqueKey<DatabasechangelogRecord> KEY_DATABASECHANGELOG_PRIMARY = UniqueKeys0.KEY_DATABASECHANGELOG_PRIMARY;
     public static final UniqueKey<DatabasechangeloglockRecord> KEY_DATABASECHANGELOGLOCK_PRIMARY = UniqueKeys0.KEY_DATABASECHANGELOGLOCK_PRIMARY;
     public static final UniqueKey<FileStorageRecord> KEY_FILE_STORAGE_PRIMARY = UniqueKeys0.KEY_FILE_STORAGE_PRIMARY;
-    public static final UniqueKey<HashtagRecord> KEY_HASHTAG_PRIMARY = UniqueKeys0.KEY_HASHTAG_PRIMARY;
     public static final UniqueKey<MessageRecord> KEY_MESSAGE_PRIMARY = UniqueKeys0.KEY_MESSAGE_PRIMARY;
     public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = UniqueKeys0.KEY_PROJECT_PRIMARY;
     public static final UniqueKey<ProjectMemberRecord> KEY_PROJECT_MEMBER_PRIMARY = UniqueKeys0.KEY_PROJECT_MEMBER_PRIMARY;
@@ -86,7 +82,6 @@ public class Keys {
     public static final ForeignKey<CommentRecord, ProjectMemberRecord> FK_COMMENT_MEMBER1 = ForeignKeys0.FK_COMMENT_MEMBER1;
     public static final ForeignKey<CommentRecord, WorkRecord> FK_COMMENT_WORK1 = ForeignKeys0.FK_COMMENT_WORK1;
     public static final ForeignKey<FileStorageRecord, MessageRecord> FK_FILE_STORAGE_MESSAGE1 = ForeignKeys0.FK_FILE_STORAGE_MESSAGE1;
-    public static final ForeignKey<HashtagRecord, WorkRecord> FK_HASHTAG_WORK1 = ForeignKeys0.FK_HASHTAG_WORK1;
     public static final ForeignKey<MessageRecord, ProjectMemberRecord> FK_MESSAGE_MEMBER1 = ForeignKeys0.FK_MESSAGE_MEMBER1;
     public static final ForeignKey<MessageRecord, ProjectRecord> FK_MESSAGE_PROJECT1 = ForeignKeys0.FK_MESSAGE_PROJECT1;
     public static final ForeignKey<ProjectRecord, UserRecord> FK_PROJECT_USER = ForeignKeys0.FK_PROJECT_USER;
@@ -107,7 +102,6 @@ public class Keys {
         public static Identity<DatabasechangelogRecord, Integer> IDENTITY_DATABASECHANGELOG = Internal.createIdentity(Databasechangelog.DATABASECHANGELOG, Databasechangelog.DATABASECHANGELOG.ID);
         public static Identity<DatabasechangeloglockRecord, Integer> IDENTITY_DATABASECHANGELOGLOCK = Internal.createIdentity(Databasechangeloglock.DATABASECHANGELOGLOCK, Databasechangeloglock.DATABASECHANGELOGLOCK.ID);
         public static Identity<FileStorageRecord, Integer> IDENTITY_FILE_STORAGE = Internal.createIdentity(FileStorage.FILE_STORAGE, FileStorage.FILE_STORAGE.ID);
-        public static Identity<HashtagRecord, Integer> IDENTITY_HASHTAG = Internal.createIdentity(Hashtag.HASHTAG, Hashtag.HASHTAG.ID);
         public static Identity<MessageRecord, Integer> IDENTITY_MESSAGE = Internal.createIdentity(Message.MESSAGE, Message.MESSAGE.ID);
         public static Identity<ProjectRecord, Integer> IDENTITY_PROJECT = Internal.createIdentity(Project.PROJECT, Project.PROJECT.ID);
         public static Identity<ProjectMemberRecord, Integer> IDENTITY_PROJECT_MEMBER = Internal.createIdentity(ProjectMember.PROJECT_MEMBER, ProjectMember.PROJECT_MEMBER.ID);
@@ -122,7 +116,6 @@ public class Keys {
         public static final UniqueKey<DatabasechangelogRecord> KEY_DATABASECHANGELOG_PRIMARY = Internal.createUniqueKey(Databasechangelog.DATABASECHANGELOG, "KEY_databasechangelog_PRIMARY", new TableField[] { Databasechangelog.DATABASECHANGELOG.ID }, true);
         public static final UniqueKey<DatabasechangeloglockRecord> KEY_DATABASECHANGELOGLOCK_PRIMARY = Internal.createUniqueKey(Databasechangeloglock.DATABASECHANGELOGLOCK, "KEY_databasechangeloglock_PRIMARY", new TableField[] { Databasechangeloglock.DATABASECHANGELOGLOCK.ID }, true);
         public static final UniqueKey<FileStorageRecord> KEY_FILE_STORAGE_PRIMARY = Internal.createUniqueKey(FileStorage.FILE_STORAGE, "KEY_file_storage_PRIMARY", new TableField[] { FileStorage.FILE_STORAGE.ID }, true);
-        public static final UniqueKey<HashtagRecord> KEY_HASHTAG_PRIMARY = Internal.createUniqueKey(Hashtag.HASHTAG, "KEY_hashtag_PRIMARY", new TableField[] { Hashtag.HASHTAG.ID }, true);
         public static final UniqueKey<MessageRecord> KEY_MESSAGE_PRIMARY = Internal.createUniqueKey(Message.MESSAGE, "KEY_message_PRIMARY", new TableField[] { Message.MESSAGE.ID }, true);
         public static final UniqueKey<ProjectRecord> KEY_PROJECT_PRIMARY = Internal.createUniqueKey(Project.PROJECT, "KEY_project_PRIMARY", new TableField[] { Project.PROJECT.ID }, true);
         public static final UniqueKey<ProjectMemberRecord> KEY_PROJECT_MEMBER_PRIMARY = Internal.createUniqueKey(ProjectMember.PROJECT_MEMBER, "KEY_project_member_PRIMARY", new TableField[] { ProjectMember.PROJECT_MEMBER.ID }, true);
@@ -137,7 +130,6 @@ public class Keys {
         public static final ForeignKey<CommentRecord, ProjectMemberRecord> FK_COMMENT_MEMBER1 = Internal.createForeignKey(Keys.KEY_PROJECT_MEMBER_PRIMARY, Comment.COMMENT, "fk_comment_member1", new TableField[] { Comment.COMMENT.MEMBER_ID }, true);
         public static final ForeignKey<CommentRecord, WorkRecord> FK_COMMENT_WORK1 = Internal.createForeignKey(Keys.KEY_WORK_PRIMARY, Comment.COMMENT, "fk_comment_work1", new TableField[] { Comment.COMMENT.WORK_ID }, true);
         public static final ForeignKey<FileStorageRecord, MessageRecord> FK_FILE_STORAGE_MESSAGE1 = Internal.createForeignKey(Keys.KEY_MESSAGE_PRIMARY, FileStorage.FILE_STORAGE, "fk_file_storage_message1", new TableField[] { FileStorage.FILE_STORAGE.MESSAGE_ID }, true);
-        public static final ForeignKey<HashtagRecord, WorkRecord> FK_HASHTAG_WORK1 = Internal.createForeignKey(Keys.KEY_WORK_PRIMARY, Hashtag.HASHTAG, "fk_hashtag_work1", new TableField[] { Hashtag.HASHTAG.WORK_ID }, true);
         public static final ForeignKey<MessageRecord, ProjectMemberRecord> FK_MESSAGE_MEMBER1 = Internal.createForeignKey(Keys.KEY_PROJECT_MEMBER_PRIMARY, Message.MESSAGE, "fk_message_member1", new TableField[] { Message.MESSAGE.MEMBER_ID }, true);
         public static final ForeignKey<MessageRecord, ProjectRecord> FK_MESSAGE_PROJECT1 = Internal.createForeignKey(Keys.KEY_PROJECT_PRIMARY, Message.MESSAGE, "fk_message_project1", new TableField[] { Message.MESSAGE.PROJECT_ID }, true);
         public static final ForeignKey<ProjectRecord, UserRecord> FK_PROJECT_USER = Internal.createForeignKey(Keys.KEY_USER_PRIMARY, Project.PROJECT, "fk_project_user", new TableField[] { Project.PROJECT.USER_ID }, true);

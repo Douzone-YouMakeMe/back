@@ -4,6 +4,7 @@ import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
 import com.ymm.back.domain.tables.User;
 import com.ymm.back.domain.tables.records.ProjectMemberRecord;
+import com.ymm.back.dto.MemberDTO;
 import com.ymm.back.pojos.ProjectMemberM;
 import com.ymm.back.pojos.ProjectMemberP;
 import com.ymm.back.pojos.ProjectP;
@@ -16,9 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.util.Locale;
 import java.util.Map;
 
 import static org.jooq.impl.DSL.defaultValue;
@@ -90,11 +90,16 @@ public class ProjectMemberController {
         });
         */
         //defaultValue(fileUploadService.uploadImage(input.getPortfolioFile()))
+        String fileUrl="";
+        if(input.getPortfolioFile() != null){
+            fileUrl = fileUploadService.uploadImage(input.getPortfolioFile());
+        }
+
         try {
-            var sql = dslContext.insertInto(member,member.USER_ID,member.PROJECT_ID,member.NAME,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
+            var sql = dslContext.insertInto(member,member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS, member.DESCRIPTION)
                     // 지원서 제출 시, pending으로 status 고정. status 변경은 patch에서만.
-                    //.columns(member.USER_ID,member.PROJECT_ID,member.NAME,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
-                    .values(input.getUserId(),input.getProjectId(),input.getName(),input.getAppliedPosition(),input.getComments(),fileUploadService.uploadImage(input.getPortfolioFile()),input.getPortfolioUrl(), "pending")
+                    //.columns(member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
+                    .values(input.getUserId(),input.getProjectId(),input.getAppliedPosition(),input.getComments(),fileUrl,input.getPortfolioUrl(), "pending", input.getDescription())
                     .execute();
             if(sql==1){
                 result = "프로젝트 지원서가 제출되었습니다.";
@@ -112,7 +117,7 @@ public class ProjectMemberController {
      * localhost:8080/member/5
      * application/json 바디 예시
      * {
-     *     "name": "",
+     *
      *     "appliedPosition": "아이 엠 그것"
      * }
      */
@@ -124,16 +129,16 @@ public class ProjectMemberController {
         // 이름 참여가능일 직무 포트폴리오 2개 하고싶은말
         if(input.getPortfolioFile() != null)
             record.set(member.PORTFOLIO_FILE,fileUploadService.uploadImage(input.getPortfolioFile()));
-        if(input.getName() != null)
-            record.set(member.NAME,input.getName());
-        if(input.getStartedTime() != null)
-            record.set(member.STARTED_TIME, input.getStartedTime());
+        if(input.getAppliedTime() != null)
+            record.set(member.APPLIED_TIME, input.getAppliedTime());
         if(input.getAppliedPosition() != null)
             record.set(member.APPLIED_POSITION, input.getAppliedPosition());
         if(input.getComments() != null)
             record.set(member.COMMENTS,input.getComments());
         if(input.getPortfolioUrl() != null)
             record.set(member.PORTFOLIO_URL,input.getPortfolioUrl());
+        if(input.getDescription() != null)
+            record.set(member.DESCRIPTION,input.getDescription());
 
         var sql = dslContext.update(member)
                 .set(record)
@@ -242,6 +247,30 @@ public class ProjectMemberController {
 
         return ResponseEntity.status(201).body(result);
     }
+
+    //@ResponseBody
+
+    /**
+     * 기획상 추가사항 발생.
+     * 프로젝트 멤버와 유저를, project_id 기준으로 합쳐서 받아옵시다.
+     *
+     *
+     * @return
+     */
+    // localhost:8080/member?projectId=1
+    @GetMapping
+    public ResponseEntity<?> getUserAndMemberByProjectId(@RequestParam Integer projectId) {
+        ProjectMember member = ProjectMember.PROJECT_MEMBER;
+        User user = User.USER;
+        //select * from user u, project_member m where u.id = m.user_id AND m.project_id = 1;
+        var joined = dslContext.select().from(user,member)
+                .where(user.ID.eq(member.USER_ID)).and(member.PROJECT_ID.eq(projectId)).and(member.STATUS.eq("approved")).fetchInto(MemberDTO.class);
+        //System.out.println(joined);
+        return ResponseEntity.status(200).body(joined);
+    }
+
+
+
 
 
 

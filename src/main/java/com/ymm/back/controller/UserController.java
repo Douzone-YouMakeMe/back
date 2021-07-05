@@ -82,10 +82,10 @@ public class UserController {
             //이메일이 없을때 nullpointer익셉션을 일으켜서 가입 go!
         } catch (Exception e){
             sql = dslContext.insertInto(user)
-                    .columns(user.EMAIL,user.NAME,user.ENABLED,user.PASSWORD,user.WSTOKEN)
+                    .columns(user.EMAIL,user.NAME,user.ENABLED,user.PASSWORD,user.WSTOKEN, user.COLOR)
                     //지금은 ENABLED가 default로 활성화에 유의!
                     //나중에 spring security 키는순간 전적으로 시큐리티 모듈에 맡겨야됨.
-                    .values(input.getEmail(),input.getName(),true,input.getPassword(),UUID.randomUUID().toString())
+                    .values(input.getEmail(),input.getName(),true,input.getPassword(),UUID.randomUUID().toString(), input.getColor())
                     .execute();
         }
         if(sql ==1){
@@ -113,6 +113,7 @@ public class UserController {
         record.set(user.PASSWORD,input.getPassword());
         record.set(user.TEL,input.getTel());
         record.set(user.JOB_TITLE,input.getJobTitle());
+        record.set(user.COLOR, input.getColor());
 
         var sql = dslContext.update(user)
                   .set(record)

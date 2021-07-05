@@ -9,7 +9,6 @@ import com.ymm.back.domain.tables.Comment;
 import com.ymm.back.domain.tables.Databasechangelog;
 import com.ymm.back.domain.tables.Databasechangeloglock;
 import com.ymm.back.domain.tables.FileStorage;
-import com.ymm.back.domain.tables.Hashtag;
 import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
@@ -31,7 +30,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class DefaultSchema extends SchemaImpl {
 
-    private static final long serialVersionUID = -1371308223;
+    private static final long serialVersionUID = 95586104;
 
     /**
      * The reference instance of <code>DEFAULT_SCHEMA</code>
@@ -62,11 +61,6 @@ public class DefaultSchema extends SchemaImpl {
      * The table <code>file_storage</code>.
      */
     public final FileStorage FILE_STORAGE = FileStorage.FILE_STORAGE;
-
-    /**
-     * The table <code>hashtag</code>.
-     */
-    public final Hashtag HASHTAG = Hashtag.HASHTAG;
 
     /**
      * The table <code>message</code>.
@@ -119,7 +113,6 @@ public class DefaultSchema extends SchemaImpl {
             Databasechangelog.DATABASECHANGELOG,
             Databasechangeloglock.DATABASECHANGELOGLOCK,
             FileStorage.FILE_STORAGE,
-            Hashtag.HASHTAG,
             Message.MESSAGE,
             Project.PROJECT,
             ProjectMember.PROJECT_MEMBER,

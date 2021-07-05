@@ -14,12 +14,11 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectMember implements Serializable {
 
-    private static final long serialVersionUID = 1100452371;
+    private static final long serialVersionUID = 1923672529;
 
     private Integer       id;
     private Integer       userId;
     private Integer       projectId;
-    private String        name;
     private String        status;
     private String        appliedPosition;
     private String        comments;
@@ -27,10 +26,7 @@ public class ProjectMember implements Serializable {
     private String        portfolioUrl;
     private String        description;
     private String        auth;
-    private Integer       roleId;
-    private String        websocket;
-    private String        color;
-    private LocalDateTime startedTime;
+    private LocalDateTime appliedTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
 
@@ -40,7 +36,6 @@ public class ProjectMember implements Serializable {
         this.id = value.id;
         this.userId = value.userId;
         this.projectId = value.projectId;
-        this.name = value.name;
         this.status = value.status;
         this.appliedPosition = value.appliedPosition;
         this.comments = value.comments;
@@ -48,10 +43,7 @@ public class ProjectMember implements Serializable {
         this.portfolioUrl = value.portfolioUrl;
         this.description = value.description;
         this.auth = value.auth;
-        this.roleId = value.roleId;
-        this.websocket = value.websocket;
-        this.color = value.color;
-        this.startedTime = value.startedTime;
+        this.appliedTime = value.appliedTime;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
     }
@@ -60,7 +52,6 @@ public class ProjectMember implements Serializable {
         Integer       id,
         Integer       userId,
         Integer       projectId,
-        String        name,
         String        status,
         String        appliedPosition,
         String        comments,
@@ -68,17 +59,13 @@ public class ProjectMember implements Serializable {
         String        portfolioUrl,
         String        description,
         String        auth,
-        Integer       roleId,
-        String        websocket,
-        String        color,
-        LocalDateTime startedTime,
+        LocalDateTime appliedTime,
         LocalDateTime createTime,
         LocalDateTime updateTime
     ) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
-        this.name = name;
         this.status = status;
         this.appliedPosition = appliedPosition;
         this.comments = comments;
@@ -86,10 +73,7 @@ public class ProjectMember implements Serializable {
         this.portfolioUrl = portfolioUrl;
         this.description = description;
         this.auth = auth;
-        this.roleId = roleId;
-        this.websocket = websocket;
-        this.color = color;
-        this.startedTime = startedTime;
+        this.appliedTime = appliedTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -116,14 +100,6 @@ public class ProjectMember implements Serializable {
 
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getStatus() {
@@ -182,36 +158,12 @@ public class ProjectMember implements Serializable {
         this.auth = auth;
     }
 
-    public Integer getRoleId() {
-        return this.roleId;
+    public LocalDateTime getAppliedTime() {
+        return this.appliedTime;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getWebsocket() {
-        return this.websocket;
-    }
-
-    public void setWebsocket(String websocket) {
-        this.websocket = websocket;
-    }
-
-    public String getColor() {
-        return this.color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public LocalDateTime getStartedTime() {
-        return this.startedTime;
-    }
-
-    public void setStartedTime(LocalDateTime startedTime) {
-        this.startedTime = startedTime;
+    public void setAppliedTime(LocalDateTime appliedTime) {
+        this.appliedTime = appliedTime;
     }
 
     public LocalDateTime getCreateTime() {
@@ -257,12 +209,6 @@ public class ProjectMember implements Serializable {
         }
         else if (!projectId.equals(other.projectId))
             return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        }
-        else if (!name.equals(other.name))
-            return false;
         if (status == null) {
             if (other.status != null)
                 return false;
@@ -305,29 +251,11 @@ public class ProjectMember implements Serializable {
         }
         else if (!auth.equals(other.auth))
             return false;
-        if (roleId == null) {
-            if (other.roleId != null)
+        if (appliedTime == null) {
+            if (other.appliedTime != null)
                 return false;
         }
-        else if (!roleId.equals(other.roleId))
-            return false;
-        if (websocket == null) {
-            if (other.websocket != null)
-                return false;
-        }
-        else if (!websocket.equals(other.websocket))
-            return false;
-        if (color == null) {
-            if (other.color != null)
-                return false;
-        }
-        else if (!color.equals(other.color))
-            return false;
-        if (startedTime == null) {
-            if (other.startedTime != null)
-                return false;
-        }
-        else if (!startedTime.equals(other.startedTime))
+        else if (!appliedTime.equals(other.appliedTime))
             return false;
         if (createTime == null) {
             if (other.createTime != null)
@@ -351,7 +279,6 @@ public class ProjectMember implements Serializable {
         result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.projectId == null) ? 0 : this.projectId.hashCode());
-        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.appliedPosition == null) ? 0 : this.appliedPosition.hashCode());
         result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
@@ -359,10 +286,7 @@ public class ProjectMember implements Serializable {
         result = prime * result + ((this.portfolioUrl == null) ? 0 : this.portfolioUrl.hashCode());
         result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
         result = prime * result + ((this.auth == null) ? 0 : this.auth.hashCode());
-        result = prime * result + ((this.roleId == null) ? 0 : this.roleId.hashCode());
-        result = prime * result + ((this.websocket == null) ? 0 : this.websocket.hashCode());
-        result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
-        result = prime * result + ((this.startedTime == null) ? 0 : this.startedTime.hashCode());
+        result = prime * result + ((this.appliedTime == null) ? 0 : this.appliedTime.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         return result;
@@ -375,7 +299,6 @@ public class ProjectMember implements Serializable {
         sb.append(id);
         sb.append(", ").append(userId);
         sb.append(", ").append(projectId);
-        sb.append(", ").append(name);
         sb.append(", ").append(status);
         sb.append(", ").append(appliedPosition);
         sb.append(", ").append(comments);
@@ -383,10 +306,7 @@ public class ProjectMember implements Serializable {
         sb.append(", ").append(portfolioUrl);
         sb.append(", ").append(description);
         sb.append(", ").append(auth);
-        sb.append(", ").append(roleId);
-        sb.append(", ").append(websocket);
-        sb.append(", ").append(color);
-        sb.append(", ").append(startedTime);
+        sb.append(", ").append(appliedTime);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
 

@@ -89,20 +89,6 @@ public class ProjectMemberDao extends DAOImpl<ProjectMemberRecord, com.ymm.back.
     }
 
     /**
-     * Fetch records that have <code>name BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfName(String lowerInclusive, String upperInclusive) {
-        return fetchRange(ProjectMember.PROJECT_MEMBER.NAME, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>name IN (values)</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByName(String... values) {
-        return fetch(ProjectMember.PROJECT_MEMBER.NAME, values);
-    }
-
-    /**
      * Fetch records that have <code>status BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfStatus(String lowerInclusive, String upperInclusive) {
@@ -201,59 +187,17 @@ public class ProjectMemberDao extends DAOImpl<ProjectMemberRecord, com.ymm.back.
     }
 
     /**
-     * Fetch records that have <code>role_id BETWEEN lowerInclusive AND upperInclusive</code>
+     * Fetch records that have <code>applied_time BETWEEN lowerInclusive AND upperInclusive</code>
      */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfRoleId(Integer lowerInclusive, Integer upperInclusive) {
-        return fetchRange(ProjectMember.PROJECT_MEMBER.ROLE_ID, lowerInclusive, upperInclusive);
+    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfAppliedTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
+        return fetchRange(ProjectMember.PROJECT_MEMBER.APPLIED_TIME, lowerInclusive, upperInclusive);
     }
 
     /**
-     * Fetch records that have <code>role_id IN (values)</code>
+     * Fetch records that have <code>applied_time IN (values)</code>
      */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByRoleId(Integer... values) {
-        return fetch(ProjectMember.PROJECT_MEMBER.ROLE_ID, values);
-    }
-
-    /**
-     * Fetch records that have <code>websocket BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfWebsocket(String lowerInclusive, String upperInclusive) {
-        return fetchRange(ProjectMember.PROJECT_MEMBER.WEBSOCKET, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>websocket IN (values)</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByWebsocket(String... values) {
-        return fetch(ProjectMember.PROJECT_MEMBER.WEBSOCKET, values);
-    }
-
-    /**
-     * Fetch records that have <code>color BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfColor(String lowerInclusive, String upperInclusive) {
-        return fetchRange(ProjectMember.PROJECT_MEMBER.COLOR, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>color IN (values)</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByColor(String... values) {
-        return fetch(ProjectMember.PROJECT_MEMBER.COLOR, values);
-    }
-
-    /**
-     * Fetch records that have <code>started_time BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchRangeOfStartedTime(LocalDateTime lowerInclusive, LocalDateTime upperInclusive) {
-        return fetchRange(ProjectMember.PROJECT_MEMBER.STARTED_TIME, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>started_time IN (values)</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByStartedTime(LocalDateTime... values) {
-        return fetch(ProjectMember.PROJECT_MEMBER.STARTED_TIME, values);
+    public List<com.ymm.back.domain.tables.pojos.ProjectMember> fetchByAppliedTime(LocalDateTime... values) {
+        return fetch(ProjectMember.PROJECT_MEMBER.APPLIED_TIME, values);
     }
 
     /**

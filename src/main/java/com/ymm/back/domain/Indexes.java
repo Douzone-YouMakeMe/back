@@ -7,7 +7,6 @@ package com.ymm.back.domain;
 import com.ymm.back.domain.tables.Agenda;
 import com.ymm.back.domain.tables.Comment;
 import com.ymm.back.domain.tables.FileStorage;
-import com.ymm.back.domain.tables.Hashtag;
 import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
@@ -34,7 +33,6 @@ public class Indexes {
     public static final Index COMMENT_FK_COMMENT_MEMBER1_IDX = Indexes0.COMMENT_FK_COMMENT_MEMBER1_IDX;
     public static final Index COMMENT_FK_COMMENT_WORK1_IDX = Indexes0.COMMENT_FK_COMMENT_WORK1_IDX;
     public static final Index FILE_STORAGE_FK_FILE_STORAGE_MESSAGE1_IDX = Indexes0.FILE_STORAGE_FK_FILE_STORAGE_MESSAGE1_IDX;
-    public static final Index HASHTAG_FK_HASHTAG_WORK1_IDX = Indexes0.HASHTAG_FK_HASHTAG_WORK1_IDX;
     public static final Index PROJECT_MEMBER_FK_MEMBER_PROJECT1_IDX = Indexes0.PROJECT_MEMBER_FK_MEMBER_PROJECT1_IDX;
     public static final Index PROJECT_MEMBER_FK_MEMBER_USER1_IDX = Indexes0.PROJECT_MEMBER_FK_MEMBER_USER1_IDX;
     public static final Index MESSAGE_FK_MESSAGE_MEMBER1_IDX = Indexes0.MESSAGE_FK_MESSAGE_MEMBER1_IDX;
@@ -55,7 +53,6 @@ public class Indexes {
         public static Index COMMENT_FK_COMMENT_MEMBER1_IDX = Internal.createIndex("fk_comment_member1_idx", Comment.COMMENT, new OrderField[] { Comment.COMMENT.MEMBER_ID }, false);
         public static Index COMMENT_FK_COMMENT_WORK1_IDX = Internal.createIndex("fk_comment_work1_idx", Comment.COMMENT, new OrderField[] { Comment.COMMENT.WORK_ID }, false);
         public static Index FILE_STORAGE_FK_FILE_STORAGE_MESSAGE1_IDX = Internal.createIndex("fk_file_storage_message1_idx", FileStorage.FILE_STORAGE, new OrderField[] { FileStorage.FILE_STORAGE.MESSAGE_ID }, false);
-        public static Index HASHTAG_FK_HASHTAG_WORK1_IDX = Internal.createIndex("fk_hashtag_work1_idx", Hashtag.HASHTAG, new OrderField[] { Hashtag.HASHTAG.WORK_ID }, false);
         public static Index PROJECT_MEMBER_FK_MEMBER_PROJECT1_IDX = Internal.createIndex("fk_member_project1_idx", ProjectMember.PROJECT_MEMBER, new OrderField[] { ProjectMember.PROJECT_MEMBER.PROJECT_ID }, false);
         public static Index PROJECT_MEMBER_FK_MEMBER_USER1_IDX = Internal.createIndex("fk_member_user1_idx", ProjectMember.PROJECT_MEMBER, new OrderField[] { ProjectMember.PROJECT_MEMBER.USER_ID }, false);
         public static Index MESSAGE_FK_MESSAGE_MEMBER1_IDX = Internal.createIndex("fk_message_member1_idx", Message.MESSAGE, new OrderField[] { Message.MESSAGE.MEMBER_ID }, false);

@@ -103,20 +103,6 @@ public class WorkDao extends DAOImpl<WorkRecord, com.ymm.back.domain.tables.pojo
     }
 
     /**
-     * Fetch records that have <code>manager BETWEEN lowerInclusive AND upperInclusive</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.Work> fetchRangeOfManager(String lowerInclusive, String upperInclusive) {
-        return fetchRange(Work.WORK.MANAGER, lowerInclusive, upperInclusive);
-    }
-
-    /**
-     * Fetch records that have <code>manager IN (values)</code>
-     */
-    public List<com.ymm.back.domain.tables.pojos.Work> fetchByManager(String... values) {
-        return fetch(Work.WORK.MANAGER, values);
-    }
-
-    /**
      * Fetch records that have <code>status BETWEEN lowerInclusive AND upperInclusive</code>
      */
     public List<com.ymm.back.domain.tables.pojos.Work> fetchRangeOfStatus(String lowerInclusive, String upperInclusive) {
@@ -142,6 +128,34 @@ public class WorkDao extends DAOImpl<WorkRecord, com.ymm.back.domain.tables.pojo
      */
     public List<com.ymm.back.domain.tables.pojos.Work> fetchByColor(String... values) {
         return fetch(Work.WORK.COLOR, values);
+    }
+
+    /**
+     * Fetch records that have <code>description BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Work> fetchRangeOfDescription(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Work.WORK.DESCRIPTION, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>description IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Work> fetchByDescription(String... values) {
+        return fetch(Work.WORK.DESCRIPTION, values);
+    }
+
+    /**
+     * Fetch records that have <code>hashtag BETWEEN lowerInclusive AND upperInclusive</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Work> fetchRangeOfHashtag(String lowerInclusive, String upperInclusive) {
+        return fetchRange(Work.WORK.HASHTAG, lowerInclusive, upperInclusive);
+    }
+
+    /**
+     * Fetch records that have <code>hashtag IN (values)</code>
+     */
+    public List<com.ymm.back.domain.tables.pojos.Work> fetchByHashtag(String... values) {
+        return fetch(Work.WORK.HASHTAG, values);
     }
 
     /**

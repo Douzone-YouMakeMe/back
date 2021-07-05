@@ -5,6 +5,7 @@ package com.ymm.back.pojos;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ymm.back.domain.tables.pojos.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class UserP implements Serializable {
     private Boolean       accountNonLocked;
     private Boolean       enabled;
     private Boolean       accountNonExpired;
+    private String        color;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -56,28 +58,30 @@ public class UserP implements Serializable {
         this.accountNonLocked = value.accountNonLocked;
         this.enabled = value.enabled;
         this.accountNonExpired = value.accountNonExpired;
+        this.color = value.color;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
     }
 
     public UserP(
-        Integer       id,
-        String        name,
-        String        email,
-        String        password,
-        String        tel,
-        String        profile,
-        String        jobTitle,
-        String        role,
-        String        wstoken,
-        String        jwt,
-        Integer       roleId,
-        Boolean       credentialsNonExpired,
-        Boolean       accountNonLocked,
-        Boolean       enabled,
-        Boolean       accountNonExpired,
-        LocalDateTime createTime,
-        LocalDateTime updateTime
+            Integer       id,
+            String        name,
+            String        email,
+            String        password,
+            String        tel,
+            String        profile,
+            String        jobTitle,
+            String        role,
+            String        wstoken,
+            String        jwt,
+            Integer       roleId,
+            Boolean       credentialsNonExpired,
+            Boolean       accountNonLocked,
+            Boolean       enabled,
+            Boolean       accountNonExpired,
+            String        color,
+            LocalDateTime createTime,
+            LocalDateTime updateTime
     ) {
         this.id = id;
         this.name = name;
@@ -94,6 +98,7 @@ public class UserP implements Serializable {
         this.accountNonLocked = accountNonLocked;
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
+        this.color = color;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -218,6 +223,14 @@ public class UserP implements Serializable {
         this.accountNonExpired = accountNonExpired;
     }
 
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     public LocalDateTime getCreateTime() {
         return this.createTime;
     }
@@ -333,6 +346,12 @@ public class UserP implements Serializable {
         }
         else if (!accountNonExpired.equals(other.accountNonExpired))
             return false;
+        if (color == null) {
+            if (other.color != null)
+                return false;
+        }
+        else if (!color.equals(other.color))
+            return false;
         if (createTime == null) {
             if (other.createTime != null)
                 return false;
@@ -367,6 +386,7 @@ public class UserP implements Serializable {
         result = prime * result + ((this.accountNonLocked == null) ? 0 : this.accountNonLocked.hashCode());
         result = prime * result + ((this.enabled == null) ? 0 : this.enabled.hashCode());
         result = prime * result + ((this.accountNonExpired == null) ? 0 : this.accountNonExpired.hashCode());
+        result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
         return result;
@@ -374,7 +394,7 @@ public class UserP implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("User (");
+        StringBuilder sb = new StringBuilder("UserP (");
 
         sb.append(id);
         sb.append(", ").append(name);
@@ -391,6 +411,7 @@ public class UserP implements Serializable {
         sb.append(", ").append(accountNonLocked);
         sb.append(", ").append(enabled);
         sb.append(", ").append(accountNonExpired);
+        sb.append(", ").append(color);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);
 

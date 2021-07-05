@@ -5,6 +5,7 @@ package com.ymm.back.pojos;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ymm.back.domain.tables.pojos.Work;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,9 +23,10 @@ public class WorkP implements Serializable {
     private Integer       projectId;
     private Integer       memberId;
     private String        name;
-    private String        manager;
     private String        status;
     private String        color;
+    private String        description;
+    private String        hashtag;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startedAt;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -41,9 +43,10 @@ public class WorkP implements Serializable {
         this.projectId = value.projectId;
         this.memberId = value.memberId;
         this.name = value.name;
-        this.manager = value.manager;
         this.status = value.status;
         this.color = value.color;
+        this.description = value.description;
+        this.hashtag = value.hashtag;
         this.startedAt = value.startedAt;
         this.finishedAt = value.finishedAt;
         this.createTime = value.createTime;
@@ -51,25 +54,27 @@ public class WorkP implements Serializable {
     }
 
     public WorkP(
-        Integer       id,
-        Integer       projectId,
-        Integer       memberId,
-        String        name,
-        String        manager,
-        String        status,
-        String        color,
-        LocalDateTime startedAt,
-        LocalDateTime finishedAt,
-        LocalDateTime createTime,
-        LocalDateTime updateTime
+            Integer       id,
+            Integer       projectId,
+            Integer       memberId,
+            String        name,
+            String        status,
+            String        color,
+            String        description,
+            String        hashtag,
+            LocalDateTime startedAt,
+            LocalDateTime finishedAt,
+            LocalDateTime createTime,
+            LocalDateTime updateTime
     ) {
         this.id = id;
         this.projectId = projectId;
         this.memberId = memberId;
         this.name = name;
-        this.manager = manager;
         this.status = status;
         this.color = color;
+        this.description = description;
+        this.hashtag = hashtag;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
         this.createTime = createTime;
@@ -108,14 +113,6 @@ public class WorkP implements Serializable {
         this.name = name;
     }
 
-    public String getManager() {
-        return this.manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-
     public String getStatus() {
         return this.status;
     }
@@ -130,6 +127,22 @@ public class WorkP implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getHashtag() {
+        return this.hashtag;
+    }
+
+    public void setHashtag(String hashtag) {
+        this.hashtag = hashtag;
     }
 
     public LocalDateTime getStartedAt() {
@@ -197,12 +210,6 @@ public class WorkP implements Serializable {
         }
         else if (!name.equals(other.name))
             return false;
-        if (manager == null) {
-            if (other.manager != null)
-                return false;
-        }
-        else if (!manager.equals(other.manager))
-            return false;
         if (status == null) {
             if (other.status != null)
                 return false;
@@ -214,6 +221,18 @@ public class WorkP implements Serializable {
                 return false;
         }
         else if (!color.equals(other.color))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        }
+        else if (!description.equals(other.description))
+            return false;
+        if (hashtag == null) {
+            if (other.hashtag != null)
+                return false;
+        }
+        else if (!hashtag.equals(other.hashtag))
             return false;
         if (startedAt == null) {
             if (other.startedAt != null)
@@ -250,9 +269,10 @@ public class WorkP implements Serializable {
         result = prime * result + ((this.projectId == null) ? 0 : this.projectId.hashCode());
         result = prime * result + ((this.memberId == null) ? 0 : this.memberId.hashCode());
         result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-        result = prime * result + ((this.manager == null) ? 0 : this.manager.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.color == null) ? 0 : this.color.hashCode());
+        result = prime * result + ((this.description == null) ? 0 : this.description.hashCode());
+        result = prime * result + ((this.hashtag == null) ? 0 : this.hashtag.hashCode());
         result = prime * result + ((this.startedAt == null) ? 0 : this.startedAt.hashCode());
         result = prime * result + ((this.finishedAt == null) ? 0 : this.finishedAt.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
@@ -262,15 +282,16 @@ public class WorkP implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Work (");
+        StringBuilder sb = new StringBuilder("WorkP (");
 
         sb.append(id);
         sb.append(", ").append(projectId);
         sb.append(", ").append(memberId);
         sb.append(", ").append(name);
-        sb.append(", ").append(manager);
         sb.append(", ").append(status);
         sb.append(", ").append(color);
+        sb.append(", ").append(description);
+        sb.append(", ").append(hashtag);
         sb.append(", ").append(startedAt);
         sb.append(", ").append(finishedAt);
         sb.append(", ").append(createTime);

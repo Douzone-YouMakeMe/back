@@ -1,30 +1,25 @@
-package com.ymm.back.pojos;
+package com.ymm.back.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@Builder
-public class UserM {
+@Builder
+public class MemberDTO {
 
-    private Integer       id;
     private String        name;
     private String        email;
     private String        password;
     private String        tel;
-    public MultipartFile profile;
+    public  String        profile;
     private String        jobTitle;
     private String        role;
     private String        wstoken;
@@ -35,8 +30,24 @@ public class UserM {
     private Boolean       enabled;
     private Boolean       accountNonExpired;
     private String        color;
+
+    private Integer       id;
+    private Integer       userId;
+    private Integer       projectId;
+    private String        status;
+    private String        appliedPosition;
+    private String        comments;
+    private String        portfolioFile;
+    private String        portfolioUrl;
+    private String        description;
+    private String        auth;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime appliedTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
+
+
+
 }

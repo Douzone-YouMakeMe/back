@@ -19,7 +19,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row17;
+import org.jooq.Row13;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectMember extends TableImpl<ProjectMemberRecord> {
 
-    private static final long serialVersionUID = -138924941;
+    private static final long serialVersionUID = 1090149314;
 
     /**
      * The reference instance of <code>project_member</code>
@@ -64,11 +64,6 @@ public class ProjectMember extends TableImpl<ProjectMemberRecord> {
      * The column <code>project_member.project_id</code>.
      */
     public final TableField<ProjectMemberRecord, Integer> PROJECT_ID = createField(DSL.name("project_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-    /**
-     * The column <code>project_member.name</code>.
-     */
-    public final TableField<ProjectMemberRecord, String> NAME = createField(DSL.name("name"), org.jooq.impl.SQLDataType.VARCHAR(100), this, "");
 
     /**
      * The column <code>project_member.status</code>.
@@ -106,24 +101,9 @@ public class ProjectMember extends TableImpl<ProjectMemberRecord> {
     public final TableField<ProjectMemberRecord, String> AUTH = createField(DSL.name("auth"), org.jooq.impl.SQLDataType.VARCHAR(30), this, "");
 
     /**
-     * The column <code>project_member.role_id</code>.
+     * The column <code>project_member.applied_time</code>.
      */
-    public final TableField<ProjectMemberRecord, Integer> ROLE_ID = createField(DSL.name("role_id"), org.jooq.impl.SQLDataType.INTEGER, this, "");
-
-    /**
-     * The column <code>project_member.websocket</code>.
-     */
-    public final TableField<ProjectMemberRecord, String> WEBSOCKET = createField(DSL.name("websocket"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
-
-    /**
-     * The column <code>project_member.color</code>.
-     */
-    public final TableField<ProjectMemberRecord, String> COLOR = createField(DSL.name("color"), org.jooq.impl.SQLDataType.VARCHAR(32), this, "");
-
-    /**
-     * The column <code>project_member.started_time</code>.
-     */
-    public final TableField<ProjectMemberRecord, LocalDateTime> STARTED_TIME = createField(DSL.name("started_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
+    public final TableField<ProjectMemberRecord, LocalDateTime> APPLIED_TIME = createField(DSL.name("applied_time"), org.jooq.impl.SQLDataType.LOCALDATETIME, this, "");
 
     /**
      * The column <code>project_member.create_time</code>.
@@ -233,11 +213,11 @@ public class ProjectMember extends TableImpl<ProjectMemberRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row17 type methods
+    // Row13 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row17<Integer, Integer, Integer, String, String, String, String, String, String, String, String, Integer, String, String, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
-        return (Row17) super.fieldsRow();
+    public Row13<Integer, Integer, Integer, String, String, String, String, String, String, String, LocalDateTime, LocalDateTime, LocalDateTime> fieldsRow() {
+        return (Row13) super.fieldsRow();
     }
 }

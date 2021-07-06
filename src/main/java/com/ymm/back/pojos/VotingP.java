@@ -5,6 +5,7 @@ package com.ymm.back.pojos;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,9 +22,9 @@ public class VotingP implements Serializable {
     private Integer       id;
     private Integer       agendaId;
     private Integer       memberId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     private String        choice;
 

@@ -43,7 +43,7 @@ public class ProjectController {
         return jdbcTemplate.queryForList(sql);
     }
     // 프로젝트 단일 정보 가져오기
-    //localhost:8080/project/?id=1
+    //localhost:8080/project/1
     @GetMapping("/{id}")
     public ResponseEntity<?> selectProjectOne(@PathVariable("id") int id){
         Project project = Project.PROJECT;
@@ -87,10 +87,18 @@ public class ProjectController {
     // 프로젝트 만들기! multipart/form
     // 필수 파라미터는 만드는 사람의 userId와, thumbnail 2가지이다.
     // UI 안내하기! total 설정 안하고 누르면 기본 정원수가 5명이라고 설정합니다!
+    // localhost:8080/project
     @PostMapping
     public ResponseEntity<?> insertProject(@ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
+        ProjectMember member = ProjectMember.PROJECT_MEMBER;
         String result="";
+        String thumbnail="";
+        if(input.getThumbnail() != null){
+            // 썸네일 있으면 집어넣기
+            thumbnail = fileUploadService.uploadImage(input.getThumbnail());
+            //System.out.println(thumbnail);
+        }
         int total= 1;
         if(input.getTotal() == null){
             total = 5;
@@ -99,7 +107,15 @@ public class ProjectController {
         }
         var sql = dslContext.insertInto(project)
                 .columns(project.USER_ID,project.NAME,project.STARTED_TIME,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION,project.AUTHORITY,project.TOTAL,project.FINISHED_TIME) //project.NAME ,project.FINISHED_AT
-                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,fileUploadService.uploadImage(input.getThumbnail()),input.getDescription(),input.getAuthority(),total,input.getFinishedTime())
+                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,thumbnail,input.getDescription(),input.getAuthority(),total,input.getFinishedTime())
+                .execute();
+        // 프로젝트 ID 를 프로젝트 작성자의 것으로 받아서 찾은다음,
+        var selectPid = dslContext.select(project.ID).from(project).orderBy(project.ID.desc()).limit(1).fetchInto(Integer.class).get(0);
+        // 첫번째 프로젝트 지원자이자, 소우쥬로서 넣는다.
+        var sql2 = dslContext.insertInto(member,member.USER_ID,member.PROJECT_ID, member.STATUS)
+                // 지원서 제출 시, pending으로 status 고정. status 변경은 patch에서만.
+                //.columns(member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
+                .values(input.getUserId(), selectPid, "approved")
                 .execute();
         if(sql==1){
             result = "프로젝트가 생성되었습니다.";

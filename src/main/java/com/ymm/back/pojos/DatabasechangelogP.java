@@ -5,6 +5,7 @@ package com.ymm.back.pojos;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,9 +18,9 @@ import java.time.LocalDateTime;
 public class DatabasechangelogP implements Serializable {
 
     private static final long serialVersionUID = 1702742808;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     private Integer       id;
 

@@ -2,6 +2,7 @@ package com.ymm.back.controller;
 
 //import com.ymm.back.domain.tables.Hashtag;
 //import com.ymm.back.pojos.HashtagP;
+import com.ymm.back.domain.tables.Message;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -29,6 +30,7 @@ public class HashtagController {
         this.dslContext = dslContext;
         this.jdbcTemplate = jdbcTemplate;
     }
+    Message message= Message.MESSAGE;
 
 //    // 전채 해시태그 모두 가져오기
 //    @GetMapping

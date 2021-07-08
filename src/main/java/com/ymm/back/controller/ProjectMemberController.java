@@ -5,6 +5,7 @@ import com.ymm.back.domain.tables.ProjectMember;
 import com.ymm.back.domain.tables.User;
 import com.ymm.back.domain.tables.records.ProjectMemberRecord;
 import com.ymm.back.dto.MemberDTO;
+import com.ymm.back.dto.ProjectMemberDTO;
 import com.ymm.back.pojos.ProjectMemberM;
 import com.ymm.back.pojos.ProjectMemberP;
 import com.ymm.back.pojos.ProjectP;
@@ -17,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -72,8 +72,18 @@ public class ProjectMemberController {
     @GetMapping("/by-user/{id}")
     public ResponseEntity<?> selectMemberOfProjectbyUserId(@PathVariable("id") int id){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
+        Project project = Project.PROJECT;
         /*List<com.ymm.back.domain.tables.pojos.Work>*/
-        var result = dslContext.select().from(member).where(member.USER_ID.eq(id)).fetchInto(ProjectMemberP.class);
+        // select distinct * from project p, project_member m where m.user_id=p.user_id AND p.user_id={id};
+        var result = dslContext.select().distinctOn().from(member).join(project).on(project.USER_ID.equal(member.USER_ID)).and(project.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
+        System.out.println(result);
+        //List<Record> aaa = result;
+//        for(int i=0;i<result.size();i++){
+//            aaa.set(i, result.get(i));
+//            //aaa.set(result.get(i));
+//            //aaa = result.get(i);
+//        }
+        //var result = dslContext.select().from(member).where(member.USER_ID.eq(id)).fetchInto(ProjectMemberP.class);
         if(result.isEmpty()){
             return ResponseEntity.status(404).body("해당 프로젝트 멤버는 존재하지 않습니다.");
         }

@@ -125,7 +125,7 @@ public class AgendaEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     public ProjectMemberEntity getProjectMemberByMemberId() {
         return projectMemberByMemberId;
     }

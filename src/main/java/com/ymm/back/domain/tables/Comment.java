@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Comment extends TableImpl<CommentRecord> {
 
-    private static final long serialVersionUID = 95258574;
+    private static final long serialVersionUID = -329604979;
 
     /**
      * The reference instance of <code>comment</code>
@@ -58,7 +58,7 @@ public class Comment extends TableImpl<CommentRecord> {
     /**
      * The column <code>comment.member_id</code>.
      */
-    public final TableField<CommentRecord, Integer> MEMBER_ID = createField(DSL.name("member_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<CommentRecord, Integer> MEMBER_ID = createField(DSL.name("member_id"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>comment.work_id</code>.

@@ -17,7 +17,6 @@ public class MessageEntity {
     private ProjectMemberEntity projectMemberByMemberId;
     private ProjectEntity projectByProjectId;
 
-
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {
@@ -91,7 +90,7 @@ public class MessageEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     public ProjectMemberEntity getProjectMemberByMemberId() {
         return projectMemberByMemberId;
     }

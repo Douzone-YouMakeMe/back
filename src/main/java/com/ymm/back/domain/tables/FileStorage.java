@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class FileStorage extends TableImpl<FileStorageRecord> {
 
-    private static final long serialVersionUID = 992472843;
+    private static final long serialVersionUID = 867105516;
 
     /**
      * The reference instance of <code>file_storage</code>
@@ -58,7 +58,7 @@ public class FileStorage extends TableImpl<FileStorageRecord> {
     /**
      * The column <code>file_storage.message_id</code>.
      */
-    public final TableField<FileStorageRecord, Integer> MESSAGE_ID = createField(DSL.name("message_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<FileStorageRecord, Integer> MESSAGE_ID = createField(DSL.name("message_id"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>file_storage.url</code>.

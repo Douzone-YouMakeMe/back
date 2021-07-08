@@ -3,7 +3,6 @@ package com.ymm.back.controller;
 import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.records.MessageRecord;
 import com.ymm.back.dto.MessageDTO;
-import com.ymm.back.entity.MessageEntity;
 import com.ymm.back.pojos.MessageP;
 import com.ymm.back.s3.FileUploadService;
 import com.ymm.back.service.MessageService;
@@ -17,12 +16,10 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

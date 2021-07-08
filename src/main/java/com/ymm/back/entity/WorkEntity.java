@@ -10,15 +10,15 @@ import java.util.Objects;
 public class WorkEntity {
     private int id;
     private String name;
-    private String manager;
     private String status;
     private String color;
+    private String description;
+    private String hashtag;
     private Timestamp startedAt;
     private Timestamp finishedAt;
     private Timestamp createTime;
     private Timestamp updateTime;
     private Collection<CommentEntity> commentsById;
-    private Collection<HashtagEntity> hashtagsById;
     private ProjectEntity projectByProjectId;
     private ProjectMemberEntity projectMemberByMemberId;
 
@@ -43,16 +43,6 @@ public class WorkEntity {
     }
 
     @Basic
-    @Column(name = "manager", nullable = true, length = 70)
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-
-    @Basic
     @Column(name = "status", nullable = true, length = 45)
     public String getStatus() {
         return status;
@@ -70,6 +60,26 @@ public class WorkEntity {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Basic
+    @Column(name = "description", nullable = true, length = 255)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Basic
+    @Column(name = "hashtag", nullable = true, length = 255)
+    public String getHashtag() {
+        return hashtag;
+    }
+
+    public void setHashtag(String hashtag) {
+        this.hashtag = hashtag;
     }
 
     @Basic
@@ -117,12 +127,12 @@ public class WorkEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkEntity that = (WorkEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(manager, that.manager) && Objects.equals(status, that.status) && Objects.equals(color, that.color) && Objects.equals(startedAt, that.startedAt) && Objects.equals(finishedAt, that.finishedAt) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(status, that.status) && Objects.equals(color, that.color) && Objects.equals(description, that.description) && Objects.equals(hashtag, that.hashtag) && Objects.equals(startedAt, that.startedAt) && Objects.equals(finishedAt, that.finishedAt) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, manager, status, color, startedAt, finishedAt, createTime, updateTime);
+        return Objects.hash(id, name, status, color, description, hashtag, startedAt, finishedAt, createTime, updateTime);
     }
 
     @OneToMany(mappedBy = "workByWorkId")
@@ -132,15 +142,6 @@ public class WorkEntity {
 
     public void setCommentsById(Collection<CommentEntity> commentsById) {
         this.commentsById = commentsById;
-    }
-
-    @OneToMany(mappedBy = "workByWorkId")
-    public Collection<HashtagEntity> getHashtagsById() {
-        return hashtagsById;
-    }
-
-    public void setHashtagsById(Collection<HashtagEntity> hashtagsById) {
-        this.hashtagsById = hashtagsById;
     }
 
     @ManyToOne
@@ -154,7 +155,7 @@ public class WorkEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "member_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     public ProjectMemberEntity getProjectMemberByMemberId() {
         return projectMemberByMemberId;
     }

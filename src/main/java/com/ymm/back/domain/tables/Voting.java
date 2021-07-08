@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Voting extends TableImpl<VotingRecord> {
 
-    private static final long serialVersionUID = -580879767;
+    private static final long serialVersionUID = -1857625496;
 
     /**
      * The reference instance of <code>voting</code>
@@ -58,7 +58,7 @@ public class Voting extends TableImpl<VotingRecord> {
     /**
      * The column <code>voting.agenda_id</code>.
      */
-    public final TableField<VotingRecord, Integer> AGENDA_ID = createField(DSL.name("agenda_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<VotingRecord, Integer> AGENDA_ID = createField(DSL.name("agenda_id"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>voting.member_id</code>.

@@ -125,6 +125,7 @@ public class ProjectController {
         return ResponseEntity.status(201).body(result);
     }
     //프로젝트 정보 변경
+    //@PutMapping("/{id}")
     @PatchMapping("/{id}")
     public String updateProject(@PathVariable("id") int id, @ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
@@ -165,6 +166,7 @@ public class ProjectController {
         Project project = Project.PROJECT;
         User user = User.USER;
         String result="";
+        //var aaa = dslContext.fetch("delete from project where project.id="+id);
         int sql = dslContext.deleteFrom(project)
                 .where(project.ID.eq(id))
                 .execute();

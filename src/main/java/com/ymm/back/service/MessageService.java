@@ -2,13 +2,10 @@ package com.ymm.back.service;
 
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
-import com.ymm.back.entity.ProjectEntity;
 import com.ymm.back.pojos.ProjectP;
 import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 

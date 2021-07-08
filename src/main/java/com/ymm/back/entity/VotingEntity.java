@@ -68,7 +68,7 @@ public class VotingEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "agenda_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "agenda_id", referencedColumnName = "id")
     public AgendaEntity getAgendaByAgendaId() {
         return agendaByAgendaId;
     }

@@ -66,6 +66,19 @@ public class ProjectMemberController {
         }
         return ResponseEntity.status(200).body(result);//jdbcTemplate.queryForList(sql).get(0);
     }
+    // 신규생성 07.08
+    // 프로젝트 신청서 정보 받아오기 by 유저가 신청한 곳. user_id. id 파라미터로 가져오기
+    // localhost:8080/member/by-user/15
+    @GetMapping("/by-user/{id}")
+    public ResponseEntity<?> selectMemberOfProjectbyUserId(@PathVariable("id") int id){
+        ProjectMember member = ProjectMember.PROJECT_MEMBER;
+        /*List<com.ymm.back.domain.tables.pojos.Work>*/
+        var result = dslContext.select().from(member).where(member.USER_ID.eq(id)).fetchInto(ProjectMemberP.class);
+        if(result.isEmpty()){
+            return ResponseEntity.status(404).body("해당 프로젝트 멤버는 존재하지 않습니다.");
+        }
+        return ResponseEntity.status(200).body(result);//jdbcTemplate.queryForList(sql).get(0);
+    }
 
     /**
      * 프로젝트에 지원서 제출!
@@ -96,10 +109,10 @@ public class ProjectMemberController {
         }
 
         try {
-            var sql = dslContext.insertInto(member,member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS, member.DESCRIPTION)
+            var sql = dslContext.insertInto(member,member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS, member.DESCRIPTION, member.APPLIED_TIME)
                     // 지원서 제출 시, pending으로 status 고정. status 변경은 patch에서만.
                     //.columns(member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
-                    .values(input.getUserId(),input.getProjectId(),input.getAppliedPosition(),input.getComments(),fileUrl,input.getPortfolioUrl(), "pending", input.getDescription())
+                    .values(input.getUserId(),input.getProjectId(),input.getAppliedPosition(),input.getComments(),fileUrl,input.getPortfolioUrl(), "pending", input.getDescription(), input.getAppliedTime())
                     .execute();
             if(sql==1){
                 result = "프로젝트 지원서가 제출되었습니다.";
@@ -167,6 +180,7 @@ public class ProjectMemberController {
      * // 주의 : approved로 이미 승인했는데, 다시 reject하는 기능은 없습니다!
      * // 그거 만드려면 api 갈아 엎어야됨.
      */
+    //@PutMapping("/status/{id}")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable("id") int id, @RequestBody ProjectMemberP input){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
@@ -253,8 +267,7 @@ public class ProjectMemberController {
     /**
      * 기획상 추가사항 발생.
      * 프로젝트 멤버와 유저를, project_id 기준으로 합쳐서 받아옵시다.
-     *
-     *
+     * status='approved'된 유저들만 받아오므로 이것이 details 화면에 들어감.
      * @return
      */
     // localhost:8080/member?projectId=1

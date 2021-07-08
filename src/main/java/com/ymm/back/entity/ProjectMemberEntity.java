@@ -9,7 +9,6 @@ import java.util.Objects;
 @Table(name = "project_member", schema = "douzone", catalog = "")
 public class ProjectMemberEntity {
     private int id;
-    private String name;
     private String status;
     private String appliedPosition;
     private String comments;
@@ -17,10 +16,7 @@ public class ProjectMemberEntity {
     private String portfolioUrl;
     private String description;
     private String auth;
-    private Integer roleId;
-    private String websocket;
-    private String color;
-    private Timestamp startedTime;
+    private Timestamp appliedTime;
     private Timestamp createTime;
     private Timestamp updateTime;
     private Collection<AgendaEntity> agendaById;
@@ -39,16 +35,6 @@ public class ProjectMemberEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "name", nullable = true, length = 100)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Basic
@@ -122,43 +108,13 @@ public class ProjectMemberEntity {
     }
 
     @Basic
-    @Column(name = "role_id", nullable = true)
-    public Integer getRoleId() {
-        return roleId;
+    @Column(name = "applied_time", nullable = true)
+    public Timestamp getAppliedTime() {
+        return appliedTime;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    @Basic
-    @Column(name = "websocket", nullable = true, length = 255)
-    public String getWebsocket() {
-        return websocket;
-    }
-
-    public void setWebsocket(String websocket) {
-        this.websocket = websocket;
-    }
-
-    @Basic
-    @Column(name = "color", nullable = true, length = 32)
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    @Basic
-    @Column(name = "started_time", nullable = true)
-    public Timestamp getStartedTime() {
-        return startedTime;
-    }
-
-    public void setStartedTime(Timestamp startedTime) {
-        this.startedTime = startedTime;
+    public void setAppliedTime(Timestamp appliedTime) {
+        this.appliedTime = appliedTime;
     }
 
     @Basic
@@ -186,12 +142,12 @@ public class ProjectMemberEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectMemberEntity that = (ProjectMemberEntity) o;
-        return id == that.id && Objects.equals(name, that.name) && Objects.equals(status, that.status) && Objects.equals(appliedPosition, that.appliedPosition) && Objects.equals(comments, that.comments) && Objects.equals(portfolioFile, that.portfolioFile) && Objects.equals(portfolioUrl, that.portfolioUrl) && Objects.equals(description, that.description) && Objects.equals(auth, that.auth) && Objects.equals(roleId, that.roleId) && Objects.equals(websocket, that.websocket) && Objects.equals(color, that.color) && Objects.equals(startedTime, that.startedTime) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
+        return id == that.id && Objects.equals(status, that.status) && Objects.equals(appliedPosition, that.appliedPosition) && Objects.equals(comments, that.comments) && Objects.equals(portfolioFile, that.portfolioFile) && Objects.equals(portfolioUrl, that.portfolioUrl) && Objects.equals(description, that.description) && Objects.equals(auth, that.auth) && Objects.equals(appliedTime, that.appliedTime) && Objects.equals(createTime, that.createTime) && Objects.equals(updateTime, that.updateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, status, appliedPosition, comments, portfolioFile, portfolioUrl, description, auth, roleId, websocket, color, startedTime, createTime, updateTime);
+        return Objects.hash(id, status, appliedPosition, comments, portfolioFile, portfolioUrl, description, auth, appliedTime, createTime, updateTime);
     }
 
     @OneToMany(mappedBy = "projectMemberByMemberId")
@@ -232,7 +188,7 @@ public class ProjectMemberEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "project_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
     public ProjectEntity getProjectByProjectId() {
         return projectByProjectId;
     }

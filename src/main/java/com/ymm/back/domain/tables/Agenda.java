@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Agenda extends TableImpl<AgendaRecord> {
 
-    private static final long serialVersionUID = -735969352;
+    private static final long serialVersionUID = -750291111;
 
     /**
      * The reference instance of <code>agenda</code>
@@ -58,7 +58,7 @@ public class Agenda extends TableImpl<AgendaRecord> {
     /**
      * The column <code>agenda.member_id</code>.
      */
-    public final TableField<AgendaRecord, Integer> MEMBER_ID = createField(DSL.name("member_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<AgendaRecord, Integer> MEMBER_ID = createField(DSL.name("member_id"), org.jooq.impl.SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>agenda.project_id</code>.

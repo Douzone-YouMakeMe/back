@@ -73,6 +73,9 @@ public class WorkController {
         }
         return ResponseEntity.status(200).body(result);
     }
+    // 업무 수정.(PUT)
+    // 사전에 화면에서는 get 해서 기존 데이터를 넣어둔 상태여야 합니다.
+    // localhost:8080/work/12
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> updateWork(@PathVariable("id") int id, @RequestBody WorkP input){
         Work work = Work.WORK;
@@ -105,11 +108,12 @@ public class WorkController {
      * input: List(work.id, status)
      * process: status: started(할일), proceed(진행중), finished(완료)
      * output: 성공(200), 실패(400)
-     * 주의: 어느 프로젝트의, 어느 멤버가 업데이트 쳤는지를 받지 않으므로
-     * UI 비즈니스 로직으로 막아야함.
+     * 주의: 어느 프로젝트의, 어느 멤버가 업데이트 쳤는지는 description 등에 받지 않는다고 함.
+     * UI 비즈니스 로직에 아무나 다중업데이트 치지 못하게
+     * 막는 사항이 옵션이 아닌 required?
      * 하단에 예시 request body List문 첨부.
      */
-    @PatchMapping(path = "/status")
+    @PutMapping(path = "/status")
     public ResponseEntity<?> updateWork2( @RequestBody List<WorkP> input){
         Work work = Work.WORK;
         String result="";

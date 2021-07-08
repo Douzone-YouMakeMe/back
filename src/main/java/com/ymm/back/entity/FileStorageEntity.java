@@ -78,7 +78,7 @@ public class FileStorageEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "message_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "message_id", referencedColumnName = "id")
     public MessageEntity getMessageByMessageId() {
         return messageByMessageId;
     }

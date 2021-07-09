@@ -113,7 +113,7 @@ public class WorkController {
      * 막는 사항이 옵션이 아닌 required?
      * 하단에 예시 request body List문 첨부.
      */
-    @PutMapping(path = "/status")
+    @PatchMapping(path = "/status")
     public ResponseEntity<?> updateWork2( @RequestBody List<WorkP> input){
         Work work = Work.WORK;
         String result="";

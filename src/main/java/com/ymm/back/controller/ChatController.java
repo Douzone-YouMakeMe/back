@@ -89,7 +89,7 @@ public class ChatController {
         var res2 = dslContext.select().from(message).where(message.MEMBER_ID.eq(projectMemberId)).orderBy(message.ID.desc()).fetchInto(MessageP.class).get(0);
         System.out.println(sql +" "+res2.getId());
         // 일단, record 안에는 그 기록(=msg)이 들어있고, 그거를 담아서 알림을 보내는 기능이 있다.
-
+ 
 
         //NotificationDTO notificationDTO = messageService.createNotificationDTO(msg);
         List<Integer> toSend = messageService.createNotificationList(projectMemberId, projectId);

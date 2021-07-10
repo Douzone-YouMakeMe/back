@@ -30,7 +30,8 @@ public class HandShakeInterceptor implements HandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
         //String jwtToken = serverHttpRequest.getURI().getQuery().substring(6);
-        String wsToken = serverHttpRequest.getURI().getQuery().substring(6);
+        //String wsToken = serverHttpRequest.getURI().getQuery().substring(6);
+        String wsToken = serverHttpRequest.getURI().getQuery();
         if(StringUtils.isEmpty(wsToken)){
             return false;
         }

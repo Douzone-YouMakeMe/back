@@ -1,7 +1,9 @@
 package com.ymm.back.service;
 
+import com.ymm.back.domain.tables.Message;
 import com.ymm.back.domain.tables.Project;
 import com.ymm.back.domain.tables.ProjectMember;
+import com.ymm.back.pojos.MessageP;
 import com.ymm.back.pojos.ProjectP;
 import com.ymm.back.s3.FileUploadService;
 import org.jooq.DSLContext;
@@ -52,7 +54,14 @@ public class MessageService {
         return toSend;
     }
 
-
+    public List<MessageP> findByProjectId(int pid){
+        Message message= Message.MESSAGE;
+        Project project =Project.PROJECT;
+//    	System.out.println(pid);
+        var temp=dslContext.selectFrom(message).where(message.PROJECT_ID.eq(pid)).fetchInto(MessageP.class);
+        return temp;
+//    	var option=dslContext.selectFrom()
+    }
 //            pms.getProjecetMembers(Integer.toString(pid), "").forEach(projectMemberEntity->toSend.add(projectMemberEntity.getId()));;
 //            public List<ProjectMemberEntity> getProjecetMembers(String pid,String uid){
 //                return pmr.getProjecetMeberByUidORPid(pid,uid);

@@ -79,10 +79,13 @@ public class ProjectMemberController {
         Project project = Project.PROJECT;
         /*List<com.ymm.back.domain.tables.pojos.Work>*/
         // select distinct * from project p, project_member m where m.user_id=p.user_id AND p.user_id={id};
+        // 원문: select distinct * from project join project_member on project.id=project_member.project_id and project_member.user_id=23;
         //select distinct * from project p , project_member m where p.id=m.project_id AND m.userId={id};
         //var result = dslContext.select().distinctOn().from(member).join(project)on(member).and(project.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
+
         var result = dslContext.select().distinctOn().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
-        System.out.println(result);
+        //var result2 = dslContext.select().distinctOn().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetch();
+        //System.out.println(result2);
         //List<Record> aaa = result;
 //        for(int i=0;i<result.size();i++){
 //            aaa.set(i, result.get(i));

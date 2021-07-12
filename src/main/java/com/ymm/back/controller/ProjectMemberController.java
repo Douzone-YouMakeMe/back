@@ -216,15 +216,15 @@ public class ProjectMemberController {
             flagOfQuery = sql;
             // 서브쿼리 떼어낸 버전.
             // 해당 프로젝트의 TO가 몇명인지 본다.
-            var to = dslContext.select().from(project)
-                    .where(project.ID.eq(input.getProjectId())).fetchInto(ProjectP.class).get(0).getTo();
+//            var to = dslContext.select().from(project)
+//                    .where(project.ID.eq(input.getProjectId())).fetchInto(ProjectP.class).get(0).getTo();
             // 그리고 to를 하나 까버린다.
             //System.out.println("지금 티오몇명입네까?: "+total);
-            var totalCut = dslContext.update(project)
-                    .set(project.TO, (to-1))
-                    .where(project.ID.eq(input.getProjectId()))
-                    .execute();
-            flagOfQuery = totalCut;
+//            var totalCut = dslContext.update(project)
+//                    .set(project.TO, (to-1))
+//                    .where(project.ID.eq(input.getProjectId()))
+//                    .execute();
+//            flagOfQuery = totalCut;
             //System.out.println("토탈 인원티오가 까졌습니까?: "+totalCut);
         } else if(input.getStatus().equalsIgnoreCase("rejected")) {
             var sql = dslContext.update(member)
@@ -234,7 +234,7 @@ public class ProjectMemberController {
             flagOfQuery = sql;
         }
         if(flagOfQuery == 0){
-            return ResponseEntity.status(400).body("승인 실패. 관리자에게 문의 바랍니다.");
+            return ResponseEntity.status(400).body("승인여부 등록 실패. 관리자에게 문의 바랍니다.");
         } else {
             result = "프로젝트 승인 결정을 성공적으로 마쳤습니다.";
         }

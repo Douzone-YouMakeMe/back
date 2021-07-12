@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.UUID;
 
 import static org.jooq.impl.DSL.coalesce;
@@ -51,18 +53,25 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody UserP input){
         User user = User.USER;
         String result="";
-        var encoded = dslContext.select(DSL.field("password")).from(user)
-                .where(user.EMAIL.eq(input.getEmail())).fetchInto(UserP.class).get(0).getPassword();
-        var decodePw = passwordEncoder.matches(encoded,input.getPassword());
-        var sql = dslContext.select().from(user)
-                .where(user.EMAIL.eq(input.getEmail()))
-                .fetchInto(UserP.class);
-        if(sql.isEmpty() || decodePw){
-            //throw new PasswordWrongException();
-            return ResponseEntity.status(401).body("회원이 없거나 잘못된 비밀번호 입니다.");
-            // exception 직접 던지는 것은 자제하고 ResponseEntity로 통일중.
-            // 복붙할 API를 처음에 잘만들걸...
-            //throw new BadCredentialsException("회원이 없거나 잘못된 비밀번호 입니다.");
+        List<UserP> sql;
+        try {
+            var encoded = dslContext.select(DSL.field("password")).from(user)
+                    .where(user.EMAIL.eq(input.getEmail())).fetchInto(UserP.class).get(0).getPassword();
+            var decodePw = passwordEncoder.matches( (CharSequence) input.getPassword(), encoded);
+            //System.out.println(encoded);
+            //System.out.println(decodePw);
+            sql = dslContext.select().from(user)
+                    .where(user.EMAIL.eq(input.getEmail()))
+                    .fetchInto(UserP.class);
+            if(input.getEmail().isEmpty() || sql.isEmpty() || !decodePw){
+                //throw new PasswordWrongException();
+                return ResponseEntity.status(401).body("회원이 없거나 잘못된 비밀번호 입니다.");
+                // exception 직접 던지는 것은 자제하고 ResponseEntity로 통일중.
+                // 복붙할 API를 처음에 잘만들걸...
+                //throw new BadCredentialsException("회원이 없거나 잘못된 비밀번호 입니다.");
+            }
+        } catch (IndexOutOfBoundsException e){
+            return ResponseEntity.status(404).body("회원이 없거나 잘못된 비밀번호 입니다.");
         }
 
         return ResponseEntity.status(200).body(sql);
@@ -105,8 +114,10 @@ public class UserController {
     // 업데이트에서도 필수로 id, name, password가 필요함에 유의.
     // 2021.06.29. 일단 프론트에 문의해서 처음에는 GET/user 로 다 받아서 양식 채워진 상태로 보여주기로.
     // 대신 profile은 s3를 쓰는 특성상, 돈 덜나오게 안넣어도 되도록 수정함. --2021.07.01
+    // 2021.07.12 이제 범용 patch로 변경.
+    // 이제는 일부만 변경하거나 전체 변경하거나 다됨 + 변경 후 유저정보를 반환하게 개선됨!
     // localhost:8080/user/2
-    @PutMapping(path="/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(path="/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> updateUser(@PathVariable("id") int id, @ModelAttribute UserM input){
         User user = User.USER;
         String result="";
@@ -115,30 +126,39 @@ public class UserController {
         if(/*!input.profile.isEmpty() &&*/ input.getProfile() !=null){
             record.set(user.PROFILE,fileUploadService.uploadImage(input.getProfile()));
         }
-        record.set(user.NAME,input.getName());
-        record.set(user.EMAIL, input.getEmail());
-        record.set(user.PASSWORD,input.getPassword());
-        record.set(user.TEL,input.getTel());
-        record.set(user.JOB_TITLE,input.getJobTitle());
-        record.set(user.COLOR, input.getColor());
+        // var decodePw = passwordEncoder.matches(encoded,input.getPassword());
+
+        if(input.getName() != null)
+        record.set(user.NAME,input.getName()); //
+        if(input.getPassword() != null)
+        record.set(user.PASSWORD,passwordEncoder.encode(input.getPassword())); //
+        if(input.getJobTitle() != null)
+        record.set(user.JOB_TITLE,input.getJobTitle()); //
+        if(input.getColor() != null)
+        record.set(user.COLOR, input.getColor()); //
 
         var sql = dslContext.update(user)
                   .set(record)
                 .where(user.ID.eq(id))
                 .execute();
+        var updatedResult = dslContext.select().from(user)
+                .where(user.ID.eq(id))
+                .fetchInto(UserP.class);
         if(sql ==1){
             result = "회원정보가 수정되었습니다.";
         } else {
             return ResponseEntity.status(400).body("허용되는 타입의 정보로 입력해서 수정해 주세요.");
         }
-        return ResponseEntity.status(201).body(result);
+        return ResponseEntity.status(201).body(updatedResult);
     }
+    // DELETE localhost:8080/user/{id}
+    // 2021.07.12 RequestBody 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable("id") int id,@RequestBody UserP input){
+    public ResponseEntity<?> deleteUser(@PathVariable("id") int id){
         User user = User.USER;
         String result="";
         var sql = dslContext.deleteFrom(user)
-                .where(user.ID.eq(id).and(user.PASSWORD.eq(input.getPassword())))
+                .where( user.ID.eq(id) )
                 .execute();
         if(sql ==1){
             result = "그동안 저희 서비스를 이용해 주셔서 감사합니다.";

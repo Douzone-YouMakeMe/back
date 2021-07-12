@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -88,8 +90,10 @@ public class ProjectController {
     // 필수 파라미터는 만드는 사람의 userId와, thumbnail 2가지이다.
     // UI 안내하기! total 설정 안하고 누르면 기본 정원수가 5명이라고 설정합니다!
     // url: POST / localhost:8080/project
-    // 2021.07.12 추가: 처음 만들때는 total을 to에 넣어서 숫자를 같게 한다.
+    // 2021.07.12 추가: 처음 만들때는 total을 to에 넣어서 숫자를 같게 한다. -> to 안쓰게 됨.
+    // + 이제 thumbnail이 없어도 에러나지 않고 pavicon으로 초기화하게 변경되었습니다!
     // 그리고 즉시 to 정원을 하나 빼버린다.
+    // POST/ localhost:8080/project
     @PostMapping
     public ResponseEntity<?> insertProject(@ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
@@ -100,6 +104,9 @@ public class ProjectController {
             // 썸네일 있으면 집어넣기
             thumbnail = fileUploadService.uploadImage(input.getThumbnail());
             //System.out.println(thumbnail);
+        } else {
+            MultipartFile file = (MultipartFile) new File("../../../pavicon.png");
+            thumbnail = fileUploadService.uploadImage(file);
         }
         int total= 1;
         if(input.getTotal() == null){

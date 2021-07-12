@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 import static org.jooq.impl.DSL.defaultValue;
+import static org.jooq.impl.DSL.notExists;
 
 @CrossOrigin
 @RestController
@@ -68,6 +69,9 @@ public class ProjectMemberController {
     }
     // 신규생성 07.08
     // 프로젝트 신청서 정보 받아오기 by 유저가 신청한 곳. user_id. id 파라미터로 가져오기
+    // 2021.07.12
+    // 수정 : join절 잘못된 부분 변경 : where m.user_id=p.user_id
+    // -> p.id=m.project_id
     // localhost:8080/member/by-user/15
     @GetMapping("/by-user/{id}")
     public ResponseEntity<?> selectMemberOfProjectbyUserId(@PathVariable("id") int id){
@@ -75,7 +79,9 @@ public class ProjectMemberController {
         Project project = Project.PROJECT;
         /*List<com.ymm.back.domain.tables.pojos.Work>*/
         // select distinct * from project p, project_member m where m.user_id=p.user_id AND p.user_id={id};
-        var result = dslContext.select().distinctOn().from(member).join(project).on(project.USER_ID.equal(member.USER_ID)).and(project.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
+        //select distinct * from project p , project_member m where p.id=m.project_id AND m.userId={id};
+        //var result = dslContext.select().distinctOn().from(member).join(project)on(member).and(project.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
+        var result = dslContext.select().distinctOn().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
         System.out.println(result);
         //List<Record> aaa = result;
 //        for(int i=0;i<result.size();i++){
@@ -188,7 +194,8 @@ public class ProjectMemberController {
      *  input : projectMember.id(pathVariable), projectId, userId, status(approved, rejected)
      *  output : success or fail
      * // 주의 : approved로 이미 승인했는데, 다시 reject하는 기능은 없습니다!
-     * // 그거 만드려면 api 갈아 엎어야됨.
+     * // 그기능은 전체 구조 변경 필요.
+     * 2021.07.12 수정: 'total'은 이제부터 총원수, 'to'는 현재 모집정원 숫자로 변경되어 컬럼이 추가됩니다.
      */
     //@PutMapping("/status/{id}")
     @PatchMapping("/{id}")
@@ -206,12 +213,12 @@ public class ProjectMemberController {
             flagOfQuery = sql;
             // 서브쿼리 떼어낸 버전.
             // 해당 프로젝트의 TO가 몇명인지 본다.
-            var total = dslContext.select().from(project)
-                    .where(project.ID.eq(input.getProjectId())).fetchInto(ProjectP.class).get(0).getTotal();
-            // 그리고 토탈을 하나 까버린다.
+            var to = dslContext.select().from(project)
+                    .where(project.ID.eq(input.getProjectId())).fetchInto(ProjectP.class).get(0).getTo();
+            // 그리고 to를 하나 까버린다.
             //System.out.println("지금 티오몇명입네까?: "+total);
             var totalCut = dslContext.update(project)
-                    .set(project.TOTAL, (total-1))
+                    .set(project.TO, (to-1))
                     .where(project.ID.eq(input.getProjectId()))
                     .execute();
             flagOfQuery = totalCut;
@@ -244,33 +251,59 @@ public class ProjectMemberController {
      *  (T/F) deleteMember(projectMember.id, user.password)
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMember(@PathVariable("id") int id, @RequestBody UserP input){
+    public ResponseEntity<?> deleteMember(@PathVariable("id") int id){
         ProjectMember member = ProjectMember.PROJECT_MEMBER;
-        Project project = Project.PROJECT;
-        User user = User.USER;
         String result ="";
         var deleted = 0;
-        // 유저아이디를 project_member를 통해 조회.
-        var user_id = dslContext.select(DSL.field("user_id"))
-                .from(member).where(member.ID.eq(id)).fetchInto(ProjectMemberP.class).get(0).getUserId();
-        //System.out.println("유저아이디 조회되었스므니까?: "+user_id);
-        var pw = dslContext.select(DSL.field("password"))
-                .from(user).where(user.ID.eq(user_id)).fetchInto(UserP.class).get(0).getPassword();
-        //System.out.println("패스워드 나왔습니까?: "+pw);
-        //System.out.println("그래서 입력한 패스워드는 무엇입네까?: "+input.getPassword());
-        var flag = input.getPassword().equals(pw);
-        //System.out.println("그래서 대조하니 맞습니까? "+flag);
-        if(flag){
-            deleted = dslContext.deleteFrom(member).where(member.ID.eq(id)).execute();
-        } else {
-            return ResponseEntity.status(401).body("비밀번호가 틀렸습니다. 탈퇴 및 삭제 실패.");
-        }
+        deleted = dslContext.deleteFrom(member).where(member.ID.eq(id)).execute();
         if(deleted==1){
             result = "프로젝트 탈퇴 및 삭제 성공.";
+        } else {
+            return ResponseEntity.status(400).body("이미 삭제된 멤버 입니다.");
         }
 
-        return ResponseEntity.status(201).body(result);
+        return ResponseEntity.status(200).body(result);
     }
+
+//    /**
+//     * 프로젝트 탈퇴 로직.
+//     * 프로젝트를 탈퇴할 때, projectMember.id를 가지고 탈퇴 들어간다.
+//     * 하지만, 스토리보드 상으로는 user.password를 입력해야 탈퇴가 된다.
+//     * 그렇다면...
+//     * input: projectMember.id, user.password
+//     * process: select user.password from user
+//     * where member.user_id 한 다음, equals ==true면 결정!
+//     * output: success or fail
+//     *  (T/F) deleteMember(projectMember.id, user.password)
+//     */
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> deleteMember(@PathVariable("id") int id, @RequestBody UserP input){
+//        ProjectMember member = ProjectMember.PROJECT_MEMBER;
+//        Project project = Project.PROJECT;
+//        User user = User.USER;
+//        String result ="";
+//        var deleted = 0;
+//        // 유저아이디를 project_member를 통해 조회.
+//        var user_id = dslContext.select(DSL.field("user_id"))
+//                .from(member).where(member.ID.eq(id)).fetchInto(ProjectMemberP.class).get(0).getUserId();
+//        //System.out.println("유저아이디 조회되었스므니까?: "+user_id);
+//        var pw = dslContext.select(DSL.field("password"))
+//                .from(user).where(user.ID.eq(user_id)).fetchInto(UserP.class).get(0).getPassword();
+//        //System.out.println("패스워드 나왔습니까?: "+pw);
+//        //System.out.println("그래서 입력한 패스워드는 무엇입네까?: "+input.getPassword());
+//        var flag = input.getPassword().equals(pw);
+//        //System.out.println("그래서 대조하니 맞습니까? "+flag);
+//        if(flag){
+//            deleted = dslContext.deleteFrom(member).where(member.ID.eq(id)).execute();
+//        } else {
+//            return ResponseEntity.status(401).body("비밀번호가 틀렸습니다. 탈퇴 및 삭제 실패.");
+//        }
+//        if(deleted==1){
+//            result = "프로젝트 탈퇴 및 삭제 성공.";
+//        }
+//
+//        return ResponseEntity.status(201).body(result);
+//    }
 
     //@ResponseBody
 
@@ -289,6 +322,34 @@ public class ProjectMemberController {
         var joined = dslContext.select().from(user,member)
                 .where(user.ID.eq(member.USER_ID)).and(member.PROJECT_ID.eq(projectId)).and(member.STATUS.eq("approved")).fetchInto(MemberDTO.class);
         //System.out.println(joined);
+        return ResponseEntity.status(200).body(joined);
+    }
+
+    /**
+     * 07.12
+     * 추가사항.
+     * 프로젝트 멤버와 유저를, project_id 기준으로 합쳐서 받아옵시다.
+     * 이번에는 status 관계 없이 전체를 받아온다.
+     * -> 추가. status=='rejected'는 뺀다.
+     * @return
+     */
+    // localhost:8080/member/all?projectId={해당프로젝트id}
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllMemberByProjectId(@RequestParam Integer projectId) {
+        ProjectMember member = ProjectMember.PROJECT_MEMBER;
+        User user = User.USER;
+        //select * from user u, project_member m where u.id = m.user_id AND m.project_id = 1;
+//        System.out.println(dslContext.select().from(user,member)
+//                .where(user.ID.eq(member.USER_ID)).and(member.PROJECT_ID.eq(projectId)).fetchInto(MemberDTO.class));
+//        System.out.println(dslContext.select().from(user,member)
+//                .where(user.ID.eq(member.USER_ID)).and(member.PROJECT_ID.eq(projectId)).and(member.STATUS.eq("rejected")).fetchInto(MemberDTO.class) );
+        var joined = dslContext.select().from(user,member)
+                .where(user.ID.eq(member.USER_ID)).and(member.PROJECT_ID.eq(projectId))
+                .andNot(member.STATUS.eq("rejected"))
+//                .andNotExists(dslContext.select().from(user,member)
+//                        .where(user.ID.eq(member.USER_ID)).and(member.STATUS.eq("rejected")))
+                .fetchInto(MemberDTO.class);
+        System.out.println(joined);
         return ResponseEntity.status(200).body(joined);
     }
 

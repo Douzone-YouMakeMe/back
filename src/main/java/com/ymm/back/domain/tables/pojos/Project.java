@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project implements Serializable {
 
-    private static final long serialVersionUID = -1654913168;
+    private static final long serialVersionUID = 1369663683;
 
     private Integer       id;
     private Integer       userId;
@@ -27,6 +27,7 @@ public class Project implements Serializable {
     private Integer       total;
     private String        type;
     private String        url;
+    private Integer       to;
     private LocalDateTime startedTime;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
@@ -46,6 +47,7 @@ public class Project implements Serializable {
         this.total = value.total;
         this.type = value.type;
         this.url = value.url;
+        this.to = value.to;
         this.startedTime = value.startedTime;
         this.createTime = value.createTime;
         this.updateTime = value.updateTime;
@@ -64,6 +66,7 @@ public class Project implements Serializable {
         Integer       total,
         String        type,
         String        url,
+        Integer       to,
         LocalDateTime startedTime,
         LocalDateTime createTime,
         LocalDateTime updateTime,
@@ -80,6 +83,7 @@ public class Project implements Serializable {
         this.total = total;
         this.type = type;
         this.url = url;
+        this.to = to;
         this.startedTime = startedTime;
         this.createTime = createTime;
         this.updateTime = updateTime;
@@ -172,6 +176,14 @@ public class Project implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Integer getTo() {
+        return this.to;
+    }
+
+    public void setTo(Integer to) {
+        this.to = to;
     }
 
     public LocalDateTime getStartedTime() {
@@ -281,6 +293,12 @@ public class Project implements Serializable {
         }
         else if (!url.equals(other.url))
             return false;
+        if (to == null) {
+            if (other.to != null)
+                return false;
+        }
+        else if (!to.equals(other.to))
+            return false;
         if (startedTime == null) {
             if (other.startedTime != null)
                 return false;
@@ -323,6 +341,7 @@ public class Project implements Serializable {
         result = prime * result + ((this.total == null) ? 0 : this.total.hashCode());
         result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
         result = prime * result + ((this.url == null) ? 0 : this.url.hashCode());
+        result = prime * result + ((this.to == null) ? 0 : this.to.hashCode());
         result = prime * result + ((this.startedTime == null) ? 0 : this.startedTime.hashCode());
         result = prime * result + ((this.createTime == null) ? 0 : this.createTime.hashCode());
         result = prime * result + ((this.updateTime == null) ? 0 : this.updateTime.hashCode());
@@ -345,6 +364,7 @@ public class Project implements Serializable {
         sb.append(", ").append(total);
         sb.append(", ").append(type);
         sb.append(", ").append(url);
+        sb.append(", ").append(to);
         sb.append(", ").append(startedTime);
         sb.append(", ").append(createTime);
         sb.append(", ").append(updateTime);

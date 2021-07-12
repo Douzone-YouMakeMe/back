@@ -28,6 +28,7 @@ public class ProjectM {
     private Integer       total;
     private String        url;
     private String        type;
+    private Integer       to;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startedTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -27,6 +27,7 @@ public class ProjectEntity {
     private UserEntity userByUserId;
     private Collection<ProjectMemberEntity> projectMembersById;
     private Collection<WorkEntity> worksById;
+    private Integer to;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -225,5 +226,15 @@ public class ProjectEntity {
 
     public void setWorksById(Collection<WorkEntity> worksById) {
         this.worksById = worksById;
+    }
+
+    @Basic
+    @Column(name = "to", nullable = true)
+    public Integer getTo() {
+        return to;
+    }
+
+    public void setTo(Integer to) {
+        this.to = to;
     }
 }

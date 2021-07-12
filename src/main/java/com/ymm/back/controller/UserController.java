@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
@@ -24,11 +25,13 @@ public class UserController {
     private final DSLContext dslContext;
     private final JdbcTemplate jdbcTemplate;
     private final FileUploadService fileUploadService;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserController(DSLContext dslContext, JdbcTemplate jdbcTemplate, FileUploadService fileUploadService) {
+    public UserController(DSLContext dslContext, JdbcTemplate jdbcTemplate, FileUploadService fileUploadService, PasswordEncoder passwordEncoder) {
         this.dslContext = dslContext;
         this.jdbcTemplate = jdbcTemplate;
         this.fileUploadService = fileUploadService;
+        this.passwordEncoder = passwordEncoder;
     }
     //유저정보를 모두 받아오면 보안이 X된다.. getAll 메소드는 삭제.
 
@@ -48,11 +51,14 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody UserP input){
         User user = User.USER;
         String result="";
+        var encoded = dslContext.select(DSL.field("password")).from(user)
+                .where(user.EMAIL.eq(input.getEmail())).fetchInto(UserP.class).get(0).getPassword();
+        var decodePw = passwordEncoder.matches(encoded,input.getPassword());
         var sql = dslContext.select().from(user)
-                .where(user.EMAIL.eq(input.getEmail()).and(user.PASSWORD.eq(input.getPassword())))
+                .where(user.EMAIL.eq(input.getEmail()))
                 .fetchInto(UserP.class);
-        if(sql.isEmpty()){
-            result = "회원이 없습니다.";
+        if(sql.isEmpty() || decodePw){
+            //throw new PasswordWrongException();
             return ResponseEntity.status(401).body("회원이 없거나 잘못된 비밀번호 입니다.");
             // exception 직접 던지는 것은 자제하고 ResponseEntity로 통일중.
             // 복붙할 API를 처음에 잘만들걸...
@@ -81,11 +87,12 @@ public class UserController {
             return ResponseEntity.status(409).body("이메일이 중복됩니다. 다른 이메일로 가입 시도 바랍니다.");
             //이메일이 없을때 nullpointer익셉션을 일으켜서 가입 go!
         } catch (Exception e){
+            System.out.println(input.getPassword());
             sql = dslContext.insertInto(user)
                     .columns(user.EMAIL,user.NAME,user.ENABLED,user.PASSWORD,user.WSTOKEN, user.COLOR)
                     //지금은 ENABLED가 default로 활성화에 유의!
                     //나중에 spring security 키는순간 전적으로 시큐리티 모듈에 맡겨야됨.
-                    .values(input.getEmail(),input.getName(),true,input.getPassword(),UUID.randomUUID().toString(), input.getColor())
+                    .values(input.getEmail(),input.getName(),true, passwordEncoder.encode(input.getPassword()),UUID.randomUUID().toString(), input.getColor())
                     .execute();
         }
         if(sql ==1){

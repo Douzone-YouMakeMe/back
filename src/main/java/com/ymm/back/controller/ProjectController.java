@@ -87,7 +87,9 @@ public class ProjectController {
     // 프로젝트 만들기! multipart/form
     // 필수 파라미터는 만드는 사람의 userId와, thumbnail 2가지이다.
     // UI 안내하기! total 설정 안하고 누르면 기본 정원수가 5명이라고 설정합니다!
-    // localhost:8080/project
+    // url: POST / localhost:8080/project
+    // 2021.07.12 추가: 처음 만들때는 total을 to에 넣어서 숫자를 같게 한다.
+    // 그리고 즉시 to 정원을 하나 빼버린다.
     @PostMapping
     public ResponseEntity<?> insertProject(@ModelAttribute ProjectM input){
         Project project = Project.PROJECT;
@@ -106,8 +108,8 @@ public class ProjectController {
             total = input.getTotal();
         }
         var sql = dslContext.insertInto(project)
-                .columns(project.USER_ID,project.NAME,project.STARTED_TIME,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION,project.AUTHORITY,project.TOTAL,project.FINISHED_TIME) //project.NAME ,project.FINISHED_AT
-                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,thumbnail,input.getDescription(),input.getAuthority(),total,input.getFinishedTime())
+                .columns(project.USER_ID,project.NAME,project.STARTED_TIME,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION,project.AUTHORITY,project.TOTAL,project.FINISHED_TIME, project.TO) //project.NAME ,project.FINISHED_AT
+                .values(input.getUserId(), input.getName(),input.getStartedTime(),input.getContents(),0,thumbnail,input.getDescription(),input.getAuthority(),total,input.getFinishedTime(), (total-1) )
                 .execute();
         // 프로젝트 ID 를 프로젝트 작성자의 것으로 받아서 찾은다음,
         var selectPid = dslContext.select(project.ID).from(project).orderBy(project.ID.desc()).limit(1).fetchInto(Integer.class).get(0);
@@ -117,6 +119,11 @@ public class ProjectController {
                 //.columns(member.USER_ID,member.PROJECT_ID,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL, member.STATUS)
                 .values(input.getUserId(), selectPid, "approved")
                 .execute();
+        //var thatId = dslContext.selectFrom(project).orderBy(project.ID.desc()).fetch().get(0).getId();
+//        var toCut = dslContext.update(project)
+//                .set(project.TO, (input.getTo()-1) )
+//                .where(project.ID.eq(thatId))
+//                .execute();
         if(sql==1){
             result = "프로젝트가 생성되었습니다.";
         } else {
@@ -140,8 +147,10 @@ public class ProjectController {
             record.set(project.DESCRIPTION, input.getDescription());
         if(input.getContents() != null)
             record.set(project.CONTENTS, input.getContents());
-        if(input.getTotal() != null)
+        if(input.getTotal() != null) {
             record.set(project.TOTAL, input.getTotal());
+            record.set(project.TO, input.getTotal());
+        }
         if(input.getStartedTime() != null)
             record.set(project.STARTED_TIME, input.getStartedTime());
         if(input.getFinishedTime() != null)

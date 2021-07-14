@@ -82,8 +82,12 @@ public class ProjectMemberController {
         // 원문: select distinct * from project join project_member on project.id=project_member.project_id and project_member.user_id=23;
         //select distinct * from project p , project_member m where p.id=m.project_id AND m.userId={id};
         //var result = dslContext.select().distinctOn().from(member).join(project)on(member).and(project.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
+        // .distinctOn()
+        //var result = dslContext.select().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
 
-        var result = dslContext.select().distinctOn().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
+        var result = dslContext.select(project.ID.as("projectId"),project.USER_ID.as("ownerUserId"),project.NAME,project.CONTENTS,project.VIEW_COUNT,project.THUMBNAIL,project.DESCRIPTION.as("projectDescription"),project.AUTHORITY,project.TOTAL,project.TYPE,project.URL,project.TO,project.STARTED_TIME,project.CREATE_TIME,project.UPDATE_TIME,project.FINISHED_TIME,
+                member.ID,member.USER_ID,member.STATUS,member.APPLIED_POSITION,member.COMMENTS,member.PORTFOLIO_FILE,member.PORTFOLIO_URL,member.DESCRIPTION,member.AUTH,member.APPLIED_TIME,member.CREATE_TIME,member.UPDATE_TIME)
+                .distinctOn().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetchInto(ProjectMemberDTO.class);
         //var result2 = dslContext.select().distinctOn().from(project).join(member).on(project.ID.equal(member.PROJECT_ID)).and(member.USER_ID.eq(id)).fetch();
         //System.out.println(result2);
         //List<Record> aaa = result;

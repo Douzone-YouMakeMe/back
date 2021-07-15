@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class ProjectMember extends TableImpl<ProjectMemberRecord> {
 
-    private static final long serialVersionUID = 1027639459;
+    private static final long serialVersionUID = -1084580732;
 
     /**
      * The reference instance of <code>project_member</code>
@@ -78,7 +78,7 @@ public class ProjectMember extends TableImpl<ProjectMemberRecord> {
     /**
      * The column <code>project_member.comments</code>.
      */
-    public final TableField<ProjectMemberRecord, String> COMMENTS = createField(DSL.name("comments"), org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ProjectMemberRecord, String> COMMENTS = createField(DSL.name("comments"), org.jooq.impl.SQLDataType.VARCHAR(1000), this, "");
 
     /**
      * The column <code>project_member.portfolio_file</code>.

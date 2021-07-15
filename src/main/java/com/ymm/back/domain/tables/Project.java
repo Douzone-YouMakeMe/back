@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Project extends TableImpl<ProjectRecord> {
 
-    private static final long serialVersionUID = 64219179;
+    private static final long serialVersionUID = -1255597745;
 
     /**
      * The reference instance of <code>project</code>
@@ -68,7 +68,7 @@ public class Project extends TableImpl<ProjectRecord> {
     /**
      * The column <code>project.contents</code>.
      */
-    public final TableField<ProjectRecord, String> CONTENTS = createField(DSL.name("contents"), org.jooq.impl.SQLDataType.VARCHAR(200), this, "");
+    public final TableField<ProjectRecord, String> CONTENTS = createField(DSL.name("contents"), org.jooq.impl.SQLDataType.VARCHAR(2000), this, "");
 
     /**
      * The column <code>project.view_count</code>.
